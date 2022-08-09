@@ -1,0 +1,235 @@
+sensor_config {
+  car_id: "VV7C001"
+  cam_param {
+    name: front_middle_camera
+    fx: 1967.60657
+    fy: 1976.31348
+    cx: 946.735718
+    cy: 505.090149
+    distortion: -0.5840801
+    distortion: 0.411844581
+    distortion: -0.238981
+    distortion: 0
+    image_width: 1920
+    image_height: 1080
+    model: "SG2-AR0233-0202-GMSL-H100"
+    type: SENYUN
+    pose {
+      translation {
+        x: 1.93993139
+        y: 0.203679532
+        z: 1.12675548
+      }
+      attitude_ypr {
+        yaw: 1.63229
+        pitch: -3.08890676
+        roll: 1.62153137
+      }
+      attitude {
+        w: 0.515420854
+        x: -0.514806867
+        y: 0.457878172
+        z: -0.509571135
+      }
+    }
+  }
+  cam_param {
+    name: front_left_camera
+    fx: 1293.76
+    fy: 1294.47729
+    cx: 977.302734
+    cy: 592.161621
+    distortion: -0.477535635
+    distortion: 0.276490718
+    distortion: -0.0983271599
+    distortion: 0
+    image_width: 1920
+    image_height: 1080
+    model: "SG2-AR0233-0202-GMSL-H100"
+    type: SENYUN
+    pose {
+      translation {
+        x: 2.69461322
+        y: 0.996435821
+        z: 0.515574932
+      }
+      attitude_ypr {
+        yaw: 2.32991505
+        pitch: 3.11408615
+        roll: 1.60936773
+      }
+      attitude {
+        w: 0.665779173
+        x: -0.633047462
+        y: 0.282802552
+        z: -0.275702119
+      }
+    }
+  }
+  cam_param {
+    name: front_right_camera
+    fx: 1298.2738
+    fy: 1298.4729
+    cx: 960.927185
+    cy: 496.927155
+    distortion: -0.477316141
+    distortion: 0.27006349
+    distortion: -0.090269357
+    distortion: 0
+    image_width: 1920
+    image_height: 1080
+    model: "SG2-AR0233-0202-GMSL-H100"
+    type: SENYUN
+    pose {
+      translation {
+        x: 2.67311811
+        y: -0.954473913
+        z: 0.528175533
+      }
+      attitude_ypr {
+        yaw: 0.808433175
+        pitch: -3.07212687
+        roll: 1.64091539
+      }
+      attitude {
+        w: -0.265737027
+        x: 0.291376829
+        y: -0.616565704
+        z: 0.681417763
+      }
+    }
+  }
+  cam_param {
+    name: rear_middle_camera
+    fx: 1970.2052
+    fy: 1971.85425
+    cx: 942.023804
+    cy: 586.439
+    distortion: -0.586337268
+    distortion: 0.374482661
+    distortion: -0.134720057
+    distortion: 0
+    image_width: 1920
+    image_height: 1080
+    model: "SG2-AR0233-0202-GMSL-H100"
+    type: SENYUN
+    pose {
+      translation {
+        x: -0.362468392
+        y: 0.0503064767
+        z: 1.22443426
+      }
+      attitude_ypr {
+        yaw: 1.57764864
+        pitch: -0.0157922078
+        roll: -1.52560794
+      }
+      attitude {
+        w: 0.513269305
+        x: -0.48283425
+        y: -0.49425438
+        z: 0.50905633
+      }
+    }
+  }
+  cam_param {
+    name: front_short_camera
+    image_width: 1920
+    image_height: 1080
+  }
+  cam_param {
+    name: left_short_camera
+    image_width: 1920
+    image_height: 1080
+  }
+  cam_param {
+    name: right_short_camera
+    image_width: 1920
+    image_height: 1080
+  }
+  cam_param {
+    name: rear_short_camera
+    image_width: 1920
+    image_height: 1080
+  }
+  lidar_param {
+    pose {
+      translation {
+        x: 1.2
+        z: 1.648947
+      }
+      attitude_ypr {
+        yaw: -1.57363
+      }
+      attitude {
+        w: 0.706104219
+        z: -0.708107948
+      }
+    }
+    name: FRONT_LIDAR
+  }
+  lidar_param {
+    pose {
+      translation {
+        x: 1.65207088
+        y: 0.511077464
+        z: 1.04325283
+      }
+      attitude_ypr {
+        yaw: 0.971131742
+        pitch: -0.00368813099
+        roll: -0.0065481253
+      }
+      attitude {
+        w: 0.88440758
+        x: -0.00203497
+        y: -0.00315893092
+        z: 0.466700286
+      }
+    }
+    name: FRONT_LEFT_LIDAR
+  }
+  lidar_param {
+    pose {
+      translation {
+        x: -0.355129272
+        y: 0.0591379181
+        z: 0.280676812
+      }
+      attitude_ypr {
+        yaw: 3.09729075
+        pitch: -0.00731753604
+        roll: -0.00529960124
+      }
+      attitude {
+        w: 0.0221585464
+        x: 0.00359915919
+        y: -0.00273016747
+        z: 0.999744236
+      }
+    }
+    name: REAR_LIDAR
+  }
+  lidar_param {
+    pose {
+      translation {
+        x: 1.65207088
+        y: -0.511077464
+        z: 1.06503
+      }
+      attitude_ypr {
+        yaw: 2.16990066
+        pitch: -3.13152337
+        roll: -3.13144469
+      }
+      attitude {
+        w: 0.884269536
+        x: 0.00213581673
+        y: -0.00682127057
+        z: -0.466922164
+      }
+    }
+    name: FRONT_RIGHT_LIDAR
+  }
+}
+
