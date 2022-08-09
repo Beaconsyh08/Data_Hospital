@@ -12,7 +12,6 @@ Copyright (c) HAOMO.AI, Inc. and its affiliates. All Rights Reserved
 import pandas as pd
 from src.data_manager.data_manager import DataManager
 import math
-from PIL import Image
 from configs.config import LogisticDoctorConfig
 
 # WEY MOKA
