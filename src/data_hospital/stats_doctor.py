@@ -1,4 +1,6 @@
+from src.utils.logger import get_logger
 import matplotlib.pyplot as plt
+import os
 
 from src.data_manager.data_manager import load_from_pickle
 
@@ -23,10 +25,14 @@ TYPE_MAP = {'car': 'car', 'van': 'car',
 
 class StatsDoctor():
     def __init__(self, cfg: dict) -> None:
-        self.df = load_from_pickle(cfg.FINAL_DATAFRAME_PATH)
+        self.df = load_from_pickle(cfg.DATAFRAME_PATH)
+        self.df['class_name_map'] = self.df['class_name'].map(TYPE_MAP)
         self.save_dir = cfg.SAVE_DIR
+        self.logger = get_logger()
+        os.makedirs(self.save_dir, exist_ok=True)
+        self.logger.info("DataFrame Loaded")
+
         
-    
     def addlabels(self, x, y):
         for i in range(len(x)):
             plt.text(i, y[i], y[i], ha = 'center')
@@ -77,16 +83,16 @@ class StatsDoctor():
         time_dict = dict()
         time_ratio_dict = dict()
         night_df = self.df[(self.df["time"] < time(6, 0, 0)) | (self.df["time"] > time(19, 0, 0))]
+        day_df = self.df[(self.df["time"] >= time(6, 0, 0)) & (self.df["time"] <= time(19, 0, 0))]
         night_json = list(set(night_df.json_path.to_list()))
+        day_json = list(set(day_df.json_path.to_list()))
         time_dict["night"] = len(night_json)
-        time_dict["day"] = len(self.total_frames) - time_dict["night"]
-        self.output_result_txt(night_json, "night")
+        time_dict["day"] = len(day_json)
+        # self.output_result_txt(night_json, "night")
         
         total_values = sum([val for val in time_dict.values()])
         time_ratio_dict["night"] = time_dict["night"]/total_values
         time_ratio_dict["day"] = time_dict["day"]/total_values
-        time_ratio_dict["empty"] = time_dict["empty"]/total_values
-
         
         time_dict = dict(sorted(time_dict.items(), key=lambda item: item[1], reverse=True))
         time_ratio_dict = dict(sorted(time_ratio_dict.items(), key=lambda item: item[1], reverse=True))
@@ -116,7 +122,6 @@ class StatsDoctor():
     
     
     def info_stats(self,):
-        self.df['class_name_map'] = self.df['class_name'].map(TYPE_MAP)
         for info in ["class_name_map", "camera_orientation"]:
             fig = plt.figure(figsize=(25, 20))
             cat_num = len(self.df[info].unique())
@@ -140,3 +145,35 @@ class StatsDoctor():
             df.to_excel(save_path, index=True,header=False)
             
             self.logger.debug("%s Stats Saved in %s" % (info.capitalize(), save_path))
+            
+            
+    def scenario_bbox_stats(self,):
+        bigcar_df = self.df[(abs(self.df.x) < 8) & (abs(self.df.y) <10) & (self.df.class_name.isin(["truck", "bus"]))]        
+        bigcar_df_frame = set(bigcar_df.json_path.to_list())
+        closedvru_df = self.df[(abs(self.df.x) < 8) & (abs(self.df.y) <10) & (self.df.class_name.isin(["pedestrian", "tricycle", "rider"]))]  
+        closedvru_df_frame = set(closedvru_df.json_path.to_list())
+        
+        res_pd = pd.DataFrame({"bbox_number":[len(bigcar_df), len(closedvru_df)], 
+                               "frame_bbox": [len(bigcar_df_frame), len(closedvru_df_frame)]})
+        res_pd.index = ["bigcar", "closedvru"]
+        print(res_pd)
+        save_path = "%s/scenario_stats_result.xlsx" % self.save_dir
+        res_pd.to_excel(save_path, index=True,header=False)
+        self.logger.debug("Scenario Stats Saved in %s" % save_path)
+
+
+    def diagnose(self):
+        self.city_stats()
+        self.time_stats()
+        self.info_stats()
+        self.scenario_bbox_stats()
+
+    
+if __name__ == '__main__':
+    class StatsDoctorConfig:
+        NAME = "sidecam_ori"
+        DATAFRAME_PATH = "/root/data_hospital_data/0728v60/%s/dataframes/logistic_dataframe.pkl" % NAME
+        SAVE_DIR = "/root/data_hospital_data/0728v60/%s/stats_doctor" % NAME
+        
+    stats_doctor = StatsDoctor(StatsDoctorConfig)
+    stats_doctor.diagnose()

@@ -24,9 +24,9 @@ def card_generator(k: int, project: str, media_name: str, paths: list):
         
             print(card_id_train)
 
-PATHS = ['/root/data_hospital/0728v60/sidecam_ori/reproject_doctor/temp2.txt']
+PATHS = ['/data_path/qa_gen_new.txt']
 K = 600000
 PROJECT = "icu30"
-MEDIA_NAME = "0808"
+MEDIA_NAME = "qa"
 
 card_generator(K, PROJECT, MEDIA_NAME, PATHS)

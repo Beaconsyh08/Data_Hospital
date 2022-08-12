@@ -1,0 +1,732 @@
+{
+  "calibration_file": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_preprocess/6275d65f8afa1b6fb24513b6/hardware_config/HP-30-V71-AC-014_hw_config.json",
+  "camera_orientation": "rear_right_camera",
+  "camera_type": "sensing-AR0231",
+  "height": 1080,
+  "image_id": "Bicu30.HP-30-V71-AC-014.61f5866d16e5631cd6607fc1",
+  "imgHttp": "https://bucket-dataengine.oss-cn-beijing.aliyuncs.com/release%2Fmedia%2F20220122%2Ficu30%2FHP-30-V71-AC-014%2Frr_wide_camera_record%2F35238671498103899.jpg?Expires=1669189053&OSSAccessKeyId=LTAI4G3xjfk2M97hcQ33Eeho&Signature=waHJRz9gopwPZPVPy%2FJaRs%2Btz%2B0%3D",
+  "imgUrl": "oss://bucket-dataengine/release/media/20220122/icu30/HP-30-V71-AC-014/rr_wide_camera_record/35238671498103899.jpg",
+  "objects": [
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "group": 0,
+        "occlusion": 0,
+        "onroad": 0,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.6211696984967212,
+          "length": 1.6405393471186227,
+          "width": 0.7616457343101501
+        },
+        "pointsCount": 670,
+        "position": {
+          "x": -9.585515289422796,
+          "y": -1.824992560431777,
+          "z": 0.5524402199883949
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -3.513470637008827e-06
+        }
+      },
+      "bbox": [
+        1826.012,
+        406.848,
+        57.529,
+        179.187
+      ],
+      "className": "rider-motorcycle",
+      "id": 6
+    },
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 1,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.521935109725262,
+          "length": 4.446186065673828,
+          "width": 1.6377811034565113
+        },
+        "pointsCount": 2352,
+        "position": {
+          "x": -10.247195996628442,
+          "y": -11.391184843789992,
+          "z": 0.5076486839698426
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 0.04666298948193898
+        }
+      },
+      "bbox": [
+        1002.499,
+        436.485,
+        282.02,
+        124.437
+      ],
+      "className": "car",
+      "id": 20
+    },
+    {
+      "2D_attributes": {
+        "crowding": 1,
+        "occlusion": 1,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.47326604090631,
+          "length": 4.304884667649098,
+          "width": 1.7488057049550256
+        },
+        "pointsCount": 1090,
+        "position": {
+          "x": -1.282054316060452,
+          "y": -22.8035322019486,
+          "z": 0.9270269451662898
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 0.7301767500486501
+        }
+      },
+      "bbox": [
+        178.833,
+        430.074,
+        176.595,
+        93.881
+      ],
+      "className": "car",
+      "id": 24
+    },
+    {
+      "2D_attributes": {
+        "crowding": 1,
+        "occlusion": 1,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.7603517860298608,
+          "length": 4.20992016261479,
+          "width": 1.7044347018850767
+        },
+        "pointsCount": 690,
+        "position": {
+          "x": -7.69696903665646,
+          "y": -19.719326846962037,
+          "z": 0.863096202903725
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 0.7822539242353564
+        }
+      },
+      "bbox": [
+        576.302,
+        420.317,
+        154.346,
+        112.474
+      ],
+      "className": "car",
+      "id": 32
+    },
+    {
+      "2D_attributes": {
+        "crowding": 1,
+        "occlusion": 1,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.4007097801566124,
+          "length": 4.477797031402588,
+          "width": 1.8366307759110292
+        },
+        "pointsCount": 435,
+        "position": {
+          "x": -9.770077438603852,
+          "y": -30.009050353318294,
+          "z": 1.0879746834933757
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 0.7401292952146659
+        }
+      },
+      "bbox": [
+        456.886,
+        441.751,
+        129.307,
+        62.865
+      ],
+      "className": "car",
+      "id": 39
+    },
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 0,
+        "truncation": 1
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.4343770557641982,
+          "length": 3.973891019821167,
+          "width": 1.6844562292099
+        },
+        "pointsCount": 85,
+        "position": {
+          "x": -47.47354850003429,
+          "y": -1.4370077007677649,
+          "z": 0.705561343729496
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 0.04703539930249553
+        }
+      },
+      "bbox": [
+        1896.3813429010763,
+        470.03132882918345,
+        23.618657098923677,
+        39.48378503530122
+      ],
+      "className": "car",
+      "id": 41
+    },
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 0,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.5687406430877042,
+          "length": 4.1923705673446126,
+          "width": 1.7806009326399759
+        },
+        "pointsCount": 884,
+        "position": {
+          "x": -11.546849931706658,
+          "y": -18.852873102601894,
+          "z": 0.767648553935846
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 0.824079278334631
+        }
+      },
+      "bbox": [
+        806.563,
+        436.861,
+        113.835,
+        93.396
+      ],
+      "className": "car",
+      "id": 44
+    },
+    {
+      "2D_attributes": {
+        "crowding": 1,
+        "occlusion": 0,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.436245391368866,
+          "length": 4.088214874267578,
+          "width": 1.7991033045876188
+        },
+        "pointsCount": 502,
+        "position": {
+          "x": -13.837166481659192,
+          "y": -17.962848318410554,
+          "z": 0.6738940823078156
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -2.3244731433888712
+        }
+      },
+      "bbox": [
+        944.53,
+        443.188,
+        99.945,
+        85.074
+      ],
+      "className": "car",
+      "id": 53
+    },
+    {
+      "2D_attributes": {
+        "crowding": 1,
+        "occlusion": 2,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.404508159163223,
+          "length": 4.273194588491685,
+          "width": 1.7093966007232666
+        },
+        "pointsCount": 530,
+        "position": {
+          "x": -14.80420181360089,
+          "y": -11.308100903871708,
+          "z": 0.45860348820555896
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 3.125176134928716
+        }
+      },
+      "bbox": [
+        1241.678,
+        449.158,
+        175.752,
+        83.467
+      ],
+      "className": "car",
+      "id": 63
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.6092755794525146,
+          "length": 0.36059080135069627,
+          "width": 0.3689401149749756
+        },
+        "pointsCount": 31,
+        "position": {
+          "x": -0.2559100712157589,
+          "y": -8.889847511746217,
+          "z": 0.05669426918029785
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 1.571679893359197
+        }
+      },
+      "bbox": [
+        467.41849456101977,
+        513.3433932406191,
+        57.77085411860783,
+        110.14879439567986
+      ],
+      "className": "traffic-cone",
+      "id": 91
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.6088696718215942,
+          "length": 0.3645458221435547,
+          "width": 0.30821794271469116
+        },
+        "pointsCount": 70,
+        "position": {
+          "x": 0.19879088598161543,
+          "y": -16.704295385922798,
+          "z": 0.24567681550979614
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 1.5716798933591973
+        }
+      },
+      "bbox": [
+        242.77080711114758,
+        495.652958928414,
+        24.575991475053115,
+        50.89676476213788
+      ],
+      "className": "traffic-cone",
+      "id": 92
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.5885719860256047,
+          "length": 0.3239879608154297,
+          "width": 0.28988338470458985
+        },
+        "pointsCount": 22,
+        "position": {
+          "x": -6.653943850889944,
+          "y": -30.645365382652763,
+          "z": 0.5933087664514616
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -1.569912760230596
+        }
+      },
+      "bbox": [
+        403.39601780321107,
+        477.24603501152706,
+        11.503060919982847,
+        24.93814519841618
+      ],
+      "className": "traffic-cone",
+      "id": 93
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.5709341482354763,
+          "length": 0.38336658477783203,
+          "width": 0.3067026329040526
+        },
+        "pointsCount": 58,
+        "position": {
+          "x": -4.9856297417431765,
+          "y": -15.386733527569104,
+          "z": 0.125346267023009
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -1.5699127602305958
+        }
+      },
+      "bbox": [
+        627.9672383229757,
+        498.72870566093735,
+        28.030719808305328,
+        51.54230253564504
+      ],
+      "className": "traffic-cone",
+      "id": 94
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.5449864266906369,
+          "length": 0.2871236899481611,
+          "width": 0.23862278156296973
+        },
+        "pointsCount": 44,
+        "position": {
+          "x": -8.424617461469541,
+          "y": -17.562555129132264,
+          "z": 0.19137147679026656
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -1.5699127602306007
+        }
+      },
+      "bbox": [
+        754.1867328176995,
+        499.1960601886841,
+        23.45185674312222,
+        36.12614366195942
+      ],
+      "className": "traffic-cone",
+      "id": 95
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.6110988676019063,
+          "length": 0.27038542944247496,
+          "width": 0.2976488451609999
+        },
+        "pointsCount": 45,
+        "position": {
+          "x": -9.247907448540488,
+          "y": -18.299271780607807,
+          "z": 0.22504373255036514
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -1.5699127602306022
+        }
+      },
+      "bbox": [
+        767.9081941334771,
+        493.11783798514847,
+        25.385179859416624,
+        37.273877951711924
+      ],
+      "className": "traffic-cone",
+      "id": 96
+    },
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "group": 0,
+        "occlusion": 1,
+        "onroad": 0,
+        "pose": "standing",
+        "truncation": 1
+      },
+      "3D_attributes": {},
+      "bbox": [
+        0,
+        430.4192936520948,
+        21.8744625967326,
+        99.86944940663462
+      ],
+      "className": "pedestrian",
+      "id": 111
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.2035130262374878,
+          "length": 0.33227588653564405,
+          "width": 0.18934226036071775
+        },
+        "pointsCount": 117,
+        "position": {
+          "x": -2.122291042825805,
+          "y": -13.470022073767861,
+          "z": 0.40430980920791626
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -1.5699127602305964
+        }
+      },
+      "bbox": [
+        490.0077082571337,
+        447.8469931696685,
+        10.483699033231805,
+        119.50742230289508
+      ],
+      "className": "traffic-cone",
+      "id": 113
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.7160948186391392,
+          "length": 0.1612740578594202,
+          "width": 0.13195023407734593
+        },
+        "pointsCount": 39,
+        "position": {
+          "x": -2.2616710119747774,
+          "y": -13.136920092594076,
+          "z": 0.19046183194800137
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -1.5699127602305947
+        }
+      },
+      "bbox": [
+        516.0299537429394,
+        494.02313794836107,
+        7.777130307085621,
+        72.34522636800007
+      ],
+      "className": "traffic-cone",
+      "id": 114
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.6989127014172513,
+          "length": 0.2605247354986101,
+          "width": 0.15260374467280172
+        },
+        "pointsCount": 37,
+        "position": {
+          "x": -2.39905713976166,
+          "y": -12.875655485900326,
+          "z": 0.18030659032772056
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -1.5699127602305962
+        }
+      },
+      "bbox": [
+        537.5101332770773,
+        493.9463014785938,
+        8.13419581286592,
+        72.33957823393042
+      ],
+      "className": "traffic-cone",
+      "id": 115
+    },
+    {
+      "2D_attributes": {
+        "group": 0,
+        "onroad": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 0.6963607606227384,
+          "length": 0.19436717987060548,
+          "width": 0.11759162228004537
+        },
+        "pointsCount": 18,
+        "position": {
+          "x": -2.5206982705514203,
+          "y": -12.556791773967202,
+          "z": 0.17032447770559855
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -1.5699127602305956
+        }
+      },
+      "bbox": [
+        563.2557824319663,
+        495.08412683866686,
+        7.863687550101831,
+        71.35474541111782
+      ],
+      "className": "traffic-cone",
+      "id": 116
+    }
+  ],
+  "producer": "datatang",
+  "relative_sensors_data": [
+    {
+      "lidar_orientation": "front_lidar",
+      "point_cloud_id": "Hicu30.6276207b8afa1b6fb25ffa1c",
+      "point_cloud_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/628c7d8e7844160dda687d16/front_lidar/1642811023275368.json",
+      "point_cloud_url": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_preprocess/6275d65f8afa1b6fb24513b6/lidar_data/1642811023275368.pcd"
+    },
+    {
+      "camera_orientation": "front_middle_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220122/icu30/HP-30-V71-AC-014/front_middle_camera_record/35238670944455771.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-014.61f5866c16e5631cd6607fbd",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/628c7d8e7844160dda687d16/front_middle_camera/1642811023216764.json"
+    },
+    {
+      "camera_orientation": "rear_middle_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220122/icu30/HP-30-V71-AC-014/rear_middle_camera_record/35238671665876059.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-014.61f5866d16e5631cd6607fc2",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/628c7d8e7844160dda687d16/rear_middle_camera/1642811023266791.json"
+    },
+    {
+      "camera_orientation": "rear_left_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220122/icu30/HP-30-V71-AC-014/lr_wide_camera_record/35238671732984923.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-014.61f5866d16e5631cd6607fc3",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/628c7d8e7844160dda687d16/rear_left_camera/1642811023273670.json"
+    },
+    {
+      "camera_orientation": "front_left_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220122/icu30/HP-30-V71-AC-014/lf_wide_camera_record/35238670894124123.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-014.61f5866c16e5631cd6607fbc",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/628c7d8e7844160dda687d16/front_left_camera/1642811023198656.json"
+    },
+    {
+      "camera_orientation": "front_right_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220122/icu30/HP-30-V71-AC-014/rf_wide_camera_record/35238671397440603.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-014.61f5866c16e5631cd6607fc0",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/628c7d8e7844160dda687d16/front_right_camera/1642811023223658.json"
+    }
+  ],
+  "rtk_data": {
+    "angle": {
+      "azimuth_angle": 148.88671875,
+      "pitch_angle": -0.41748046875,
+      "roll_angle": 0.670166015625
+    },
+    "gps_time_us": 1642811023258000,
+    "header": {
+      "length": 164,
+      "original_stamp": 1642811023267826,
+      "seq": 51000,
+      "stamp": 1642811023267826,
+      "valid": true
+    },
+    "hstd": 0.04328284040093422,
+    "latstd": 0.0347352959215641,
+    "lon_lat_height": {
+      "height": 6.197000026702881,
+      "latitude": 22.9876816,
+      "longitude": 113.30735729999999
+    },
+    "lonstd": 0.03615286946296692,
+    "rtk_sts": 50,
+    "speed": {
+      "earth_speed": 0.0244140625,
+      "east_speed": 2.8228759765625,
+      "north_speed": -4.6844482421875
+    },
+    "stas_num": 42,
+    "status": 15,
+    "sys_time_us": 1642811023258000,
+    "xyz_rate_acc": {
+      "x_acc": 0.6572083830833435,
+      "x_angular_rate": -0.014061490073800087,
+      "y_acc": -0.24420857429504395,
+      "y_angular_rate": 0.0027164241764694452,
+      "z_acc": -9.674968719482422,
+      "z_angular_rate": -0.006391586735844612
+    },
+    "yawstd": 0.22992558777332306
+  },
+  "timestamp": 1642811023248670,
+  "width": 1920,
+  "ori_path": "/oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/628c7d8e7844160dda687d16/rear_right_camera/1642811023248670.json"
+}

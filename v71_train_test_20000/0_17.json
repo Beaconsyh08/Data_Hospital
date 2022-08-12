@@ -1,0 +1,127 @@
+{
+  "calibration_file": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_preprocess/62661d4d1f4b36299c15735b/hardware_config/HP-30-V71-AC-018_hw_config.json",
+  "camera_orientation": "front_right_camera",
+  "camera_type": "sensing-AR0231",
+  "height": 1080,
+  "image_id": "Bicu30.HP-30-V71-AC-018.625e7ff371c2408235761882",
+  "imgHttp": "https://bucket-dataengine.oss-cn-beijing.aliyuncs.com/release%2Fmedia%2F20220330%2Ficu30%2FHP-30-V71-AC-018%2Frf_wide_camera_record%2F46780762346761703.jpg?Expires=1668183578&OSSAccessKeyId=LTAI4G3xjfk2M97hcQ33Eeho&Signature=BFjgSsDYf%2Bg93MgEJx6QPNiaY5Y%3D",
+  "imgUrl": "oss://bucket-dataengine/release/media/20220330/icu30/HP-30-V71-AC-018/rf_wide_camera_record/46780762346761703.jpg",
+  "objects": [
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 0,
+        "truncation": 1
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 3.637894694805145,
+          "length": 17.285181807712284,
+          "width": 2.769176721572876
+        },
+        "pointsCount": 12533,
+        "position": {
+          "x": 17.351362373492478,
+          "y": -2.246951690491586,
+          "z": 1.7650009187486673
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -0.00886929131782505
+        }
+      },
+      "bbox": [
+        62.99698468157226,
+        0,
+        453.7628621341503,
+        649.8769629171817
+      ],
+      "className": "truck",
+      "id": 2
+    }
+  ],
+  "producer": "datatang",
+  "relative_sensors_data": [
+    {
+      "lidar_orientation": "front_lidar",
+      "point_cloud_id": "Hicu30.6266ca061f4b36299c4c479e",
+      "point_cloud_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/62a2d9029e6ea9ed632cb602/front_lidar/1648622670075120.json",
+      "point_cloud_url": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_preprocess/62661d4d1f4b36299c15735b/lidar_data/1648622670075120.pcd"
+    },
+    {
+      "camera_orientation": "front_middle_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220330/icu30/HP-30-V71-AC-018/front_middle_camera_record/46780759326862823.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-018.625e7ff171c240823576187f",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/62a2d9029e6ea9ed632cb602/front_middle_camera/1648622670016526.json"
+    },
+    {
+      "camera_orientation": "rear_middle_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220330/icu30/HP-30-V71-AC-018/rear_middle_camera_record/46780766373293543.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-018.625e7ff571c2408235761889",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/62a2d9029e6ea9ed632cb602/rear_middle_camera/1648622670066565.json"
+    },
+    {
+      "camera_orientation": "rear_left_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220330/icu30/HP-30-V71-AC-018/lr_wide_camera_record/46780766524288487.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-018.625e7ff571c240823576188a",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/62a2d9029e6ea9ed632cb602/rear_left_camera/1648622670073490.json"
+    },
+    {
+      "camera_orientation": "front_left_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220330/icu30/HP-30-V71-AC-018/lf_wide_camera_record/46780759259753959.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-018.625e7ff171c240823576187e",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/62a2d9029e6ea9ed632cb602/front_left_camera/1648622669998492.json"
+    },
+    {
+      "camera_orientation": "rear_right_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220330/icu30/HP-30-V71-AC-018/rr_wide_camera_record/46780766289407463.jpg",
+      "image_id": "Bicu30.HP-30-V71-AC-018.625e7ff571c2408235761888",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/62a2d9029e6ea9ed632cb602/rear_right_camera/1648622670048491.json"
+    }
+  ],
+  "rtk_data": {
+    "angle": {
+      "azimuth_angle": 271.23046875,
+      "pitch_angle": 0.076904296875,
+      "roll_angle": -0.41748046875
+    },
+    "gps_time_us": 1648622670063000,
+    "header": {
+      "length": 164,
+      "original_stamp": 1648622670072752,
+      "seq": 345425,
+      "stamp": 1648622670072752,
+      "valid": true
+    },
+    "hstd": 0.05901290476322174,
+    "latstd": 0.04735896736383438,
+    "lon_lat_height": {
+      "height": 286.42999267578125,
+      "latitude": 29.541723599999997,
+      "longitude": 106.2204344
+    },
+    "lonstd": 0.04504924640059471,
+    "rtk_sts": 50,
+    "speed": {
+      "earth_speed": -0.0579833984375,
+      "east_speed": -9.747314453125,
+      "north_speed": 0.1861572265625
+    },
+    "stas_num": 28,
+    "status": 15,
+    "sys_time_us": 1648622670063000,
+    "xyz_rate_acc": {
+      "x_acc": -0.5279214382171631,
+      "x_angular_rate": 0.0030360035598278046,
+      "y_acc": -0.1759738177061081,
+      "y_angular_rate": -0.01022653840482235,
+      "z_acc": -9.125499725341797,
+      "z_angular_rate": -0.00207726564258337
+    },
+    "yawstd": 0.17033308744430542
+  },
+  "timestamp": 1648622670023493,
+  "width": 1920,
+  "ori_path": "/oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/62a2d9029e6ea9ed632cb602/front_right_camera/1648622670023493.json"
+}

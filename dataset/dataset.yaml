@@ -1,15 +1,70 @@
-cards_conf:   
-  # - file_name: /data_path/test0808.txt
+cards_conf:
+  # - file_name: /data_path/yayun_test.txt
   #   cards:
-  #   - card_id: 62f104827168aad4745b42ff
-  #     media_name: fornt_cam
+  #   - card_id: 62bb2f5fddf478154fa369c4
+  #     media_name: rear_middle_v30
+  #     project: icu30
+  
+  - file_name: /data_path/gt_qa_tunnel_new_2.txt
+    cards:
+    - card_id: 62b044233b9b8671dd276573
+      media_name: tunnel
+      project: icu30
+
+  - file_name: /data_path/dt_qa_tunnel_new_2.txt
+    cards:
+    - card_id: 62f3b4482dcbdc786a6987f5
+      media_name: tunnel_107w_dt
+      project: icu30
+
+  - file_name: /data_path/gt_night_new_2.txt
+    cards:
+    - card_id: 62f395222dcbdc786a5dca98
+      media_name: qa
+      project: icu30
+
+  - file_name: /data_path/dt_night_new_2.txt
+    cards:
+    - card_id: 62f3b4972dcbdc786a699639
+      media_name: night_107w_dt
+      project: icu30
+
+  - file_name: /data_path/gt_gen_new_2.txt
+    cards:
+    - card_id: 62f3b5052dcbdc786a6a66cf
+      media_name: city_107w_gt
+      project: icu30
+
+  - file_name: /data_path/dt_gen_new_2.txt
+    cards:
+    - card_id: 62f3b54e2dcbdc786a6ab487
+      media_name: city_107w_dt
+      project: icu30
+
+  # - file_name: /data_path/test0809.txt
+  #   cards:
+  #   - card_id: 62f1f4336844083467abd6ca
+  #     media_name: front_cam
+  #     project: icu30 
+  # - file_name: /data_path/traffic_cone_test.txt
+  #   cards:
+  #   - card_id: 62f26b22684408346766198d
+  #     media_name: traffic_cone
+  #     project: icu30 
+  # - file_name: /data_path/sidecam_3.1.txt
+  #   cards:
+  #   - card_id: 62f1fcc36844083467ca8224
+  #     media_name: side_cam
   #     project: icu30 
 
-  - file_name: /data_path/qa_cmh.txt
-    cards:
-    - card_id: 62d173f328f4f2a8671b2874
-      media_name: trans_zhouping_side_gt
-      project: icu30 
+
+
+
+  # - file_name: /data_path/qa_cmh.txt
+  #   cards:
+  #   - card_id: 62d173f328f4f2a8671b2874
+  #     media_name: trans_zhouping_side_gt
+  #     project: icu30 
 
 #   - file_name: /data_path/qa_cmh_1205.txt
 #     cards:
@@ -124,38 +179,38 @@ cards_conf:
 #   #     project: icu30
 
 
-#   - file_name: /data_path/sidecam_ori.txt
-#     cards:
-#     - card_id: 62c3e77e7f2d00be3458f368
-#       media_name: side_cam
-#       project: ori 
-#     - card_id: 62c3e7997f2d00be346296b9
-#       media_name: side_cam
-#       project: ori 
-#     - card_id: 62cecfed0a4bcd0612271fed
-#       media_name: side_cam
-#       project: icu30 
-#     - card_id: 62c5afcf526a0e03d32a60d8
-#       media_name: side_cam
-#       project: icu30
-#     - card_id: 62c3e7327f2d00be3451457a
-#       media_name: side_cam
-#       project: ori
-#     - card_id: 62c652c312d7beae398237ac
-#       media_name: side_cam
-#       project: icu30
-#     - card_id: 62c2b1cae05307228ba7130f
-#       media_name: side_cam
-#       project: ori 
-#     - card_id: 62c2b1abe05307228b9dde83
-#       media_name: side_cam
-#       project: ori 
-#     - card_id: 62c2b23de05307228bb5ddd3
-#       media_name: side_cam
-#       project: ori 
-#     - card_id: 62c2b221e05307228baca3a1
-#       media_name: side_cam
-#       project: ori 
+  # - file_name: /data_path/sidecam_ori.txt
+  #   cards:
+  #   - card_id: 62c3e77e7f2d00be3458f368
+  #     media_name: side_cam
+  #     project: ori 
+  #   - card_id: 62c3e7997f2d00be346296b9
+  #     media_name: side_cam
+  #     project: ori 
+  #   - card_id: 62cecfed0a4bcd0612271fed
+  #     media_name: side_cam
+  #     project: icu30 
+  #   - card_id: 62c5afcf526a0e03d32a60d8
+  #     media_name: side_cam
+  #     project: icu30
+  #   - card_id: 62c3e7327f2d00be3451457a
+  #     media_name: side_cam
+  #     project: ori
+  #   - card_id: 62c652c312d7beae398237ac
+  #     media_name: side_cam
+  #     project: icu30
+  #   - card_id: 62c2b1cae05307228ba7130f
+  #     media_name: side_cam
+  #     project: ori 
+  #   - card_id: 62c2b1abe05307228b9dde83
+  #     media_name: side_cam
+  #     project: ori 
+  #   - card_id: 62c2b23de05307228bb5ddd3
+  #     media_name: side_cam
+  #     project: ori 
+  #   - card_id: 62c2b221e05307228baca3a1
+  #     media_name: side_cam
+  #     project: ori 
 
 
 #   - file_name: /data_path/frontcam_ori.txt
@@ -282,11 +337,11 @@ cards_conf:
 #       media_name: 0609_SIDECAM
 #       project: qa
 
-#   - file_name: /data_path/226_dt.txt
-#     cards:
-#     - card_id: 62e28386516a7251afb58ec1
-#       media_name: 0728_SIDECAM
-#       project: qa  
+  - file_name: /data_path/226_dt.txt
+    cards:
+    - card_id: 62e28386516a7251afb58ec1
+      media_name: 0728_SIDECAM
+      project: qa  
 
 
 #   # - file_name: /data_path/0630qa.txt
@@ -314,83 +369,101 @@ cards_conf:
 #   #     media_name: qa
 #   #     project: icu30
 
-#   - file_name: /data_path/qa_beibao.txt
-#     cards:
-#     - card_id: 6298c5224db89afdac1e41c8
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_beibao.txt
+  #   cards:
+  #   - card_id: 6298c5224db89afdac1e41c8
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_chengdu.txt
-#     cards:
-#     - card_id: 6298c4a44db89afdac1de3e4
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_chengdu.txt
+  #   cards:
+  #   - card_id: 6298c4a44db89afdac1de3e4
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_guangzhou.txt
-#     cards:
-#     - card_id: 6298cc914db89afdac2fe632
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_guangzhou.txt
+  #   cards:
+  #   - card_id: 6298cc914db89afdac2fe632
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_nanjing.txt
-#     cards:
-#     - card_id: 6298bab61cb0467494b2cf62
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_nanjing.txt
+  #   cards:
+  #   - card_id: 6298bab61cb0467494b2cf62
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_chongqing.txt
-#     cards:
-#     - card_id: 6298bd341cb0467494b3fcea
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_chongqing.txt
+  #   cards:
+  #   - card_id: 6298bd341cb0467494b3fcea
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_shenyang.txt
-#     cards:
-#     - card_id: 6298c4d74db89afdac1e0806
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_shenyang.txt
+  #   cards:
+  #   - card_id: 6298c4d74db89afdac1e0806
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_shenzhen.txt
-#     cards:
-#     - card_id: 6298ccd14db89afdac301b57
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_shenzhen.txt
+  #   cards:
+  #   - card_id: 6298ccd14db89afdac301b57
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_wuhan.txt
-#     cards:
-#     - card_id: 6298bc0f4db89afdac17a62f
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_wuhan.txt
+  #   cards:
+  #   - card_id: 6298bc0f4db89afdac17a62f
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_dongguan.txt
-#     cards:
-#     - card_id: 6298c0294db89afdac1a465a
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_dongguan.txt
+  #   cards:
+  #   - card_id: 6298c0294db89afdac1a465a
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_changsha.txt
-#     cards:
-#     - card_id: 6298bf934db89afdac1a1d9d
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_changsha.txt
+  #   cards:
+  #   - card_id: 6298bf934db89afdac1a1d9d
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_night.txt
-#     cards:
-#     - card_id: 6298c22e4db89afdac1b05cc
-#       media_name: qa
-#       project: syh_exp
+  # - file_name: /data_path/qa_night.txt
+  #   cards:
+  #   - card_id: 6298c22e4db89afdac1b05cc
+  #     media_name: qa
+  #     project: syh_exp
 
-#   - file_name: /data_path/qa_tunnel.txt
-#     cards:
-#     - card_id: 62b044233b9b8671dd276573
-#       media_name: tunnel
-#       project: icu30
+  # - file_name: /data_path/qa_tunnel.txt
+  #   cards:
+  #   - card_id: 62b044233b9b8671dd276573
+  #     media_name: tunnel
+  #     project: icu30
 
-#   - file_name: /data_path/qa_bigcar.txt
-#     cards:
-#     - card_id: 62b57ea32d5066b67055106c
-#       media_name: bigcar_qa
-#       project: icu30
+  # - file_name: /data_path/qa_bigcar.txt
+  #   cards:
+  #   - card_id: 62b57ea32d5066b67055106c
+  #     media_name: bigcar_qa
+  #     project: icu30
+
+  - file_name: /data_path/qa_tunnel_new.txt
+    cards:
+    - card_id: 62b044233b9b8671dd276573
+      media_name: tunnel
+      project: icu30
+
+  - file_name: /data_path/qa_night_new.txt
+    cards:
+    - card_id: 62f395222dcbdc786a5dca98
+      media_name: qa
+      project: icu30
+
+  - file_name: /data_path/qa_gen_new.txt
+    cards:
+    - card_id: 62f395292dcbdc786a5dd66c
+      media_name: qa
+      project: icu30
 
 #   # - file_name: /data_path/qa_combined.txt
 #   #   cards:

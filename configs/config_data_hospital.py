@@ -1,4 +1,4 @@
-NAME = "qa_cmh_1000"
+NAME = "tars_ori"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/0728v60/%s' % NAME
@@ -8,8 +8,18 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    MODULES = ["Duplicated", "Logistic", "Reproject"]
+    # MODULES = ["Duplicated", "Logistic", "Reproject"]
+    MODULES = ["Logistic"]
 
+class DataHospital2Config(Config):
+    MODULES = ["CoorTrans", "Inference"]
+    
+
+class CoorTransConfig(Config):
+    OUTPUT_DIR = '%s/coor_trans_doctor/trans/' % Config.ROOT
+    INPUT_PATH = '%s/reproject_doctor/clean.txt' % Config.ROOT
+    OUTPUT_PATH = '%s/coor_trans_doctor/to_be_inf.txt' % Config.ROOT
+    
 
 class DuplicatedDoctorConfig(Config):
     JSON_PATH = "/data_path/%s.txt" % NAME
@@ -26,7 +36,7 @@ class LogisticDoctorConfig(Config):
     DATA_TYPE = "train_cam3d"
     ERROR_LIST = ["bbox_error", "coor_error"]
     SAVE_DIR = "%s/logistic_doctor" % Config.ROOT
-    COOR = "Car"
+    COOR = "Lidar"
     ONLINE = False
     VIS = False
     
@@ -39,7 +49,7 @@ class ReprojectDoctorConfig(Config):
     LOAD_PATH = "%s/ready_2_reproject" % SAVE_DIR
     VIS_PATH = "%s/vis" % SAVE_DIR
     THRESHOLD = 0.1
-    COOR = "Car"
+    COOR = "Lidar"
     VIS = False
     
 

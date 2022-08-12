@@ -64,8 +64,13 @@ function execute_analysis() {
         python setup.py install && python tools/eda.py
 
     elif [ "${module_name}" == "data_hospital" ]; then
-        python setup.py install
-        python tools/data_hospital.py        
+        python setup.py install && python tools/data_hospital.py        
+
+    elif [ "${module_name}" == "data_hospital_2" ]; then
+    # TODO
+        # cd ../data_inference
+        # ./run.sh -p /data_path/to_be_inf.txt
+        python setup.py install && python tools/data_hospital_2.py 
     else
         echo -e "${red_start}invalid input module name !!! ${red_end}\n"
         help_content

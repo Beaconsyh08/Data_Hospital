@@ -4,7 +4,7 @@ import os
 import numpy as np
 from google.protobuf import text_format
 from scipy.spatial.transform import Rotation as R
-from src.data_hospital.reproject_doctor.hardware_config_pb2 import HardwareConfig, CameraParameter, LidarParameter
+from src.data_hospital.utils.reproject.hardware_config_pb2 import HardwareConfig, CameraParameter, LidarParameter
 
 current_path = os.path.split(os.path.realpath(__file__))[0]
 new_hw_config_path = os.path.join(current_path, 'hw_pb/hw_config_VV7C001_20211023.prototxt')
@@ -291,7 +291,7 @@ def lidar2vehicle(position: list, lv_trans: tuple):
     return list(vehicle_position.reshape(-1))
 
 def vehicle2camera(vehicle_position: list, Tvc_params: tuple):
-
+    vehicle_position = np.array(vehicle_position).reshape(3, 1)
     vc_R, vc_T = Tvc_params
     camera_postion = np.matmul(vc_R, vehicle_position) + vc_T
     # print("Camera: ", camera_postion)

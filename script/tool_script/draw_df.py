@@ -21,13 +21,14 @@ def show_case(df, ):
         #     obs_list.append(parse_obs(df.loc[row.peer_id]))
         img_save_name = '_'.join([row.flag, row.class_name, Path(row.json_path).stem, str(int(row.id))+'.jpg'])
         
-        # save_path = os.path.join('./cluster_img/', str(row.cluster_id), img_save_name)
-        # bev_save_path = str(Path(save_path).parent/(str(Path(save_path).stem)+'_bev.jpg'))
-        # t0 = threading.Thread(target=visualizer.draw_bbox_0, args=(obs_list, save_path))
-        
-        save_path = os.path.join('./cluster_img_cropped/', str(row.cluster_id), img_save_name)
+        save_path = "./cluster_img/%f_%s.png" % (round(row.yaw, 2), row.class_name)
+        print(row.json_path)
         bev_save_path = str(Path(save_path).parent/(str(Path(save_path).stem)+'_bev.jpg'))
-        t0 = threading.Thread(target=visualizer.crop_img, args=(img_url, obs_list[0].bbox, save_path))
+        t0 = threading.Thread(target=visualizer.draw_bbox_0, args=(obs_list, save_path))
+        
+        # save_path = os.path.join('./cluster_img_cropped/', str(row.cluster_id), img_save_name)
+        # bev_save_path = str(Path(save_path).parent/(str(Path(save_path).stem)+'_bev.jpg'))
+        # t0 = threading.Thread(target=visualizer.crop_img, args=(img_url, obs_list[0].bbox, save_path))
 
         t0.start()
         # t1 = threading.Thread(target=visualizer.plot_bird_view, args=(obs_list, bev_save_path))
@@ -37,6 +38,7 @@ def show_case(df, ):
         
         
         
-df_path = "/cpfs/output/0702_br/other/dataframes/P0_dataframe.pkl"
+df_path = "/root/data_hospital_data/0728v60/test0809/dataframes/reproject_dataframe.pkl"
 df = pd.read_pickle(df_path)["df"]
+df = df[df.yaw>3.14]
 show_case(df)

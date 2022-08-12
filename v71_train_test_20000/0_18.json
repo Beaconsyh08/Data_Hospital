@@ -1,0 +1,237 @@
+{
+  "calibration_file": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_preprocess/62276d758ec597d64c73b5be/hardware_config/HP-30-V71-012_hw_config.json",
+  "camera_orientation": "rear_left_camera",
+  "camera_type": "sensing-AR0231",
+  "height": 1080,
+  "image_id": "Bicu30.HP-30-V71-012.622310201f8e70fe376cab12",
+  "imgHttp": "https://bucket-dataengine.oss-cn-beijing.aliyuncs.com/release%2Fmedia%2F20220226%2Ficu30%2FHP-30-V71-012%2Flr_wide_camera_record%2F40245615204014798.jpg?Expires=1664044985&OSSAccessKeyId=LTAI4G3xjfk2M97hcQ33Eeho&Signature=q0eW7Zchfpm%2Ff632pS1tU8fHxkU%3D",
+  "imgUrl": "oss://bucket-dataengine/release/media/20220226/icu30/HP-30-V71-012/lr_wide_camera_record/40245615204014798.jpg",
+  "objects": [
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 0,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.7214490362336823,
+          "length": 4.509227053557471,
+          "width": 2.129454729912007
+        },
+        "pointsCount": 2929,
+        "position": {
+          "x": -7.249048318309493,
+          "y": 3.0987664140949445,
+          "z": 0.4059198989557855
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 0.004657911348400497
+        }
+      },
+      "bbox": [
+        122.61515875988289,
+        344.5410425901279,
+        302,
+        253.6231277703837
+      ],
+      "className": "car",
+      "id": 1
+    },
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 0,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.7732454019869102,
+          "length": 4.22925677008107,
+          "width": 1.9951687290206839
+        },
+        "pointsCount": 43,
+        "position": {
+          "x": -67.90331441098321,
+          "y": 2.093214497645849,
+          "z": -0.35870166739596643
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -0.02567507542490053
+        }
+      },
+      "bbox": [
+        21.4989604989605,
+        441.99792099792097,
+        25.995841995841996,
+        32.997920997921
+      ],
+      "className": "car",
+      "id": 53
+    },
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 0,
+        "truncation": 0
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.6631303818154728,
+          "length": 4.217261141245324,
+          "width": 2.025497839308365
+        },
+        "pointsCount": 20,
+        "position": {
+          "x": -90.44654918332839,
+          "y": 5.821536982851884,
+          "z": -0.925897544115069
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -0.025675075701665915
+        }
+      },
+      "bbox": [
+        59.15745984187371,
+        449.4694636139041,
+        17.534601823499933,
+        22
+      ],
+      "className": "car",
+      "id": 54
+    },
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 0,
+        "truncation": 0
+      },
+      "3D_attributes": {},
+      "bbox": [
+        94.809125460889,
+        452.8091275605783,
+        10.190874539110991,
+        14
+      ],
+      "className": "car",
+      "id": 55
+    },
+    {
+      "2D_attributes": {
+        "crowding": 0,
+        "occlusion": 0,
+        "truncation": 1
+      },
+      "3D_attributes": {
+        "dimension": {
+          "height": 1.5622672443562382,
+          "length": 4.34008504015088,
+          "width": 2.15266821626382
+        },
+        "pointsCount": 846,
+        "position": {
+          "x": 1.8296642799150158,
+          "y": 3.099785743822918,
+          "z": 0.30321667776980443
+        },
+        "rotation": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": -0.01019939662343131
+        }
+      },
+      "bbox": [
+        540,
+        110,
+        1380.1384072939998,
+        970
+      ],
+      "className": "car",
+      "id": 57
+    }
+  ],
+  "producer": "datatang",
+  "relative_sensors_data": [
+    {
+      "lidar_orientation": "front_lidar",
+      "point_cloud_id": "Hicu30.6227a36fb6294cce0bb05ae4",
+      "point_cloud_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/626d0a070654fa0ec2d25005/front_lidar/1645838024375201.json",
+      "point_cloud_url": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_preprocess/62276d758ec597d64c73b5be/lidar_data/1645838024375201.pcd"
+    },
+    {
+      "camera_orientation": "rear_right_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220226/icu30/HP-30-V71-012/rr_wide_camera_record/40245615036242638.jpg",
+      "image_id": "Bicu30.HP-30-V71-012.6223101f1f8e70fe376cab10",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/626d0a070654fa0ec2d25005/rear_right_camera/1645838024348561.json"
+    },
+    {
+      "camera_orientation": "front_right_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220226/icu30/HP-30-V71-012/rf_wide_camera_record/40245614969133774.jpg",
+      "image_id": "Bicu30.HP-30-V71-012.6223101f1f8e70fe376cab0f",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/626d0a070654fa0ec2d25005/front_right_camera/1645838024323559.json"
+    },
+    {
+      "camera_orientation": "front_left_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220226/icu30/HP-30-V71-012/lf_wide_camera_record/40245614432262862.jpg",
+      "image_id": "Bicu30.HP-30-V71-012.6223101f1f8e70fe376cab0b",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/626d0a070654fa0ec2d25005/front_left_camera/1645838024298561.json"
+    },
+    {
+      "camera_orientation": "front_middle_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220226/icu30/HP-30-V71-012/front_middle_camera_record/40245614499371726.jpg",
+      "image_id": "Bicu30.HP-30-V71-012.6223101f1f8e70fe376cab0c",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/626d0a070654fa0ec2d25005/front_middle_camera/1645838024316579.json"
+    },
+    {
+      "camera_orientation": "rear_middle_camera",
+      "imageUrl": "oss://bucket-dataengine/release/media/20220226/icu30/HP-30-V71-012/rear_middle_camera_record/40245615120128718.jpg",
+      "image_id": "Bicu30.HP-30-V71-012.6223101f1f8e70fe376cab11",
+      "image_json": "oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/626d0a070654fa0ec2d25005/rear_middle_camera/1645838024366615.json"
+    }
+  ],
+  "rtk_data": {
+    "angle": {
+      "azimuth_angle": 269.110107421875,
+      "pitch_angle": -0.3515625,
+      "roll_angle": -0.450439453125
+    },
+    "gps_time_us": 1645838024358000,
+    "header": {
+      "length": 144,
+      "original_stamp": 1645838024368061,
+      "seq": 170018,
+      "stamp": 1645838024368061,
+      "valid": true
+    },
+    "hstd": 0.06521934270858765,
+    "latstd": 0.04242578148841858,
+    "lon_lat_height": {
+      "height": 30.920000076293945,
+      "latitude": 23.561321799999998,
+      "longitude": 113.5962175
+    },
+    "lonstd": 0.0578443706035614,
+    "rtk_sts": 50,
+    "speed": null,
+    "stas_num": 30,
+    "status": 15,
+    "sys_time_us": 1645838024358000,
+    "xyz_rate_acc": {
+      "x_acc": -0.017956512048840523,
+      "y_acc": -0.1364694982767105,
+      "y_angular_rate": 0.00047936898772604764,
+      "z_acc": -9.793481826782227,
+      "z_angular_rate": 0.0006391586503013968
+    },
+    "yawstd": 0.26184576749801636
+  },
+  "timestamp": 1645838024373555,
+  "width": 1920,
+  "ori_path": "/oss://bucket-dataengine/release/preparation/card_data/icu30/data_label_postprocess/626d0a070654fa0ec2d25005/rear_left_camera/1645838024373555.json"
+}

@@ -1,7 +1,5 @@
-from configs.config import (Config, LogisticDoctorConfig, ReprojectDoctorConfig)
-from configs.config_data_hospital import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig
-from src.data_hospital.reproject_doctor.reproject_doctor import ReprojectDoctor
-from src.data_manager.data_manager_creator import data_manager_creator
+from configs.config import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig, LogisticDoctorConfig, ReprojectDoctorConfig
+from src.data_hospital.reproject_doctor import ReprojectDoctor
 from src.data_hospital.logistic_doctor import LogisticDoctor
 from src.data_hospital.duplicated_doctor import DuplicatedDoctor
 from src.data_hospital.stats_doctor import StatsDoctor
