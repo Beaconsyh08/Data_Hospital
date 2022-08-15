@@ -1,7 +1,6 @@
-from configs.config import DataHospital2Config, CoorTransConfig
-from src.data_hospital.coor_trans_doctor import CoorTransDoctor
+from configs.config import DataHospital2Config, EvaluateConfig
+from src.data_hospital.evaluate_doctor import EvaluateDoctor
 from src.utils.logger import get_logger
-import os
 
 
 logger = get_logger()
@@ -15,15 +14,9 @@ class DataHospital2():
         
         logger.critical("Data Hospital II Running")
         
-        if "CoorTrans" in self.modules:
-            logger.critical("Coor Trans Doctor Diagnosing")
-            coor_trans_doctor = CoorTransDoctor(CoorTransConfig)
-            coor_trans_doctor.diagnose()
-        
-        if "Inference" in self.modules:
-            logger.critical("Inferencing...")
-            os.system("../data_inferencer/run.sh")
-        
+        if "Evaluate" in self.modules:
+            evaluate_doctor = EvaluateDoctor(EvaluateConfig)
+            evaluate_doctor.diagnose()
         
 if __name__ == '__main__':
     data_hospital2 = DataHospital2(DataHospital2Config)

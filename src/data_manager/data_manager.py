@@ -337,7 +337,6 @@ class DataManager:
                 the info json object
                 
         """
-        
         width = info["img_width"] if width is None else width
         height = info["img_height"] if height is None else height
         

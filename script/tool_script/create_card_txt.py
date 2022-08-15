@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/root/haomo_ai_framework")
+sys.path.append("../haomo_ai_framework")
 from haomoai.cards import cardapi
 import random
 from itertools import zip_longest

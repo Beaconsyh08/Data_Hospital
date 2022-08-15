@@ -4,42 +4,48 @@ cards_conf:
   #   - card_id: 62bb2f5fddf478154fa369c4
   #     media_name: rear_middle_v30
   #     project: icu30
+
+  - file_name: /data_path/train31.txt
+    cards:
+    - card_id: 62f4bd465320fb93027a9415
+      media_name: side_cam
+      project: icu30
   
-  - file_name: /data_path/gt_qa_tunnel_new_2.txt
-    cards:
-    - card_id: 62b044233b9b8671dd276573
-      media_name: tunnel
-      project: icu30
+  # - file_name: /data_path/gt_qa_tunnel_new_2.txt
+  #   cards:
+  #   - card_id: 62b044233b9b8671dd276573
+  #     media_name: tunnel
+  #     project: icu30
 
-  - file_name: /data_path/dt_qa_tunnel_new_2.txt
-    cards:
-    - card_id: 62f3b4482dcbdc786a6987f5
-      media_name: tunnel_107w_dt
-      project: icu30
+  # - file_name: /data_path/dt_qa_tunnel_new_2.txt
+  #   cards:
+  #   - card_id: 62f3b4482dcbdc786a6987f5
+  #     media_name: tunnel_107w_dt
+  #     project: icu30
 
-  - file_name: /data_path/gt_night_new_2.txt
-    cards:
-    - card_id: 62f395222dcbdc786a5dca98
-      media_name: qa
-      project: icu30
+  # - file_name: /data_path/gt_night_new_2.txt
+  #   cards:
+  #   - card_id: 62f395222dcbdc786a5dca98
+  #     media_name: qa
+  #     project: icu30
 
-  - file_name: /data_path/dt_night_new_2.txt
-    cards:
-    - card_id: 62f3b4972dcbdc786a699639
-      media_name: night_107w_dt
-      project: icu30
+  # - file_name: /data_path/dt_night_new_2.txt
+  #   cards:
+  #   - card_id: 62f3b4972dcbdc786a699639
+  #     media_name: night_107w_dt
+  #     project: icu30
 
-  - file_name: /data_path/gt_gen_new_2.txt
-    cards:
-    - card_id: 62f3b5052dcbdc786a6a66cf
-      media_name: city_107w_gt
-      project: icu30
+  # - file_name: /data_path/gt_gen_new_2.txt
+  #   cards:
+  #   - card_id: 62f3b5052dcbdc786a6a66cf
+  #     media_name: city_107w_gt
+  #     project: icu30
 
-  - file_name: /data_path/dt_gen_new_2.txt
-    cards:
-    - card_id: 62f3b54e2dcbdc786a6ab487
-      media_name: city_107w_dt
-      project: icu30
+  # - file_name: /data_path/dt_gen_new_2.txt
+  #   cards:
+  #   - card_id: 62f3b54e2dcbdc786a6ab487
+  #     media_name: city_107w_dt
+  #     project: icu30
 
   # - file_name: /data_path/test0809.txt
   #   cards:
@@ -337,11 +343,11 @@ cards_conf:
 #       media_name: 0609_SIDECAM
 #       project: qa
 
-  - file_name: /data_path/226_dt.txt
-    cards:
-    - card_id: 62e28386516a7251afb58ec1
-      media_name: 0728_SIDECAM
-      project: qa  
+  # - file_name: /data_path/226_dt.txt
+  #   cards:
+  #   - card_id: 62e28386516a7251afb58ec1
+  #     media_name: 0728_SIDECAM
+  #     project: qa  
 
 
 #   # - file_name: /data_path/0630qa.txt
@@ -447,23 +453,23 @@ cards_conf:
   #     media_name: bigcar_qa
   #     project: icu30
 
-  - file_name: /data_path/qa_tunnel_new.txt
-    cards:
-    - card_id: 62b044233b9b8671dd276573
-      media_name: tunnel
-      project: icu30
+  # - file_name: /data_path/qa_tunnel_new.txt
+  #   cards:
+  #   - card_id: 62b044233b9b8671dd276573
+  #     media_name: tunnel
+  #     project: icu30
 
-  - file_name: /data_path/qa_night_new.txt
-    cards:
-    - card_id: 62f395222dcbdc786a5dca98
-      media_name: qa
-      project: icu30
+  # - file_name: /data_path/qa_night_new.txt
+  #   cards:
+  #   - card_id: 62f395222dcbdc786a5dca98
+  #     media_name: qa
+  #     project: icu30
 
-  - file_name: /data_path/qa_gen_new.txt
-    cards:
-    - card_id: 62f395292dcbdc786a5dd66c
-      media_name: qa
-      project: icu30
+  # - file_name: /data_path/qa_gen_new.txt
+  #   cards:
+  #   - card_id: 62f395292dcbdc786a5dd66c
+  #     media_name: qa
+  #     project: icu30
 
 #   # - file_name: /data_path/qa_combined.txt
 #   #   cards:

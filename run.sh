@@ -56,7 +56,7 @@ function set_configs() {
 
 function execute_analysis() {
     # execute scripts according to different input modules
-    echo -e "${green_start}start analyzing ${module_name} ... ${green_end}\n"
+    echo -e "${green_start}Start Analyzing ${module_name} ... ${green_end}\n"
     if [ "${module_name}" == "qa" ]; then
         python setup.py install && python tools/analyze_qa.py
 
@@ -64,19 +64,29 @@ function execute_analysis() {
         python setup.py install && python tools/eda.py
 
     elif [ "${module_name}" == "data_hospital" ]; then
-        python setup.py install && python tools/data_hospital.py        
+        python setup.py install 
+        python tools/data_hospital.py
+        IS_INFERENCE=$(python ./tools/data_hospital.py)
+        array=(`echo $IS_INFERENCE | tr ' ' ' '` )
+        echo $array
+        INF_INPUT_PATH=${array[-3]}
+        INF_OUTPUT_DIR=${array[-2]}
+        INFERENCE_FLAG=${array[-1]}
+        if [ "${INFERENCE_FLAG}" == "inference" ]; then
+            # cd ../data_inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
+            cd ../data_inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
+            cd ../data_hospital/
+        fi
 
-    elif [ "${module_name}" == "data_hospital_2" ]; then
-    # TODO
-        # cd ../data_inference
-        # ./run.sh -p /data_path/to_be_inf.txt
-        python setup.py install && python tools/data_hospital_2.py 
+        python tools/data_hospital_2.py 
+
+
     else
-        echo -e "${red_start}invalid input module name !!! ${red_end}\n"
+        echo -e "${red_start}Invalid input module name !!! ${red_end}\n"
         help_content
     fi
 
-    echo -e "${green_start}analyzing ${module_name} complete!${green_end}\n"
+    echo -e "${green_start}Analyzing ${module_name} Completed!${green_end}\n"
     return 0
 }
 

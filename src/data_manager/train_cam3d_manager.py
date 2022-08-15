@@ -9,6 +9,7 @@
 Copyright (c) HAOMO.AI, Inc. and its affiliates. All Rights Reserved
 """
 
+from os import system
 import pandas as pd
 from src.data_manager.data_manager import DataManager
 import math
@@ -47,7 +48,14 @@ class TrainCam3dManager(DataManager):
         ori = info["camera_orientation"]
         x, y, z, h = info["x"], info["y"], info["z"], info["height"]
         
-        if info["truncation"] == 0 or info["truncation"] == None:
+        if info["truncation"] in [1, 2]:
+            if z - h / 2 < -1:
+                if abs(x) < 10 and abs(y) < 10:
+                    info["coor_error"] = 3
+                else:
+                    info["coor_error"] = 2
+            
+        else:
             x = x - 2 * self_length / 3
 
             # tolerance for side cam
@@ -93,13 +101,6 @@ class TrainCam3dManager(DataManager):
                 front_side_cox = abs(x) * front_co
                 if x > 0 or y < - front_side_cox or y > front_side_cox: 
                     info["coor_error"] = 1
-            
-        else:
-            if z - h / 2 < -1:
-                if abs(x) < 10 and abs(y) < 10:
-                    info["coor_error"] = 3
-                else:
-                    info["coor_error"] = 2
                     
     
     def coor_checker_lidar(self, info: dict) -> None:
@@ -119,7 +120,14 @@ class TrainCam3dManager(DataManager):
         ori = info["camera_orientation"]
         x, y, z, h = info["x"], info["y"], info["z"], info["height"]
         
-        if info["truncation"] == 0 or info["truncation"] == None:
+        if info["truncation"] in [1, 2]:
+            if z - h / 2 > -1:
+                if abs(x) < 10 and abs(y) < 10:
+                    info["coor_error"] = 3
+                else:
+                    info["coor_error"] = 2
+        
+        else:
             y = y + self_length / 6
 
             # tolerance for side cam
@@ -164,13 +172,6 @@ class TrainCam3dManager(DataManager):
                 front_side_coy = abs(y) * front_co
                 if y < 0 or x < - front_side_coy or x > front_side_coy:
                     info["coor_error"] = 1
-        
-        else:
-            if z - h / 2 > -1:
-                if abs(x) < 10 and abs(y) < 10:
-                    info["coor_error"] = 3
-                else:
-                    info["coor_error"] = 2
                 
 
     def json_extractor(self, json_info: str, json_path: str) -> list:
@@ -244,25 +245,25 @@ class TrainCam3dManager(DataManager):
             except KeyError:
                 has_2D = False
                 info["2d_null_error"] = 1
+                info["truncation"] = None
             except TypeError:
                 has_2D = False
                 info["2d_null_error"] = 2
-                
-            if obj["3D_attributes"]:
+                info["truncation"] = None
+            
+            if obj.get("3D_attributes"):
                 super().attributes_extractor_3d(obj["3D_attributes"], info)
-                try:
-                    if LogisticDoctorConfig.COOR == "Car":
-                        self.coor_checker_car(info)
-                    else:
-                        self.coor_checker_lidar(info)
-                except KeyError:
-                    pass
+                if LogisticDoctorConfig.COOR == "Car":
+                    self.coor_checker_car(info)
+                else:
+                    self.coor_checker_lidar(info)
                 
-                    if has_2D:
-                        super().define_priority(info)
+                if has_2D:
+                    super().define_priority(info)
 
             else:
                 info["3d_null_error"] = 1
+
             
             super().date_time_extractor(timestamp, info)
             info["flag"], info["json_path"] = "train", json_path

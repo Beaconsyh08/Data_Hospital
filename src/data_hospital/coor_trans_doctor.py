@@ -42,7 +42,7 @@ class CoorTransDoctor():
         # lidar坐标系到车辆坐标系rotation中的yaw
         # self.lv_yaw = None
         self.Tcv_params = None
-        self.CLASSES = ('car','bus','truck','pedestrian','rider', 'bicycle','tricycle')
+        self.CLASSES = ('car', 'bus', 'truck', 'pedestrian', 'rider', 'bicycle', 'tricycle')
         self.cat2label = {cat: i for i, cat in enumerate(self.CLASSES)}
         
     def parsetUnion3D(self, obj_ann,test=False):
@@ -204,7 +204,7 @@ class CoorTransDoctor():
 
 
     def coor_trans(self, num, lines):
-        for idx, line in tqdm(enumerate(lines), total=len(lines), desc="Coordinate transforming"):
+        for idx, line in enumerate(lines):
             json_path = line.strip()
             json_map = self.get_ann_info(json_path)
             json_map["ori_path"] = json_path
@@ -223,14 +223,16 @@ class CoorTransDoctor():
             p = Process(target=self.coor_trans, args=(str(i), json_inf_each[i]))
             jobs.append(p)
             p.start()
-        for proc in jobs:
+        for proc in tqdm(jobs, desc="Coordinate transforming"):
             proc.join()
             
             
     def generate_txt(self,):
         with open (self.output_path, "w") as output_file:
-            for file in glob.iglob(self.output_dir, recursive=True):
-                output_file.writelines(file + "\n")
+            for root, directories, file in os.walk(self.output_dir):
+                for file in file:
+                    save_path = os.path.join(root, file)
+                    output_file.writelines(save_path + "\n")
             
             self.logger.debug('Saving Final Txt: %s' % self.output_path)
             

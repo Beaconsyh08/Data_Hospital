@@ -1,4 +1,5 @@
-from configs.config import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig, LogisticDoctorConfig, ReprojectDoctorConfig
+from configs.config import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig, LogisticDoctorConfig, ReprojectDoctorConfig, CoorTransConfig
+from src.data_hospital.coor_trans_doctor import CoorTransDoctor
 from src.data_hospital.reproject_doctor import ReprojectDoctor
 from src.data_hospital.logistic_doctor import LogisticDoctor
 from src.data_hospital.duplicated_doctor import DuplicatedDoctor
@@ -32,6 +33,15 @@ class DataHospital():
             reproject_doctor = ReprojectDoctor(ReprojectDoctorConfig)
             reproject_doctor.diagnose()          
             
+        if "CoorTrans" in self.modules:
+            logger.critical("Coor Trans Doctor Diagnosing")
+            coor_trans_doctor = CoorTransDoctor(CoorTransConfig)
+            coor_trans_doctor.diagnose()
+        
+        if "Inference" in self.modules:
+            print(CoorTransConfig.OUTPUT_PATH)
+            print(CoorTransConfig.INF_OUTPUT_DIR)
+            print("inference")
 
 if __name__ == '__main__':
     data_hospital = DataHospital(DataHospitalConfig)

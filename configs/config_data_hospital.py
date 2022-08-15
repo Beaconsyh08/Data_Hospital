@@ -1,4 +1,4 @@
-NAME = "tars_ori"
+NAME = "train312"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/0728v60/%s' % NAME
@@ -8,18 +8,11 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    # MODULES = ["Duplicated", "Logistic", "Reproject"]
-    MODULES = ["Logistic"]
+    # MODULES = ["Duplicated", "Logistic", "Reproject", "CoorTrans", "Inference"]
+    MODULES = [""]
 
 class DataHospital2Config(Config):
-    MODULES = ["CoorTrans", "Inference"]
-    
-
-class CoorTransConfig(Config):
-    OUTPUT_DIR = '%s/coor_trans_doctor/trans/' % Config.ROOT
-    INPUT_PATH = '%s/reproject_doctor/clean.txt' % Config.ROOT
-    OUTPUT_PATH = '%s/coor_trans_doctor/to_be_inf.txt' % Config.ROOT
-    
+    MODULES = ["Evaluate"]
 
 class DuplicatedDoctorConfig(Config):
     JSON_PATH = "/data_path/%s.txt" % NAME
@@ -38,7 +31,7 @@ class LogisticDoctorConfig(Config):
     SAVE_DIR = "%s/logistic_doctor" % Config.ROOT
     COOR = "Lidar"
     ONLINE = False
-    VIS = False
+    VIS = True
     
     
 class ReprojectDoctorConfig(Config):
@@ -52,7 +45,17 @@ class ReprojectDoctorConfig(Config):
     COOR = "Lidar"
     VIS = False
     
-
+class CoorTransConfig(Config):
+    OUTPUT_DIR = '%s/coor_trans_doctor/trans/' % Config.ROOT
+    INPUT_PATH = '%s/reproject_doctor/clean.txt' % Config.ROOT
+    OUTPUT_PATH = '%s/coor_trans_doctor/to_be_inf.txt' % Config.ROOT
+    INF_OUTPUT_DIR = '%s/inference_doctor/'% Config.ROOT
+    
+class EvaluateConfig(Config):
+    NAME = NAME
+    INPUT_DIR = '%s/inference_doctor/'% Config.ROOT
+    OUTPUT_DIR = '%s/evaluate_doctor' % Config.ROOT
+    
 class StatsDoctorConfig(Config):
     SAVE_DIR = "%s/stats_doctor" % Config.ROOT
     
