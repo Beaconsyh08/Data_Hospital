@@ -60,9 +60,6 @@ function execute_analysis() {
     if [ "${module_name}" == "qa" ]; then
         python setup.py install && python tools/analyze_qa.py
 
-    elif [ "${module_name}" == "eda" ]; then
-        python setup.py install && python tools/eda.py
-
     elif [ "${module_name}" == "data_hospital" ]; then
         python setup.py install 
         python tools/data_hospital.py

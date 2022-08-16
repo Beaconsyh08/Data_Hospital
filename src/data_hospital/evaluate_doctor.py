@@ -70,11 +70,11 @@ class EvaluateDoctor():
         
     
     def diagnose(self, ):
-        # dt_card = self.card_generator_json("icu30", "dt", self.dt_path)
-        # gt_card = self.card_generator_json("icu30", "gt", self.gt_path)
-        # self.eval_data = [{"gt_card": gt_card, "dt_card":dt_card}]
+        dt_card = self.card_generator_json("icu30", "dt", self.dt_path)
+        gt_card = self.card_generator_json("icu30", "gt", self.gt_path)
+        self.eval_data = [{"gt_card": gt_card, "dt_card":dt_card}]
         
-        # self.evaluate()
+        self.evaluate()
         while not self.result_flag:
             result = self.get_result()
             self.logger.info(result["desc"])

@@ -1,4 +1,4 @@
-NAME = "train312"
+NAME = "qa_cmh"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/0728v60/%s' % NAME
