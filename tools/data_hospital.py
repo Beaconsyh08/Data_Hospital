@@ -1,10 +1,11 @@
-from configs.config import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig, LogisticDoctorConfig, ReprojectDoctorConfig, CoorTransConfig
+from configs.config import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig, LogisticDoctorConfig, ReprojectDoctorConfig, CoorTransConfig, InferenceConfig
 from src.data_hospital.coor_trans_doctor import CoorTransDoctor
 from src.data_hospital.reproject_doctor import ReprojectDoctor
 from src.data_hospital.logistic_doctor import LogisticDoctor
 from src.data_hospital.duplicated_doctor import DuplicatedDoctor
 from src.data_hospital.stats_doctor import StatsDoctor
 from src.utils.logger import get_logger
+import os
 
 logger = get_logger()
 
@@ -39,8 +40,13 @@ class DataHospital():
             coor_trans_doctor.diagnose()
         
         if "Inference" in self.modules:
+            if len(self.modules) == 1:
+                os.makedirs(CoorTransConfig.OUTPUT_DIR, exist_ok=True)
+                os.system("cp %s %s" % (DuplicatedDoctorConfig.JSON_PATH, CoorTransConfig.OUTPUT_PATH)) 
+            print(DataHospitalConfig.ORIENTATION)
+            print(InferenceConfig.INF_MODEL_PATH)
             print(CoorTransConfig.OUTPUT_PATH)
-            print(CoorTransConfig.INF_OUTPUT_DIR)
+            print(InferenceConfig.INF_OUTPUT_DIR)
             print("inference")
 
 if __name__ == '__main__':

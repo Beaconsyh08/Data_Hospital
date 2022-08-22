@@ -66,12 +66,14 @@ function execute_analysis() {
         IS_INFERENCE=$(python ./tools/data_hospital.py)
         array=(`echo $IS_INFERENCE | tr ' ' ' '` )
         echo $array
+        ORIENTATION=${array[-5]}
+        MODEL_PATH=${array[-4]}
         INF_INPUT_PATH=${array[-3]}
         INF_OUTPUT_DIR=${array[-2]}
         INFERENCE_FLAG=${array[-1]}
         if [ "${INFERENCE_FLAG}" == "inference" ]; then
             # cd ../data_inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
-            cd ../data_inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
+            cd ../data_inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -m $MODEL_PATH -c $ORIENTATION -g
             cd ../data_hospital/
         fi
 

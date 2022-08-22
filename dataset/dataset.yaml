@@ -5,12 +5,19 @@ cards_conf:
   #     media_name: rear_middle_v30
   #     project: icu30
 
-  - file_name: /data_path/train31.txt
-    cards:
-    - card_id: 62f4bd465320fb93027a9415
-      media_name: side_cam
-      project: icu30
+  # - file_name: /data_path/train31.txt
+  #   cards:
+  #   - card_id: 62f4bd465320fb93027a9415
+  #     media_name: side_cam
+  #     project: icu30
   
+  - file_name: /data_path/test.txt
+    cards:
+    - card_id: 62fe5691cb734b4949e552de
+      media_name: dt
+      project: icu30
+
+
   # - file_name: /data_path/gt_qa_tunnel_new_2.txt
   #   cards:
   #   - card_id: 62b044233b9b8671dd276573

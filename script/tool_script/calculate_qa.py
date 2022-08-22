@@ -1,6 +1,6 @@
 import json
 
-PATH = "/share/analysis/result/qa_res/overall/2.2.8.1.json"
+PATH = "/share/analysis/result/qa_res/overall/v2.1.2.0.json"
 NEW = True
 
 def get_f1(dic: dict):
@@ -32,7 +32,7 @@ with open(PATH, 'r') as f:
     json_obj = json.load(f)
     
     if NEW:
-        selected_area = json_obj["-20m_20m"]
+        selected_area = json_obj["-20m~20m"]
         vehicle, pedestrian, cyclist = selected_area.values()
         vehicle_no, vehicle_f, vehicle_tp, vehicle_yaw, vehicle_pos = get_f1(vehicle)
         pedestrian_no, pedestrian_f, pedestrian_tp, pedestrian_yaw, pedestrian_pos = get_f1(pedestrian)

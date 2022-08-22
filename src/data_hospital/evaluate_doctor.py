@@ -1,6 +1,8 @@
 import sys
 from time import sleep
-from datetime import date
+from datetime import datetime
+
+from configs.config_data_hospital import DataHospitalConfig
 sys.path.append("../haomo_ai_framework")
 import json
 import os
@@ -21,8 +23,12 @@ class EvaluateDoctor():
         self.gt_path = "%s/gt/" % cfg.INPUT_DIR
         self.logger.debug("GT_PATH: %s" % self.gt_path) 
         self.result_flag = False
-        self.request_id = "%s_%s" % (cfg.NAME, str(date.today()))
+        self.request_id = "%s_%s_%s" % (cfg.MODEL_NAME, cfg.NAME, str(datetime.now()))
         self.output_dir = cfg.OUTPUT_DIR
+        if DataHospitalConfig.ORIENTATION == "SIDE":
+            self.sensor = "front_left_camera"
+        elif DataHospitalConfig.ORIENTATION == "FRONT":
+            self.sensor = "front_middle_camera"
         os.makedirs(self.output_dir, exist_ok=True)
         
         
@@ -50,13 +56,14 @@ class EvaluateDoctor():
                 "algorithm_type": "perception",
                 "model_type": "model",
                 "model_name": "2d_obstacle",
-                "sensor": "front_left_camera",
+                "sensor": self.sensor,
                 "tasks": self.eval_data
                 }
 
         r = requests.post(url="http://10.100.4.203:5000/evaluate_lucas", json=data)
         
         self.logger.info("Evaluating")
+        self.logger.info(data)
         return r.json()
 
 
@@ -89,3 +96,25 @@ class EvaluateDoctor():
             json.dump(result, output_file)
             
         self.logger.debug("Result Has Been Saved in: %s" % save_path)
+        
+        
+if __name__ == '__main__':
+    class Config1:
+        NAME = "227"
+        INPUT_DIR = '%s/inference_doctor/'% '/root/data_hospital_data/0728v60/%s'
+        OUTPUT_DIR = '%s/evaluate_doctor' % '/root/data_hospital_data/0728v60/%s'
+    
+    evaluator = EvaluateDoctor(Config1)
+    # evaluator.eval_data = [{"gt_card": {'project': 'icu30', 'id': '62d173f328f4f2a8671b2874', 'name': 'trans_zhouping_side_gt'}, 
+    #                         "dt_card":{'project': 'qa', 'id': '62e90c382f748ee9edbfb0f6', 'name': '0804_SIDECAM'}}]
+    # evaluator.evaluate()
+    evaluator.request_id = '227_2022-08-16 21:58:01.492500'
+    result = evaluator.get_result()
+    print(result)
+    
+    save_path = "%s/result.json" % Config1.OUTPUT_DIR
+    with open(save_path, 'w') as output_file:
+        json.dump(result, output_file)
+        
+    print("Result Has Been Saved in: %s" % save_path)
+    
