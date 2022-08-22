@@ -1,10 +1,21 @@
-NAME = "qa_shuf_2"
+NAME = "v31"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/0728v60/%s' % NAME
     LOGISTIC_DATAFRAME_PATH = '%s/dataframes/logistic_dataframe.pkl' % ROOT
     REPROJECT_DATAFRAME_PATH = '%s/dataframes/reproject_dataframe.pkl' % ROOT
     FINAL_DATAFRAME_PATH = '%s/dataframes/final_dataframe.pkl' % ROOT
+    TYPE_MAP = {'car': 'car', 'van': 'car', 
+                'truck': 'truck', 'forklift': 'truck',
+                'bus':'bus', 
+                'rider':'rider',
+                'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
+                'rider_bicycle': 'rider', 'rider_motorcycle':'rider',
+                'bicycle': 'bicycle', 'motorcycle': 'bicycle',
+                'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 
+                'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
+                'static': 'static', 'trafficCone': 'static', 'water-filledBarrier': 'static', 'other': 'static', 'accident': 'static', 'construction': 'static', 'traffic-cone': 'static', 'other-vehicle': 'static', 'attached': 'static', 'accident': 'static', 'traffic_cone': 'static', 'other-static': 'static', 'water-filled-barrier': 'static', 'other_static': 'static', 'water_filled_barrier': 'static', 'dynamic': 'static', 'other_vehicle': 'static', 'trafficcone': 'static', 'water-filledbarrier': 'static',
+                }
 
 
 class DataHospitalConfig(Config):
@@ -56,11 +67,12 @@ class CoorTransConfig(Config):
     OUTPUT_DIR = '%s/coor_trans_doctor/trans/' % Config.ROOT
     INPUT_PATH = '%s/reproject_doctor/clean.txt' % Config.ROOT
     OUTPUT_PATH = '%s/coor_trans_doctor/to_be_inf.txt' % Config.ROOT
+    MAPPING = True
     
 
 class InferenceConfig(Config):
     INF_OUTPUT_DIR = '%s/inference_doctor/'% Config.ROOT
-    INF_MODEL_PATH = '/share/analysis/syh/models/4W-Control.pth'
+    INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
     
     
 class EvaluateConfig(Config):

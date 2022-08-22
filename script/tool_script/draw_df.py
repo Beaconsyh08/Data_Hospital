@@ -1,5 +1,4 @@
 from pathlib import Path
-from configs.config import VisualizationConfig
 from src.utils.struct import Obstacle, parse_obs
 from src.visualization.visualization import Visualizer
 import pandas as pd
@@ -8,7 +7,7 @@ import os
 from tqdm import tqdm
 
 def show_case(df, ):
-    visualizer = Visualizer(VisualizationConfig)
+    visualizer = Visualizer(VConfig)
     for idx, row in tqdm(enumerate(df.itertuples()), total=len(df)):
         # try:
         obs_list = []
@@ -37,7 +36,10 @@ def show_case(df, ):
         #     continue
         
         
-        
+class VConfig():
+    SAVE_DIR = '/cpfs/output/%s/other'
+    MAX_TSNE_SAMPLES = 20000
+    
 df_path = "/root/data_hospital_data/0728v60/test0809/dataframes/reproject_dataframe.pkl"
 df = pd.read_pickle(df_path)["df"]
 df = df[df.yaw>3.14]

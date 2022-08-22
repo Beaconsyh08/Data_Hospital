@@ -40,9 +40,6 @@ class DataHospital():
             coor_trans_doctor.diagnose()
         
         if "Inference" in self.modules:
-            if len(self.modules) == 1:
-                os.makedirs(CoorTransConfig.OUTPUT_DIR, exist_ok=True)
-                os.system("cp %s %s" % (DuplicatedDoctorConfig.JSON_PATH, CoorTransConfig.OUTPUT_PATH)) 
             print(DataHospitalConfig.ORIENTATION)
             print(InferenceConfig.INF_MODEL_PATH)
             print(CoorTransConfig.OUTPUT_PATH)

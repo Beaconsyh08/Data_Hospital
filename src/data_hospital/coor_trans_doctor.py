@@ -5,6 +5,7 @@ import math
 from pathlib import Path
 import shutil
 from tqdm import tqdm
+from configs.config import Config
 from tools.coor_trans.ann_parser import transfer_attr
 from tools.coor_trans.ann_parser import getCalibTransformMatrix, lidar2camera, lidar2vehicle, vehicle2lidar
 from multiprocessing import Process,Queue,Pool,Pipe,Manager
@@ -39,11 +40,10 @@ class CoorTransDoctor():
         
         self.lv_trans = None
         self.vc_trans = None
-        # lidar坐标系到车辆坐标系rotation中的yaw
-        # self.lv_yaw = None
         self.Tcv_params = None
-        self.CLASSES = ('car', 'bus', 'truck', 'pedestrian', 'rider', 'bicycle', 'tricycle')
-        self.cat2label = {cat: i for i, cat in enumerate(self.CLASSES)}
+        
+        self.mapping = cfg.MAPPING
+        
         
     def parsetUnion3D(self, obj_ann,test=False):
         if not test:
@@ -154,6 +154,9 @@ class CoorTransDoctor():
                 json_ann_path, camera_orientation)
 
         for idx, obj_ann in enumerate(json_map['objects']):
+            if self.mapping:
+                trans_class_name = Config.TYPE_MAP[json_map['objects'][idx]["className"]]
+                json_map['objects'][idx]["className"] = trans_class_name
             if not obj_ann:
                 continue
             # TODO: 去除非车辆的类别
@@ -229,8 +232,9 @@ class CoorTransDoctor():
             
     def generate_txt(self,):
         with open (self.output_path, "w") as output_file:
-            for root, directories, file in os.walk(self.output_dir):
-                for file in file:
+            for root, directories, files in os.walk(self.output_dir):
+                for file in files:
+                    print(file)
                     save_path = os.path.join(root, file)
                     output_file.writelines(save_path + "\n")
             
