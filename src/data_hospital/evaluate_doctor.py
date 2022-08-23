@@ -1,8 +1,10 @@
 import sys
 from time import sleep
 from datetime import datetime
+import yaml
 
 from configs.config_data_hospital import DataHospitalConfig
+from src.data_manager.data_manager_creator import data_manager_creator
 sys.path.append("../haomo_ai_framework")
 import json
 import os
@@ -76,10 +78,35 @@ class EvaluateDoctor():
         return r.json()
         
     
+    def append_2_yaml(self, badcase_card: dict) -> None:
+        new_yaml = "  -file_name: %s\n    cards: \n    - card_id: %s\n      media_name: %s\n      project: %s\n" % (self.cfg.JSON_PATH, badcase_card["id"], "cases", badcase_card["project"])
+        
+        yaml_path = "../../dataset/dataset.yaml"
+        yaml_path = "/root/data_hospital/dataset/dataset.yaml"
+        # with open(yaml_path, "a") as new_yaml:
+        #     new_yaml.writelines(new_yaml)
+            
+        with open(yaml_path) as file:
+            try:
+                data = yaml.safe_load(file)
+                for key, value in data.items():
+                    print(key, ":", value)
+            except yaml.YAMLError as exception:
+                print(exception)
+        
+        os.system("./run.sh -d")
+    
+    
+    def build_badcase_df(self, ) -> None:
+        dm = data_manager_creator(self.cfg)
+        dm.load_from_json()
+        dm.save_to_pickle(self.cfg.BADCASE_DATAFRAME_PATH)
+    
+    
     def diagnose(self, ):
         dt_card = self.card_generator_json("icu30", "dt", self.dt_path)
         gt_card = self.card_generator_json("icu30", "gt", self.gt_path)
-        self.eval_data = [{"gt_card": gt_card, "dt_card":dt_card}]
+        self.eval_data = [{"gt_card": gt_card, "dt_card": dt_card}]
         
         self.evaluate()
         while not self.result_flag:
@@ -97,12 +124,23 @@ class EvaluateDoctor():
             
         self.logger.debug("Result Has Been Saved in: %s" % save_path)
         
+        badcase_card = result["data"]["badcase_card"]
+        self.append_2_yaml(badcase_card)
+        self.build_badcase_df()
+        
         
 if __name__ == '__main__':
     class Config1:
         NAME = "227"
         INPUT_DIR = '%s/inference_doctor/'% '/root/data_hospital_data/0728v60/%s'
         OUTPUT_DIR = '%s/evaluate_doctor' % '/root/data_hospital_data/0728v60/%s'
+        MODEL_NAME = "HAHA"
+        
+        JSON_PATH = '/data_path/data_hospital_badcase.txt'
+        JSON_TYPE = "txt"
+        DATA_TYPE = "qa_cam3d_temp"
+        ROOT = '/root/data_hospital_data/0728v60/%s' % NAME
+        BADCASE_DATAFRAME_PATH = '%s/dataframes/badcase_dataframe.pkl' % ROOT
     
     evaluator = EvaluateDoctor(Config1)
     # evaluator.eval_data = [{"gt_card": {'project': 'icu30', 'id': '62d173f328f4f2a8671b2874', 'name': 'trans_zhouping_side_gt'}, 
@@ -117,4 +155,9 @@ if __name__ == '__main__':
         json.dump(result, output_file)
         
     print("Result Has Been Saved in: %s" % save_path)
+    
+    badcase_card = result["data"]["badcase_card"]
+    evaluator.append_2_yaml(badcase_card)
+    evaluator.build_badcase_df()
+        
     

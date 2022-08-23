@@ -48,7 +48,7 @@ class TrainCam3dManager(DataManager):
         ori = info["camera_orientation"]
         x, y, z, h = info["x"], info["y"], info["z"], info["height"]
         
-        if info["truncation"] in [1, 2]:
+        if (info["truncation"] in [1, 2]) and (abs(info["x"]) < 50) and (abs(info["y"]) < 50):
             if z - h / 2 < -1:
                 if abs(x) < 10 and abs(y) < 10:
                     info["coor_error"] = 3
@@ -120,7 +120,7 @@ class TrainCam3dManager(DataManager):
         ori = info["camera_orientation"]
         x, y, z, h = info["x"], info["y"], info["z"], info["height"]
         
-        if info["truncation"] in [1, 2]:
+        if (info["truncation"] in [1, 2]) and (abs(info["x"]) < 50) and (abs(info["y"]) < 50):
             if z - h / 2 > -1:
                 if abs(x) < 10 and abs(y) < 10:
                     info["coor_error"] = 3
@@ -250,6 +250,10 @@ class TrainCam3dManager(DataManager):
                 has_2D = False
                 info["2d_null_error"] = 2
                 info["truncation"] = None
+                
+            if not has_2D:
+                info["truncation"] = super().truncation_generator(info, img_width, img_height)    
+            
             
             if obj.get("3D_attributes"):
                 super().attributes_extractor_3d(obj["3D_attributes"], info)

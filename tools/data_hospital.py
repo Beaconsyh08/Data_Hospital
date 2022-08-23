@@ -17,6 +17,7 @@ class DataHospital():
     def run(self, ) -> None:
         
         logger.critical("Data Hospital Running")
+        logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
         
         if "Duplicated" in self.modules:
             logger.critical("Duplicated Doctor Diagnosing")

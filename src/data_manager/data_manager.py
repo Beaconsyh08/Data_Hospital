@@ -23,6 +23,7 @@ import pandas as pd
 from tqdm import tqdm
 from PIL import Image
 from shapely.geometry import Point, Polygon
+from configs.config import Config
 from src.utils.logger import get_logger
 
 
@@ -171,6 +172,13 @@ class DataManager:
 
         pass
     
+    
+    def truncation_generator(self, info: dict, img_width: int, img_height: int) -> int:
+        if (info["bbox_x"] + info["bbox_w"] > 0.995 * img_width or info["bbox_x"] <  0.005 * img_width) and Config.TYPE_MAP[info["class_name"]] not in ["pedestrian", "static"]:
+            return 1
+        else:
+            return 0
+        
     
     def define_priority(self, obj: dict) -> str:
         """

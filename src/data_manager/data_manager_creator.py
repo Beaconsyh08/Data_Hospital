@@ -12,6 +12,7 @@ Copyright (c) HAOMO.AI, Inc. and its affiliates. All Rights Reserved
 
 from src.data_manager.data_manager import DataManager
 from src.data_manager.qa_cam3d_manager import QaCam3dManager
+from src.data_manager.qa_cam3dtemp_manager import QaCam3dTempManager
 from src.data_manager.train_cam3d_manager import TrainCam3dManager
 from src.data_manager.train_lidar_manager import TrainLidarManager
 
@@ -41,6 +42,8 @@ def data_manager_creator(cfg: dict) -> DataManager:
         manager = TrainCam3dManager
     elif cfg.DATA_TYPE.lower() == "train_lidar":
         manager = TrainLidarManager
+    elif cfg.DATA_TYPE.lower() == "qa_cam3d_temp":
+        manager = QaCam3dTempManager
     if cfg.DATA_TYPE is None:
         logger.warning("No predifined data manager type exist.")
         manager = DataManager 

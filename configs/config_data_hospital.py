@@ -1,27 +1,28 @@
-NAME = "v31"
+NAME = "v31_total"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/0728v60/%s' % NAME
     LOGISTIC_DATAFRAME_PATH = '%s/dataframes/logistic_dataframe.pkl' % ROOT
     REPROJECT_DATAFRAME_PATH = '%s/dataframes/reproject_dataframe.pkl' % ROOT
     FINAL_DATAFRAME_PATH = '%s/dataframes/final_dataframe.pkl' % ROOT
+    BADCASE_DATAFRAME_PATH = '%s/dataframes/badcase_dataframe.pkl' % ROOT
+    
     TYPE_MAP = {'car': 'car', 'van': 'car', 
                 'truck': 'truck', 'forklift': 'truck',
                 'bus':'bus', 
                 'rider':'rider',
                 'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
-                'rider_bicycle': 'rider', 'rider_motorcycle':'rider',
                 'bicycle': 'bicycle', 'motorcycle': 'bicycle',
-                'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 
-                'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
+                'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
                 'static': 'static', 'trafficCone': 'static', 'water-filledBarrier': 'static', 'other': 'static', 'accident': 'static', 'construction': 'static', 'traffic-cone': 'static', 'other-vehicle': 'static', 'attached': 'static', 'accident': 'static', 'traffic_cone': 'static', 'other-static': 'static', 'water-filled-barrier': 'static', 'other_static': 'static', 'water_filled_barrier': 'static', 'dynamic': 'static', 'other_vehicle': 'static', 'trafficcone': 'static', 'water-filledbarrier': 'static',
                 }
 
 
 class DataHospitalConfig(Config):
     # MODULES = ["Duplicated", "Logistic", "Reproject", "CoorTrans", "Inference"]
-    MODULES = ["Inference"]
-    # MODULES = []
+    # MODULES = ["Logistic", "Reproject", "CoorTrans", "Inference"]
+    # MODULES = ["Inference"]
+    MODULES = []
     ORIENTATION = "SIDE"
     COOR = "Lidar"
     VIS = False
@@ -48,7 +49,7 @@ class LogisticDoctorConfig(Config):
     SAVE_DIR = "%s/logistic_doctor" % Config.ROOT
     COOR = DataHospitalConfig.COOR
     ONLINE = False
-    VIS = DataHospitalConfig.VIS
+    VIS = True
     
     
 class ReprojectDoctorConfig(Config):
@@ -81,6 +82,19 @@ class EvaluateConfig(Config):
     INPUT_DIR = '%s/inference_doctor/'% Config.ROOT
     OUTPUT_DIR = '%s/evaluate_doctor' % Config.ROOT
     
+    JSON_PATH = '/data_path/data_hospital_badcase.txt'
+    JSON_TYPE = "txt"
+    DATA_TYPE = "qa_cam3d_temp"
+    
+    
+class MissAnnoDoctorConfig(Config):
+    SAVE_DIR = "%s/miss_anno_doctor" % Config.ROOT
+    
+    
+class MatchingDoctorConfig(Config):
+    SAVE_DIR = "%s/matching_doctor" % Config.ROOT
+
+
 class StatsDoctorConfig(Config):
     SAVE_DIR = "%s/stats_doctor" % Config.ROOT
     

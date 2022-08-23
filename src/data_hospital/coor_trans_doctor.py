@@ -234,7 +234,6 @@ class CoorTransDoctor():
         with open (self.output_path, "w") as output_file:
             for root, directories, files in os.walk(self.output_dir):
                 for file in files:
-                    print(file)
                     save_path = os.path.join(root, file)
                     output_file.writelines(save_path + "\n")
             

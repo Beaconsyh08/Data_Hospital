@@ -13,6 +13,7 @@ class DataHospital2():
     def run(self, ) -> None:
         
         logger.critical("Data Hospital II Running")
+        logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
         
         if "Evaluate" in self.modules:
             evaluate_doctor = EvaluateDoctor(EvaluateConfig)

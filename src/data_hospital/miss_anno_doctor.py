@@ -7,22 +7,15 @@ import threading
 import os
 from tqdm import tqdm
 import json
-from typing import List, Dict, Tuple
 from src.utils.logger import get_logger
 
 
 logger = get_logger()
 
-
-def save_json(obs_list: List[Obstacle] = [], save_path:str = None):
-    if obs_list == 0:
-        logger.warning("List[Obstacle] == 0, cannot draw bbox")
-        return
-    json_path = obs_list[0].json_path
-    with open(json_path) as f:
-        json_obj = json.load(f)
-    with open(save_path, 'w') as output_file:
-        json.dump(json_obj, output_file)
+def MissAnnoDoctor():
+    def __init__(self, cfg: dict) -> None:
+        self.cfg = cfg
+        
     
     
 def visualization(df_vis: pd.DataFrame, save_root: str):
@@ -42,8 +35,6 @@ def visualization(df_vis: pd.DataFrame, save_root: str):
         t0.start()
         # t1 = threading.Thread(target=visualizer.plot_bird_view, args=(obs_list, bev_save_path))
         # t1.start()
-        # t2 = threading.Thread(target=save_json, args=(obs_list, json_save_path))
-        # t2.start()
         
 
 if __name__ == '__main__':
