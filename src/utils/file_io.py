@@ -11,13 +11,7 @@ import json
 from pathlib import Path
 import shutil
 from PIL import Image,ImageDraw
-from certifi import contents
 from tqdm import tqdm
-from multiprocessing.pool import ThreadPool
-from configs.config import (ClusterConfig, Config, EvalDataFrameConfig,
-                            SamplerConfig, TrainDataFrameConfig)
-from src.classification.clustering import Clustering
-from src.data_manager.data_manager import load_from_pickle
 from src.utils.logger import get_logger
 logger = get_logger()
 

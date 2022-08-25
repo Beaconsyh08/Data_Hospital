@@ -8,14 +8,11 @@
 
 # import time
 import logging
-import os
 import sys
-from logging.handlers import TimedRotatingFileHandler
 from os import makedirs
 from os.path import dirname, exists
 
 import colorlog
-from colorlog import ColoredFormatter
 from configs.config import LogConfig
 
 loggers = {}

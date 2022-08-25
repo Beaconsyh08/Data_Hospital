@@ -1,27 +1,21 @@
 import argparse
-import numpy as np
 import json
 import os
 import math
-from collections import OrderedDict
-from PIL import Image, ImageDraw, ImageFont
-import cv2
 from pathlib import Path
 import shutil
 from tqdm import tqdm
-import sys
-from ann_parser import transfer_attr
-from ann_parser import getCalibTransformMatrix, lidar2camera, lidar2vehicle, vehicle2lidar
+from configs.config import Config
+from tools.coor_trans.ann_parser import transfer_attr
+from tools.coor_trans.ann_parser import getCalibTransformMatrix, lidar2camera, lidar2vehicle, vehicle2lidar
 from multiprocessing import Process,Queue,Pool,Pipe,Manager
-# sys.path.append('/root/Arithmetic_evaluation_server')
-# from ann_parser import transfer_attr
-# from ann_parser import getCalibTransformMatrix, lidar2camera, lidar2vehicle
+from src.utils.logger import get_logger
+import glob
 
-# from mmdet.haomo.core.evalution import eval_map_haomo
 
 
 # @DATASETS.register_module()
-class FlowVehicleDataset(object):
+class CoorTransDoctor():
     CAMERA_MAPS = dict(
         FRONT_MIDDLE_CAMERA = ['front_wide_camera', 'front_middle_camera'],
         FRONT_LEFT_CAMERA = ['lf_wide_camera', 'front_left_camera'],
@@ -36,15 +30,20 @@ class FlowVehicleDataset(object):
     # 车辆的方向
     VEHICLE_DIRECTIONS = ['left', 'right', 'front', 'behind', 'left_front', 'left_behind', 'right_front', 'right_behind']
     
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, cfg: dict):
+        self.cfg = cfg
+        self.output_dir = cfg.OUTPUT_DIR
+        os.makedirs(self.output_dir, exist_ok=True)
+        self.input_path = cfg.INPUT_PATH
+        self.output_path = cfg.OUTPUT_PATH
+        self.logger = get_logger()
+        
         self.lv_trans = None
         self.vc_trans = None
-        # lidar坐标系到车辆坐标系rotation中的yaw
-        # self.lv_yaw = None
         self.Tcv_params = None
-        self.CLASSES = ('car','bus','truck','pedestrian','rider', 'bicycle','tricycle')
-        self.cat2label = {cat: i for i, cat in enumerate(self.CLASSES)}
+        
+        self.mapping = cfg.MAPPING
+        
         
     def parsetUnion3D(self, obj_ann,test=False):
         if not test:
@@ -149,13 +148,15 @@ class FlowVehicleDataset(object):
         image_width = json_map['width']
         image_height = json_map['height']
 
-
         camera_orientation = json_map.get('camera_orientation', 'front_wide_camera')
         if json_map.get('calibration_file', None):
             self.lv_trans, self.vc_trans, self.Tcv_params = getCalibTransformMatrix(
                 json_ann_path, camera_orientation)
 
         for idx, obj_ann in enumerate(json_map['objects']):
+            if self.mapping:
+                trans_class_name = Config.TYPE_MAP[json_map['objects'][idx]["className"]]
+                json_map['objects'][idx]["className"] = trans_class_name
             if not obj_ann:
                 continue
             # TODO: 去除非车辆的类别
@@ -205,54 +206,46 @@ class FlowVehicleDataset(object):
             fp.write(json.dumps(json_map ,indent=2))
 
 
-def parse_args():
-    """
-    :return:进行参数的解析
-    """
-    parser = argparse.ArgumentParser(description="")
-    parser.add_argument("-i", "--input_txt_path", type=str,
-                        default="/data_path/v71_train_20000.txt", help="input data path")
-    parser.add_argument("-o", "--output_dir", type=str,
-                        default="/root/data_hospital/v71_train_test_20000", help="output dir")
-    return parser.parse_args()
+    def coor_trans(self, num, lines):
+        for idx, line in enumerate(lines):
+            json_path = line.strip()
+            json_map = self.get_ann_info(json_path)
+            json_map["ori_path"] = json_path
+            # print(json_map)
+            save_new_json_path = os.path.join(self.output_dir, str(idx)+'_'+num+'.json')
+            self.write_json(save_new_json_path, json_map)
 
-
-def coor_trans(num, lines):
-    opt = parse_args()
-    dataset = FlowVehicleDataset()
-    for idx, line in tqdm(enumerate(lines), total=len(lines), desc="Coordinate transforming"):
-        json_path = line.strip()
-        json_map = dataset.get_ann_info(json_path)
-        json_map["ori_path"] = json_path
-        # print(json_map)
-        save_new_json_path = os.path.join(opt.output_dir, str(idx)+'_'+num+'.json')
-        dataset.write_json(save_new_json_path, json_map)
-
-def splitPaths_MultiProcessing(json_paths, coreNum):
-    lenPerSt= int(len(json_paths)/coreNum+1)
-    json_inf_each = []
-    for i in range(coreNum):
-        json_inf_each.append(json_paths[i*lenPerSt:(i+1)*lenPerSt])
-    # recieve the return values of multi-processing
-    jobs = []
-    for i in range(coreNum):
-        p = Process(target=coor_trans, args=(str(i), json_inf_each[i]))
-        jobs.append(p)
-        p.start()
-    for proc in jobs:
-        proc.join()
-
-
-def main():
-    opt = parse_args()
-    with open(opt.input_txt_path,  'r') as f:
-        lines = f.readlines()
-    
-    coreNum = 40
-    splitPaths_MultiProcessing(lines, coreNum)
-    print('save to: %s'%(opt.output_dir))
-    
-
-
-if __name__ == '__main__':
-    main()
+    def splitPaths_MultiProcessing(self, json_paths, coreNum):
+        lenPerSt= int(len(json_paths)/coreNum+1)
+        json_inf_each = []
+        for i in range(coreNum):
+            json_inf_each.append(json_paths[i*lenPerSt:(i+1)*lenPerSt])
+        # recieve the return values of multi-processing
+        jobs = []
+        for i in range(coreNum):
+            p = Process(target=self.coor_trans, args=(str(i), json_inf_each[i]))
+            jobs.append(p)
+            p.start()
+        for proc in tqdm(jobs, desc="Coordinate transforming"):
+            proc.join()
+            
+            
+    def generate_txt(self,):
+        with open (self.output_path, "w") as output_file:
+            for root, directories, files in os.walk(self.output_dir):
+                for file in files:
+                    save_path = os.path.join(root, file)
+                    output_file.writelines(save_path + "\n")
+            
+            self.logger.debug('Saving Final Txt: %s' % self.output_path)
+            
+            
+    def diagnose(self,):
+        with open(self.input_path,  'r') as f:
+            lines = f.readlines()
+        
+        coreNum = 40
+        self.splitPaths_MultiProcessing(lines, coreNum)
+        self.logger.debug('Saving Trans Result: %s' % (self.output_dir))
+        self.generate_txt()
+        

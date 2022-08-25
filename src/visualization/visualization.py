@@ -526,7 +526,7 @@ class Visualizer(object):
     def plot_bird_view(self, obs_list: List[Obstacle] = None, save_path:str = None):
         if obs_list is None:
             obs_list = []
-        topView = TopViewer(x_range=50, y_range=30, view_unit=0.05)
+        topView = TopViewer(x_range=100, y_range=60, view_unit=0.05)
         topView.initTopView()
         color_dict = {'gt': (0,255,0), 'dt': (0, 0, 255)}
 

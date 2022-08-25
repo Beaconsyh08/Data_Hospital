@@ -1,10 +1,8 @@
 import shutil
 from google.protobuf import text_format
-from src.data_hospital.reproject_doctor.hardware_config_pb2 import HardwareConfig, CameraParameter, LidarParameter
-from src.data_hospital.reproject_doctor.utils import get_mtx, get_RTMatrix, get_minArearect_v2, convert_3dbox_to_8corner, get_iou
-from src.data_hospital.reproject_doctor.lidar2camera import getCalibTransformMatrix, lidar2camera, vehicle2camera
-from configs.config import ReprojectDoctorConfig
-import argparse
+from src.data_hospital.utils.reproject.hardware_config_pb2 import HardwareConfig, CameraParameter, LidarParameter
+from src.data_hospital.utils.reproject.reproject_utils import get_mtx, get_RTMatrix, get_minArearect_v2, convert_3dbox_to_8corner, get_iou
+from src.data_hospital.utils.reproject.lidar2camera import getCalibTransformMatrix, lidar2camera, vehicle2camera
 import json
 import numpy as np
 import cv2
@@ -33,6 +31,9 @@ class ReprojectDoctor():
         self.save_dir = cfg.SAVE_DIR
         self.load_path = cfg.LOAD_PATH
         self.threshold = cfg.THRESHOLD
+        self.txt_paths = [self.load_path + "/" + _ for _ in os.listdir(self.load_path)]
+        self.res_pd = pd.DataFrame()
+        
 
 # 获取相机标定参数
     def get_camera_para_json(self, clibraction_data, camera_name):
@@ -444,20 +445,16 @@ class ReprojectDoctor():
                         obj['position']['y'],
                         obj['position']['z']]
                     lidar_yaw = obj['rotation']['yaw']
-
+                    lidar_yaw_point = [lidar_position[0] + math.cos(lidar_yaw) * l, 
+                    lidar_position[1] + math.sin(lidar_yaw) * l, 
+                    lidar_position[2]]
 
                     if self.coor == "Lidar":
-                        lidar_yaw_point = [lidar_position[0] + math.cos(lidar_yaw) * l, 
-                                            lidar_position[1] + math.sin(lidar_yaw) * l, 
-                                            lidar_position[2]]
                         camera_position = lidar2camera(
                             lidar_position, lv_param, vc_param)
                         camera_yaw_point = lidar2camera(
                             lidar_yaw_point, lv_param, vc_param)
                     elif self.coor == "Car":
-                        lidar_yaw_point = [lidar_position[0] + math.sin(lidar_yaw) * l, 
-                                            lidar_position[1] + math.cos(lidar_yaw) * l, 
-                                            lidar_position[2]]                    
                         camera_position = vehicle2camera(
                             lidar_position, vc_param)
                         camera_yaw_point = vehicle2camera(
@@ -681,32 +678,13 @@ class ReprojectDoctor():
         return mean_ious, count
 
     
-    def diagnose(self):
-        txt_paths = [self.load_path + "/" + _ for _ in os.listdir(self.load_path)]
-
-        tag = 'label'  # 'inference'
-        img_count = 'basename'  # 0
-
-        res_pd = pd.DataFrame()
-        txt_lst, iou_lst, count_lst = [], [], []
-
-        
-        for txt in tqdm(txt_paths):
-            mean_iou, count = self.multi_process(txt, tag, img_count)
-            txt_lst.append(txt)
-            iou_lst.append(mean_iou)
-            count_lst.append(count)
-        
-        res_pd["Txt"] = txt_lst
-        res_pd["Mean Iou"] = iou_lst
-        res_pd["Count"] = count_lst
-        
+    def output_result(self,):
         clean_path = "%s/clean.txt" % self.save_dir
         prob_path = "%s/prob.txt" % self.save_dir
-        with open("%s/clean.txt" % self.save_dir, "w") as clean_file:
-            with open("%s/prob.txt" % self.save_dir, "w") as prob_file:
+        with open(clean_path, "w") as clean_file:
+            with open(prob_path, "w") as prob_file:
                 clean, prob = 0, 0
-                for i, row in res_pd.iterrows():
+                for i, row in self.res_pd.iterrows():
                     key, value = row["Txt"], row["Mean Iou"]
                     if value > self.threshold:
                         with open(key) as input_file:
@@ -721,15 +699,29 @@ class ReprojectDoctor():
         
         self.logger.debug("\nClean Frame: %d \nProb Frame: %d" % (clean, prob))
         self.logger.debug("Cleaned Path Has Been Saved in: %s" % clean_path)
-
         excel_path = "%s/result.xlsx" % self.save_dir
-        res_pd.to_excel(excel_path)
+        self.res_pd.to_excel(excel_path)
         hist_path = "%s/result_hist.png" % self.save_dir
-        res_pd["Mean Iou"].hist(bins=20).get_figure().savefig(hist_path)
+        self.res_pd["Mean Iou"].hist(bins=20).get_figure().savefig(hist_path)
         self.logger.debug("Result Stats Has Been Saved in: %s" % excel_path)
-        
-        
-if __name__ == '__main__':
-    rd = ReprojectDoctor(ReprojectDoctorConfig)
-    rd.diagnose()
     
+    
+    def diagnose(self,):
+        # tag = 'label'  # 'inference'
+        tag = 'label'
+        img_count = 'basename'  # 0
+        txt_lst, iou_lst, count_lst = [], [], []
+        
+        for txt in tqdm(self.txt_paths):
+            mean_iou, count = self.multi_process(txt, tag, img_count)
+            txt_lst.append(txt)
+            iou_lst.append(mean_iou)
+            count_lst.append(count)
+        
+        self.res_pd["Txt"] = txt_lst
+        self.res_pd["Mean Iou"] = iou_lst
+        self.res_pd["Count"] = count_lst
+        
+        self.output_result()
+
+        

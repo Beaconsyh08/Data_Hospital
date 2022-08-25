@@ -1,0 +1,11 @@
+cards_conf:
+- cards:
+  - card_id: 63043bf2232e1c5fe2c6ca0d
+    media_name: side_cam
+    project: icu30
+  file_name: /data_path/train31_test.txt
+- cards:
+  - card_id: 6307472174cfc40ac04edc57
+    media_name: cases
+    project: qa
+  file_name: /data_path/data_hospital_badcase.txt

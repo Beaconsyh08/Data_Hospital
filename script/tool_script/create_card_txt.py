@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/root/haomo_ai_framework")
+sys.path.append("../haomo_ai_framework")
 from haomoai.cards import cardapi
 import random
 from itertools import zip_longest
@@ -24,9 +24,9 @@ def card_generator(k: int, project: str, media_name: str, paths: list):
         
             print(card_id_train)
 
-PATHS = ['/root/data_hospital/0728v60/sidecam_ori/reproject_doctor/temp2.txt']
+PATHS = ['/data_path/new_coor.txt']
 K = 600000
 PROJECT = "icu30"
-MEDIA_NAME = "0808"
+MEDIA_NAME = "temp"
 
 card_generator(K, PROJECT, MEDIA_NAME, PATHS)

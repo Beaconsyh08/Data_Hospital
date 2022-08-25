@@ -63,7 +63,10 @@ def parse_obs(row):
     obs.x, obs.y, obs.z = obs.position
     obs.height, obs.length, obs.width = row.height, row.length, row.width
     obs.class_name, obs.yaw = row.class_name, row.yaw
-    obs.truncation, obs.crowding, obs.occlusion = row.truncation, row.crowding, row.occlusion
+    try:
+        obs.truncation, obs.crowding, obs.occlusion = row.truncation, row.crowding, row.occlusion
+    except:
+        pass
     obs.camera_orientation = row.camera_orientation
     obs.flag = row.flag
     obs.json_path = row.json_path

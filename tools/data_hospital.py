@@ -1,11 +1,11 @@
-from configs.config import (Config, LogisticDoctorConfig, ReprojectDoctorConfig)
-from configs.config_data_hospital import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig
-from src.data_hospital.reproject_doctor.reproject_doctor import ReprojectDoctor
-from src.data_manager.data_manager_creator import data_manager_creator
+from configs.config import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig, LogisticDoctorConfig, ReprojectDoctorConfig, CoorTransConfig, InferenceConfig
+from src.data_hospital.coor_trans_doctor import CoorTransDoctor
+from src.data_hospital.reproject_doctor import ReprojectDoctor
 from src.data_hospital.logistic_doctor import LogisticDoctor
 from src.data_hospital.duplicated_doctor import DuplicatedDoctor
 from src.data_hospital.stats_doctor import StatsDoctor
 from src.utils.logger import get_logger
+import os
 
 logger = get_logger()
 
@@ -17,6 +17,7 @@ class DataHospital():
     def run(self, ) -> None:
         
         logger.critical("Data Hospital Running")
+        logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
         
         if "Duplicated" in self.modules:
             logger.critical("Duplicated Doctor Diagnosing")
@@ -34,6 +35,11 @@ class DataHospital():
             reproject_doctor = ReprojectDoctor(ReprojectDoctorConfig)
             reproject_doctor.diagnose()          
             
+        if "CoorTrans" in self.modules:
+            logger.critical("Coor Trans Doctor Diagnosing")
+            coor_trans_doctor = CoorTransDoctor(CoorTransConfig)
+            coor_trans_doctor.diagnose()
+        
 
 if __name__ == '__main__':
     data_hospital = DataHospital(DataHospitalConfig)

@@ -6,6 +6,8 @@ import pickle
 import pandas as pd
 import tqdm
 from configs.config import (OutputConfig, ReprojectDoctorConfig, VisualizationConfig)
+from configs.config_data_hospital import CoorTransConfig, LogisticDoctorConfig
+from src.data_hospital.coor_trans_doctor import CoorTransDoctor
 from src.data_manager.data_manager import DataManager, load_from_pickle
 from src.data_manager.data_manager_creator import data_manager_creator
 from src.utils.logger import get_logger
@@ -41,6 +43,7 @@ class LogisticDoctor(DataManager):
         self.empty_frames = []
         self.error_list = ["bbox_error", "coor_error"]
         self.vis = cfg.VIS
+        self.coor = cfg.COOR
         
     def instance_erros(self, ) -> None:
         """
@@ -196,12 +199,41 @@ class LogisticDoctor(DataManager):
         """
         
         self.logger.debug("Example Error Images Saved in: %s" % self.ver.save_dir)
+        coor_trans = CoorTransDoctor(CoorTransConfig)
         for error_type in self.error_list:
             for flag in self.df[error_type].unique().tolist():
                 # if flag != 0:
                 error_df = self.df[self.df[error_type] == flag]
                 error_df = error_df.sample(n=min(sample_no, len(error_df)))
-                objs = [parse_obs(error_df.iloc[_]) for _ in range(len(error_df))]
+                
+                if self.coor == "Lidar":
+                    objs = []
+                    for _ in range(len(error_df)):
+                        json_map = coor_trans.get_ann_info(error_df.iloc[_].json_path)
+                        id = error_df.iloc[_].id
+                        new = error_df.iloc[_]
+                        
+                        for object in json_map['objects']:
+                            if object["id"] == id:
+                                try:
+                                    # print(object)
+                                    attr = object['3D_attributes']['position']
+                                    new.x = attr["x"]
+                                    new.y = attr["y"]
+                                    new.z = attr["z"]
+                                    new.yaw = object['3D_attributes']['rotation']["yaw"]
+                                    # print("old", error_df.iloc[_])
+                                    # print("new", new)
+                                except:
+                                    pass
+                                    
+                        
+                        objs.append(parse_obs(new))
+                
+                else:
+                    objs = [parse_obs(error_df.iloc[_]) for _ in range(len(error_df))]
+                    
+                    
                 for ind, obj in tqdm.tqdm(enumerate(objs), desc="Saving %s_%d Images" % (error_type, flag)):
                     self.ver.draw_bbox_0([obj], "%s/%s_%d/%d.jpg" % (self.ver.save_dir, error_type, flag, ind))
                     self.ver.plot_bird_view([obj], "%s/%s_%d/%d_bev.jpg" % (self.ver.save_dir, error_type, flag, ind))
@@ -223,5 +255,12 @@ class LogisticDoctor(DataManager):
         self.instance_erros()
         self.frame_errors()
         self.construct_reproject_dataframe()
+        
         if self.vis:
             self.visualization(100)
+            
+if __name__ == '__main__':
+    logistic_doctor = LogisticDoctor(LogisticDoctorConfig)
+    logistic_doctor.df = pd.read_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/reproject_dataframe.pkl")["df"]
+    if logistic_doctor.vis:
+        logistic_doctor.visualization(100)

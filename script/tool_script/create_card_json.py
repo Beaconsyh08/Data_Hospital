@@ -19,6 +19,6 @@ for _, _, files in os.walk(json_path):
             oss_urls.append(js_str)
 
 # card_id = card_inst.create_card_w_append( project='qa', media_name='0609_SIDECAM', target_dir=json_path) # 设置生成卡片的 project 和 media_name
-card_id = card_inst.create_card_w_append( project='icu30', media_name='0811_SIDECAM', target_dir=json_path) # 设置生成卡片的 project 和 media_name
+card_id = card_inst.create_card_w_append( project='icu30', media_name='2281_SIDECAM', target_dir=json_path) # 设置生成卡片的 project 和 media_name
 
 print('card_id: ', card_id)

@@ -67,7 +67,10 @@ class DuplicatedDoctor():
             
             with open(json_path) as json_obj:
                 json_info = json.load(json_obj)
-                img_url = json_info["imgUrl"]
+                try:
+                    img_url = json_info["imgUrl"]
+                except:
+                    print(json_path)
                 res_dict[img_url].append(json_path)
 
         with ThreadPool(processes = 40) as pool:
