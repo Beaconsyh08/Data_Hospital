@@ -5,67 +5,72 @@ from src.visualization.visualization import Visualizer
 import pandas as pd
 import threading
 import os
+import pickle
 from tqdm import tqdm
 import json
 from src.utils.logger import get_logger
 
 
-logger = get_logger()
-
-def MissAnnoDoctor():
+class MissAnnoDoctor():
     def __init__(self, cfg: dict) -> None:
         self.cfg = cfg
+        self.logger = get_logger()
+        self.df = pd.read_pickle(self.cfg.BADCASE_DATAFRAME_PATH)["df"]        
+        self.logger.info("Bad Case DataFrame Loaded")
         
-    
-    
-def visualization(df_vis: pd.DataFrame, save_root: str):
-    visualizer = Visualizer(VisualizationConfig)
-    for idx, row in tqdm(enumerate(df_vis.itertuples()), total=len(df_vis)):
-        obs_list = []
-        class_name, idx, id = row.class_name, row.Index, row.id
-        img_url = idx.split("@")[0]
-        obs = parse_obs(row)
-        obs_list.append(obs)
+        self.save_dir = cfg.SAVE_DIR
+        os.makedirs(self.save_dir, exist_ok=True)
+        self.vis = cfg.VIS
+        self.new_df_path = cfg.BADCASE_DATAFRAME_PATH_DMISS
         
-        save_dir = "%s/%s/%s_%d" % (save_root, class_name, str(Path(row.json_path).stem), id)
-        save_path = '%s.jpg' % save_dir
-        bev_save_path = '%s_bev.jpg' % save_dir
-        json_save_path = '%s.json' % save_dir
-        t0 = threading.Thread(target=visualizer.draw_bbox_0, args=(obs_list, save_path))
-        t0.start()
-        # t1 = threading.Thread(target=visualizer.plot_bird_view, args=(obs_list, bev_save_path))
-        # t1.start()
         
-
-if __name__ == '__main__':
-    path = '/cpfs/output/0719/other/dataframes/P0_dataframe.pkl'
-    df = pd.read_pickle(path)["df"]
-    df_false_vru_p0 = df[(df.priority == "P0") & (df.case_flag == "2") & (df.iou == -1)]
-    false_vru_p0_jsons = list(set(df_false_vru_p0.json_path))
-    logger.debug("Miss Label P0 Frame Number: %d" % len(false_vru_p0_jsons))
+    def rules_decider(self,) -> set:
+        self.df_false_p0 = self.df[(self.df.priority == "P0") & (self.df.case_flag == "2") & (self.df.iou == -1)]
+        false_p0_jsons = set(self.df_false_p0.json_path)
+        self.logger.debug("Miss Label P0 Frame Number: %d" % len(false_p0_jsons))
+        new_df = self.df[~self.df.json_path.isin(false_p0_jsons)]
+        self.save_to_pickle(new_df, self.new_df_path)
+        return false_p0_jsons
     
-    save_root = "/root/data_hospital/0728v60/sidecam_ori_2/miss_anno_doctor/"
-    os.makedirs(save_root, exist_ok=True)
     
-    with open("%s/to_del.txt" % save_root, "w") as to_del_file:
-        with open("%s/to_del_train.txt" % save_root, "w") as to_del_train_file:
-            for json_path in tqdm(false_vru_p0_jsons):
-                train_json_path = ""
+    def save_to_pickle(self, pickle_obj: dict, save_path: str) -> None:
+        with open(save_path, "wb") as pickle_file: 
+            pickle.dump(pickle_obj, pickle_file)
+            
+            
+    def result_output(self, jsons: set, save_name: str):
+        with open("%s/%s.txt" % (self.save_dir, save_name), "w") as to_del_file:
+            
+            for json_path in tqdm(jsons):
                 with open(json_path) as f:
                     json_obj = json.load(f)
-                    rel_sensors = json_obj.get("relative_sensors_data")
-                    camera_orientation = json_obj.get("camera_orientation")
-                    for rel_sensor in rel_sensors:
-                        if rel_sensor.get("camera_orientation") == camera_orientation:
-                            train_json_path = rel_sensor.get("image_json")
-                            break
-                
-                if train_json_path != "" and train_json_path.split("/")[4] == "preparation":
-                    to_del_train_file.writelines("/" + train_json_path + "\n")
-                else:
-                    to_del_file.writelines(json_path + "\n")
+                    to_del_file.writelines(json_obj["ori_path"] + "\n")
                     
-    df_vis = df_false_vru_p0.sample(500)
-    visualization(df_vis, save_root)
+    
+    def diagnose(self,):
+        false_p0_jsons = self.rules_decider()
+        self.result_output(false_p0_jsons, "to_del")    
+        total_jsons = set(self.df.json_path)
+        clean_jsons = total_jsons - false_p0_jsons
+        self.result_output(clean_jsons, "clean")
+        if self.vis:
+            self.visualization(self.df_false_p0.sample(500))
+    
+    
+    def visualization(self, df_vis: pd.DataFrame):
+        visualizer = Visualizer(VisualizationConfig)
+        for idx, row in tqdm(enumerate(df_vis.itertuples()), total=len(df_vis)):
+            obs_list = []
+            class_name, id = row.class_name, row.id
+            obs = parse_obs(row)
+            obs_list.append(obs)
+            
+            save_dir = "%s/%s/%s_%d" % (self.save_dir, class_name, str(Path(row.json_path).stem), id)
+            save_path = '%s.jpg' % save_dir
+            t0 = threading.Thread(target=visualizer.draw_bbox_0, args=(obs_list, save_path))
+            t0.start()
 
         
+if __name__ == '__main__':
+    pass
+    

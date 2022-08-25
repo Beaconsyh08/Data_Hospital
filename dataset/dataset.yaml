@@ -5,56 +5,62 @@ cards_conf:
   #     media_name: rear_middle_v30
   #     project: icu30
 
-  - file_name: /data_path/train31.txt
-    cards:
-    - card_id: 62f4bd465320fb93027a9415
-      media_name: side_cam
-      project: icu30
+  # - file_name: /data_path/train31.txt
+  #   cards:
+  #   - card_id: 62f4bd465320fb93027a9415
+  #     media_name: side_cam
+  #     project: icu30
 
-  - file_name: /data_path/train31_total.txt
+  - file_name: /data_path/train31_test.txt
     cards:
     - card_id: 63043bf2232e1c5fe2c6ca0d
       media_name: side_cam
       project: icu30
-    - card_id: 63037d0a0050048827eb2fa6
-      media_name: side_cam
-      project: icu30
 
-  - file_name: /data_path/train31_cases.txt
-    cards:
-    - card_id: 6303a20d2c3d13bcb7b26c8a
-      media_name: cases
-      project: qa
+  # - file_name: /data_path/train31_total.txt
+  #   cards:
+  #   - card_id: 63043bf2232e1c5fe2c6ca0d
+  #     media_name: side_cam
+  #     project: icu30
+  #   - card_id: 63037d0a0050048827eb2fa6
+  #     media_name: side_cam
+  #     project: icu30
 
-  - file_name: /data_path/227_cases.txt
-    cards:
-    - card_id: 62f6177626f4425c2025597f
-      media_name: cases
-      project: qa
+  # - file_name: /data_path/train31_cases.txt
+  #   cards:
+  #   - card_id: 6303a20d2c3d13bcb7b26c8a
+  #     media_name: cases
+  #     project: qa
+
+  # - file_name: /data_path/227_cases.txt
+  #   cards:
+  #   - card_id: 62f6177626f4425c2025597f
+  #     media_name: cases
+  #     project: qa
   
-  - file_name: /data_path/224_cases.txt
-    cards:
-    - card_id: 62f61a4e26f4425c20275f24
-      media_name: cases
-      project: qa  
+  # - file_name: /data_path/224_cases.txt
+  #   cards:
+  #   - card_id: 62f61a4e26f4425c20275f24
+  #     media_name: cases
+  #     project: qa  
       
-  - file_name: /data_path/2111_cases.txt
-    cards:
-    - card_id: 62f61a8bee3bc1b91e6dcc80
-      media_name: cases
-      project: qa
+  # - file_name: /data_path/2111_cases.txt
+  #   cards:
+  #   - card_id: 62f61a8bee3bc1b91e6dcc80
+  #     media_name: cases
+  #     project: qa
 
-  - file_name: /data_path/v31_control.txt
-    cards:
-    - card_id: 6303316729bcafb90aa1ae22
-      media_name: cases
-      project: qa  
+  # - file_name: /data_path/v31_control.txt
+  #   cards:
+  #   - card_id: 6303316729bcafb90aa1ae22
+  #     media_name: cases
+  #     project: qa  
       
-  - file_name: /data_path/v31_.txt
-    cards:
-    - card_id: 63032c7329bcafb90a8fb067
-      media_name: cases
-      project: qa
+  # - file_name: /data_path/v31_.txt
+  #   cards:
+  #   - card_id: 63032c7329bcafb90a8fb067
+  #     media_name: cases
+  #     project: qa
 
 
       
@@ -114,11 +120,11 @@ cards_conf:
 
 
 
-  - file_name: /data_path/qa_cmh.txt
-    cards:
-    - card_id: 62d173f328f4f2a8671b2874
-      media_name: trans_zhouping_side_gt
-      project: icu30 
+  # - file_name: /data_path/qa_cmh.txt
+  #   cards:
+  #   - card_id: 62d173f328f4f2a8671b2874
+  #     media_name: trans_zhouping_side_gt
+  #     project: icu30 
 
 #   - file_name: /data_path/qa_cmh_1205.txt
 #     cards:
@@ -374,11 +380,11 @@ cards_conf:
   #     media_name: side_cam_v70
   #     project: icu30 
 
-  - file_name: /data_path/traffic_temp.txt
-    cards:
-    - card_id: 62fc80bf45595539301873af
-      media_name: frame_sensor_data
-      project: icu30
+  # - file_name: /data_path/traffic_temp.txt
+  #   cards:
+  #   - card_id: 62fc80bf45595539301873af
+  #     media_name: frame_sensor_data
+  #     project: icu30
 
     
 

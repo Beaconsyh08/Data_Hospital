@@ -8,7 +8,6 @@ from src.data_manager.data_manager_creator import data_manager_creator
 sys.path.append("../haomo_ai_framework")
 import json
 import os
-from itertools import zip_longest
 
 import requests
 from haomoai.cards import CardOperation
@@ -79,23 +78,20 @@ class EvaluateDoctor():
         
     
     def append_2_yaml(self, badcase_card: dict) -> None:
-        new_yaml = "  -file_name: %s\n    cards: \n    - card_id: %s\n      media_name: %s\n      project: %s\n" % (self.cfg.JSON_PATH, badcase_card["id"], "cases", badcase_card["project"])
-        
-        yaml_path = "../../dataset/dataset.yaml"
-        yaml_path = "/root/data_hospital/dataset/dataset.yaml"
-        # with open(yaml_path, "a") as new_yaml:
-        #     new_yaml.writelines(new_yaml)
+        new_yaml = {'file_name': self.cfg.JSON_PATH, 
+                    'cards': [{'card_id': badcase_card["id"], 'media_name': "cases", 'project': badcase_card["project"]}]}
+        yaml_path = "dataset/dataset.yaml"
+        new_yaml_path = "dataset/new_dataset.yaml"
             
-        with open(yaml_path) as file:
-            try:
-                data = yaml.safe_load(file)
-                for key, value in data.items():
-                    print(key, ":", value)
-            except yaml.YAMLError as exception:
-                print(exception)
+        with open(yaml_path) as input_file:
+            data = yaml.safe_load(input_file)
+            data['cards_conf'].append(new_yaml)
+            
+        with open(new_yaml_path, 'w') as output_file:
+            yaml.dump(data, output_file)
         
-        os.system("./run.sh -d")
-    
+        os.system("./run.sh -d %s" % new_yaml_path) 
+        
     
     def build_badcase_df(self, ) -> None:
         dm = data_manager_creator(self.cfg)
@@ -131,7 +127,7 @@ class EvaluateDoctor():
         
 if __name__ == '__main__':
     class Config1:
-        NAME = "227"
+        NAME = "train31_total"
         INPUT_DIR = '%s/inference_doctor/'% '/root/data_hospital_data/0728v60/%s'
         OUTPUT_DIR = '%s/evaluate_doctor' % '/root/data_hospital_data/0728v60/%s'
         MODEL_NAME = "HAHA"
@@ -145,8 +141,8 @@ if __name__ == '__main__':
     evaluator = EvaluateDoctor(Config1)
     # evaluator.eval_data = [{"gt_card": {'project': 'icu30', 'id': '62d173f328f4f2a8671b2874', 'name': 'trans_zhouping_side_gt'}, 
     #                         "dt_card":{'project': 'qa', 'id': '62e90c382f748ee9edbfb0f6', 'name': '0804_SIDECAM'}}]
-    # evaluator.evaluate()
-    evaluator.request_id = '227_2022-08-16 21:58:01.492500'
+    evaluator.evaluate()
+    evaluator.request_id = '0825_syh_test'
     result = evaluator.get_result()
     print(result)
     

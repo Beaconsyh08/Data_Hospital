@@ -40,12 +40,6 @@ class DataHospital():
             coor_trans_doctor = CoorTransDoctor(CoorTransConfig)
             coor_trans_doctor.diagnose()
         
-        if "Inference" in self.modules:
-            print(DataHospitalConfig.ORIENTATION)
-            print(InferenceConfig.INF_MODEL_PATH)
-            print(CoorTransConfig.OUTPUT_PATH)
-            print(InferenceConfig.INF_OUTPUT_DIR)
-            print("inference")
 
 if __name__ == '__main__':
     data_hospital = DataHospital(DataHospitalConfig)

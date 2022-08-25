@@ -1,11 +1,14 @@
-NAME = "v31_total"
+NAME = "train31_test2"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
-    ROOT = '/root/data_hospital_data/0728v60/%s' % NAME
+    ROOT = '/root/data_hospital_data/%s' % NAME
     LOGISTIC_DATAFRAME_PATH = '%s/dataframes/logistic_dataframe.pkl' % ROOT
     REPROJECT_DATAFRAME_PATH = '%s/dataframes/reproject_dataframe.pkl' % ROOT
     FINAL_DATAFRAME_PATH = '%s/dataframes/final_dataframe.pkl' % ROOT
     BADCASE_DATAFRAME_PATH = '%s/dataframes/badcase_dataframe.pkl' % ROOT
+    BADCASE_DATAFRAME_PATH_DMISS = '%s/dataframes/badcase_dmiss_dataframe.pkl' % ROOT
+    BADCASE_DATAFRAME_PATH_DMATCH = '%s/dataframes/badcase_dmiss_dataframe.pkl' % ROOT
+    
     
     TYPE_MAP = {'car': 'car', 'van': 'car', 
                 'truck': 'truck', 'forklift': 'truck',
@@ -19,19 +22,13 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    # MODULES = ["Duplicated", "Logistic", "Reproject", "CoorTrans", "Inference"]
-    # MODULES = ["Logistic", "Reproject", "CoorTrans", "Inference"]
-    # MODULES = ["Inference"]
-    MODULES = []
+    MODULES = ["Duplicated", "Logistic", "Reproject", "CoorTrans", "Inference", "Evaluate", "MissAnno", "Matching"]
+    # MODULES = ["MissAnno", "Matching"]
     ORIENTATION = "SIDE"
     COOR = "Lidar"
     VIS = False
     
     
-class DataHospital2Config(Config):
-    MODULES = ["Evaluate"]
-
-
 class DuplicatedDoctorConfig(Config):
     JSON_PATH = "/data_path/%s.txt" % NAME
     ORI_JSON_PATH = "/data_path/%s.txt" % NAME
@@ -49,7 +46,7 @@ class LogisticDoctorConfig(Config):
     SAVE_DIR = "%s/logistic_doctor" % Config.ROOT
     COOR = DataHospitalConfig.COOR
     ONLINE = False
-    VIS = True
+    VIS = False
     
     
 class ReprojectDoctorConfig(Config):
@@ -89,10 +86,12 @@ class EvaluateConfig(Config):
     
 class MissAnnoDoctorConfig(Config):
     SAVE_DIR = "%s/miss_anno_doctor" % Config.ROOT
+    VIS = DataHospitalConfig.VIS
     
     
 class MatchingDoctorConfig(Config):
     SAVE_DIR = "%s/matching_doctor" % Config.ROOT
+    VIS = DataHospitalConfig.VIS
 
 
 class StatsDoctorConfig(Config):
