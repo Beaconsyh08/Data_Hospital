@@ -155,7 +155,7 @@ class StatsDoctor():
         closedvru_df_frame = set(closedvru_df.json_path.to_list())
         
         res_pd = pd.DataFrame({"bbox_number":[len(bigcar_df), len(closedvru_df)], 
-                               "frame_bbox": [len(bigcar_df_frame), len(closedvru_df_frame)]})
+                                "frame_number": [len(bigcar_df_frame), len(closedvru_df_frame)]})
         res_pd.index = ["bigcar", "closedvru"]
         print(res_pd)
         save_path = "%s/scenario_stats_result.xlsx" % self.save_dir

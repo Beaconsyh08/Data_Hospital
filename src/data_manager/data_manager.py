@@ -331,38 +331,6 @@ class DataManager:
         return width, height
         
     
-    def bbox_checker(self, info: dict, width: int = None, height: int = None) -> None:
-        """
-        Summary
-        -------
-            Check if the bbox has error, and assign the corresponding flag for the bbox_error
-                1: x/y/w/h out of bounds
-                2: x+w/y+h out of bounds
-
-        Parameters
-        ----------
-            info: dict
-                the info json object
-                
-        """
-        width = info["img_width"] if width is None else width
-        height = info["img_height"] if height is None else height
-        
-        if (info["bbox_x"] > (width * 1.02)) \
-        or (info["bbox_y"] > (height * 1.02)) \
-        or (info["bbox_x"] < - (width * 0.02)) \
-        or (info["bbox_y"] < -(height * 0.02)) \
-        or (info["bbox_w"] < 0) \
-        or (info["bbox_h"] < 0) \
-        or (info["bbox_w"] > width * 1.02) \
-        or (info["bbox_h"] > height * 1.02):
-            info["bbox_error"] = 1
-        
-        elif (info["bbox_x"] + info["bbox_w"] > (width * 1.02)) \
-        or (info["bbox_y"] + info["bbox_h"] > (height * 1.02)):
-            info["bbox_error"] = 2
-
-        
     def _city_polygon_constructor(self, ) -> dict:
         """
         Summary

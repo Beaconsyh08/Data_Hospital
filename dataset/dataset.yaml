@@ -5,16 +5,22 @@ cards_conf:
   #     media_name: rear_middle_v30
   #     project: icu30
 
-  # - file_name: /data_path/train31.txt
-  #   cards:
-  #   - card_id: 62f4bd465320fb93027a9415
-  #     media_name: side_cam
-  #     project: icu30
+  - file_name: /data_path/train31.txt
+    cards:
+    - card_id: 62f4bd465320fb93027a9415
+      media_name: side_cam
+      project: icu30
 
   - file_name: /data_path/train31_test.txt
     cards:
     - card_id: 63043bf2232e1c5fe2c6ca0d
       media_name: side_cam
+      project: icu30
+  
+  - file_name: /data_path/yayun_night.txt
+    cards:
+    - card_id: 6305b8d792f478a3b3e5ab74
+      media_name: night
       project: icu30
 
   # - file_name: /data_path/train31_total.txt

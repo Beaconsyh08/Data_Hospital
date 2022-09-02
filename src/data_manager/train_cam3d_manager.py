@@ -9,15 +9,9 @@
 Copyright (c) HAOMO.AI, Inc. and its affiliates. All Rights Reserved
 """
 
-from os import system
 import pandas as pd
+from src.data_hospital.logistic_doctor import LogisticDoctor
 from src.data_manager.data_manager import DataManager
-import math
-from configs.config import LogisticDoctorConfig
-
-# WEY MOKA
-self_width = 1.96
-self_length = 4.875
 
 class TrainCam3dManager(DataManager):
     """
@@ -29,151 +23,8 @@ class TrainCam3dManager(DataManager):
 
     def __init__(self, df: pd.DataFrame = None, df_path: str = None, cfg: dict = None) -> None:
         super(TrainCam3dManager, self).__init__(df, df_path, cfg)
-    
 
-    def coor_checker_car(self, info: dict) -> None:
-        """
-        Summary
-        -------
-            Check if the coordinate system trans has error, and assign the corresponding flag for the coor_error
-                1: trans error
                 
-        Parameters
-        ----------
-            info: dict
-                the info json object
-                
-        """
-        
-        ori = info["camera_orientation"]
-        x, y, z, h = info["x"], info["y"], info["z"], info["height"]
-        
-        if (info["truncation"] in [1, 2]) and (abs(info["x"]) < 50) and (abs(info["y"]) < 50):
-            if z - h / 2 < -1:
-                if abs(x) < 10 and abs(y) < 10:
-                    info["coor_error"] = 3
-                else:
-                    info["coor_error"] = 2
-            
-        else:
-            x = x - 2 * self_length / 3
-
-            # tolerance for side cam
-            side_co_x = math.tan(10 * math.pi/180)
-            side_cox = abs(x) * side_co_x
-            
-            side_co_y = math.tan(10 * math.pi/180)
-
-            # tolerance for front & rear cam
-            front_co = math.tan(60* math.pi/180)
-
-            if ori == "front_left_camera":
-                y = y - self_width / 2
-                side_coy = abs(y) * side_co_y
-                if x < -side_coy or y < -side_cox:
-                    info["coor_error"] = 1
-                    
-            elif ori == "front_right_camera":
-                y = y + self_width / 2
-                side_coy = abs(y) * side_co_y
-                if x < -side_coy or y > side_cox:
-                    info["coor_error"] = 1
-                    
-            elif ori == "rear_left_camera": 
-                y = y - self_width / 2
-                side_coy = abs(y) * side_co_y
-                if x > side_coy or y < -side_cox:
-                    info["coor_error"] = 1
-                    
-            elif ori == "rear_right_camera":
-                y = y + self_width / 2
-                side_coy = abs(y) * side_co_y
-                if x > side_coy or y > side_cox:
-                    info["coor_error"] = 1
-                    
-            elif ori == "front_middle_camera": 
-                front_side_cox = abs(x) * front_co
-                if x < 0 or y < - front_side_cox or y > front_side_cox:
-                    info["coor_error"] = 1
-                    
-            elif ori == "rear_middle_camera": 
-                x = x + 2 * self_length / 3
-                front_side_cox = abs(x) * front_co
-                if x > 0 or y < - front_side_cox or y > front_side_cox: 
-                    info["coor_error"] = 1
-                    
-    
-    def coor_checker_lidar(self, info: dict) -> None:
-        """
-        Summary
-        -------
-            Check if the coordinate system trans has error, and assign the corresponding flag for the coor_error
-                1: trans error
-                
-        Parameters
-        ----------
-            info: dict
-                the info json object
-                
-        """
-        
-        ori = info["camera_orientation"]
-        x, y, z, h = info["x"], info["y"], info["z"], info["height"]
-        
-        if (info["truncation"] in [1, 2]) and (abs(info["x"]) < 50) and (abs(info["y"]) < 50):
-            if z - h / 2 > -1:
-                if abs(x) < 10 and abs(y) < 10:
-                    info["coor_error"] = 3
-                else:
-                    info["coor_error"] = 2
-        
-        else:
-            y = y + self_length / 6
-
-            # tolerance for side cam
-            side_co_y = math.tan(10 * math.pi/180)
-            side_coy = abs(y) * side_co_y
-            side_co_x =  math.tan(10 * math.pi/180)
-
-            # tolerance for front & rear cam
-            front_co = math.tan(60 * math.pi/180)
-
-            if ori == "front_left_camera":
-                x = x - self_width / 2
-                side_cox = abs(x) * side_co_x
-                if x < -side_coy or y > side_cox:
-                    info["coor_error"] = 1
-                    
-            if ori == "front_right_camera":
-                x = x + self_width / 2
-                side_cox = abs(x) * side_co_x
-                if x > side_coy or y > side_cox:
-                    info["coor_error"] = 1
-                    
-            if ori == "rear_left_camera":
-                x = x - self_width / 2
-                side_cox = abs(x) * side_co_x
-                if x < -side_coy or y < -side_cox:
-                    info["coor_error"] = 1
-                    
-            if ori == "rear_right_camera":
-                x = x + self_width / 2 
-                side_cox = abs(x) * side_co_x
-                if x > side_coy or y < -side_cox:
-                    info["coor_error"] = 1
-                    
-            if ori == "front_middle_camera":
-                front_side_coy = abs(y) * front_co
-                if y > 0 or x < - front_side_coy or x > front_side_coy:
-                    info["coor_error"] = 1
-                    
-            if ori == "rear_middle_camera":
-                y = y - self_length / 6 - self_length / 2
-                front_side_coy = abs(y) * front_co
-                if y < 0 or x < - front_side_coy or x > front_side_coy:
-                    info["coor_error"] = 1
-                
-
     def json_extractor(self, json_info: str, json_path: str) -> list:
         """
         Summary
@@ -234,7 +85,7 @@ class TrainCam3dManager(DataManager):
             
             try:
                 super().bbox_calculator(obj, info)    
-                super().bbox_checker(info, img_width, img_height) 
+                LogisticDoctor.bbox_checker(info, img_width, img_height) 
             except TypeError:
                 info["bbox_error"] = 3
                 # continue
@@ -254,20 +105,15 @@ class TrainCam3dManager(DataManager):
             if not has_2D:
                 info["truncation"] = super().truncation_generator(info, img_width, img_height)    
             
-            
             if obj.get("3D_attributes"):
                 super().attributes_extractor_3d(obj["3D_attributes"], info)
-                if LogisticDoctorConfig.COOR == "Car":
-                    self.coor_checker_car(info)
-                else:
-                    self.coor_checker_lidar(info)
+                LogisticDoctor.coor_checker(info)
                 
                 if has_2D:
                     super().define_priority(info)
 
             else:
                 info["3d_null_error"] = 1
-
             
             super().date_time_extractor(timestamp, info)
             info["flag"], info["json_path"] = "train", json_path

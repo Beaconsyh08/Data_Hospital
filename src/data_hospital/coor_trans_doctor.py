@@ -32,6 +32,7 @@ class CoorTransDoctor():
     
     def __init__(self, cfg: dict):
         self.cfg = cfg
+        self.coor = cfg.COOR
         self.output_dir = cfg.OUTPUT_DIR
         os.makedirs(self.output_dir, exist_ok=True)
         self.input_path = cfg.INPUT_PATH
@@ -241,7 +242,7 @@ class CoorTransDoctor():
             
             
     def diagnose(self,):
-        with open(self.input_path,  'r') as f:
+        with open(self.input_path, 'r') as f:
             lines = f.readlines()
         
         coreNum = 40

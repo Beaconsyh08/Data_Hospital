@@ -2,17 +2,22 @@ import shutil
 import json
 import os
 import pickle
+import math
 
 import pandas as pd
 import tqdm
-from configs.config import (OutputConfig, ReprojectDoctorConfig, VisualizationConfig)
-from configs.config_data_hospital import CoorTransConfig, LogisticDoctorConfig
+from configs.config import (OutputConfig, ReprojectDoctorConfig, VisualizationConfig, CoorTransConfig, LogisticDoctorConfig)
 from src.data_hospital.coor_trans_doctor import CoorTransDoctor
 from src.data_manager.data_manager import DataManager, load_from_pickle
 from src.data_manager.data_manager_creator import data_manager_creator
 from src.utils.logger import get_logger
 from src.utils.struct import parse_obs
 from src.visualization.visualization import Visualizer
+
+
+# WEY MOKA
+self_width = 1.96
+self_length = 4.875
 
 
 class LogisticDoctor(DataManager):
@@ -170,13 +175,12 @@ class LogisticDoctor(DataManager):
                     with open("%s/%d.json" % (parent_path, ind), 'w') as output_file:
                         json.dump(json_obj, output_file)
             
-            
         else:
             os.makedirs(self.txt_output_dir, exist_ok=True)
             with open("%s/%s.txt" % (self.txt_output_dir, file_name), "w") as output_file:
                 for json_path in json_paths:
                     output_file.writelines(json_path + "\n")
-                
+
                 
     def txt_for_reproejct(self, ) -> None:
         df_reproject = load_from_pickle(ReprojectDoctorConfig.REPROJECT_DATAFRAME_PATH)
@@ -216,23 +220,18 @@ class LogisticDoctor(DataManager):
                         for object in json_map['objects']:
                             if object["id"] == id:
                                 try:
-                                    # print(object)
                                     attr = object['3D_attributes']['position']
                                     new.x = attr["x"]
                                     new.y = attr["y"]
                                     new.z = attr["z"]
                                     new.yaw = object['3D_attributes']['rotation']["yaw"]
-                                    # print("old", error_df.iloc[_])
-                                    # print("new", new)
                                 except:
                                     pass
                                     
-                        
                         objs.append(parse_obs(new))
                 
                 else:
                     objs = [parse_obs(error_df.iloc[_]) for _ in range(len(error_df))]
-                    
                     
                 for ind, obj in tqdm.tqdm(enumerate(objs), desc="Saving %s_%d Images" % (error_type, flag)):
                     self.ver.draw_bbox_0([obj], "%s/%s_%d/%d.jpg" % (self.ver.save_dir, error_type, flag, ind))
@@ -259,8 +258,192 @@ class LogisticDoctor(DataManager):
         if self.vis:
             self.visualization(100)
             
+    
+    def coor_checker(info:dict) -> None:
+        if LogisticDoctorConfig.COOR == "Car":
+            LogisticDoctor.coor_checker_car(info)
+        else:
+            LogisticDoctor.coor_checker_lidar(info)
+        
+        
+    def coor_checker_car(info: dict) -> None:
+        """
+        Summary
+        -------
+            Check if the coordinate system trans has error, and assign the corresponding flag for the coor_error
+                1: trans error
+                
+        Parameters
+        ----------
+            info: dict
+                the info json object
+                
+        """
+        
+        ori = info["camera_orientation"]
+        x, y, z, h = info["x"], info["y"], info["z"], info["height"]
+        
+        if (info["truncation"] in [1, 2]) and (abs(info["x"]) < 50) and (abs(info["y"]) < 50):
+            if z - h / 2 < -1:
+                if abs(x) < 10 and abs(y) < 10:
+                    info["coor_error"] = 3
+                else:
+                    info["coor_error"] = 2
+            
+        else:
+            x = x - 2 * self_length / 3
+
+            # tolerance for side cam
+            side_co_x = math.tan(10 * math.pi/180)
+            side_cox = abs(x) * side_co_x
+            
+            side_co_y = math.tan(10 * math.pi/180)
+
+            # tolerance for front & rear cam
+            front_co = math.tan(60* math.pi/180)
+
+            if ori == "front_left_camera":
+                y = y - self_width / 2
+                side_coy = abs(y) * side_co_y
+                if x < -side_coy or y < -side_cox:
+                    info["coor_error"] = 1
+                    
+            elif ori == "front_right_camera":
+                y = y + self_width / 2
+                side_coy = abs(y) * side_co_y
+                if x < -side_coy or y > side_cox:
+                    info["coor_error"] = 1
+                    
+            elif ori == "rear_left_camera": 
+                y = y - self_width / 2
+                side_coy = abs(y) * side_co_y
+                if x > side_coy or y < -side_cox:
+                    info["coor_error"] = 1
+                    
+            elif ori == "rear_right_camera":
+                y = y + self_width / 2
+                side_coy = abs(y) * side_co_y
+                if x > side_coy or y > side_cox:
+                    info["coor_error"] = 1
+                    
+            elif ori == "front_middle_camera": 
+                front_side_cox = abs(x) * front_co
+                if x < 0 or y < - front_side_cox or y > front_side_cox:
+                    info["coor_error"] = 1
+                    
+            elif ori == "rear_middle_camera": 
+                x = x + 2 * self_length / 3
+                front_side_cox = abs(x) * front_co
+                if x > 0 or y < - front_side_cox or y > front_side_cox: 
+                    info["coor_error"] = 1
+                    
+    
+    def coor_checker_lidar(info: dict) -> None:
+        """
+        Summary
+        -------
+            Check if the coordinate system trans has error, and assign the corresponding flag for the coor_error
+                1: trans error
+                
+        Parameters
+        ----------
+            info: dict
+                the info json object
+                
+        """
+        
+        ori = info["camera_orientation"]
+        x, y, z, h = info["x"], info["y"], info["z"], info["height"]
+        
+        if (info["truncation"] in [1, 2]) and (abs(info["x"]) < 50) and (abs(info["y"]) < 50):
+            if z - h / 2 > -1:
+                if abs(x) < 10 and abs(y) < 10:
+                    info["coor_error"] = 3
+                else:
+                    info["coor_error"] = 2
+        
+        else:
+            y = y + self_length / 6
+
+            # tolerance for side cam
+            side_co_y = math.tan(10 * math.pi/180)
+            side_coy = abs(y) * side_co_y
+            side_co_x =  math.tan(10 * math.pi/180)
+
+            # tolerance for front & rear cam
+            front_co = math.tan(60 * math.pi/180)
+
+            if ori == "front_left_camera":
+                x = x - self_width / 2
+                side_cox = abs(x) * side_co_x
+                if x < -side_coy or y > side_cox:
+                    info["coor_error"] = 1
+                    
+            if ori == "front_right_camera":
+                x = x + self_width / 2
+                side_cox = abs(x) * side_co_x
+                if x > side_coy or y > side_cox:
+                    info["coor_error"] = 1
+                    
+            if ori == "rear_left_camera":
+                x = x - self_width / 2
+                side_cox = abs(x) * side_co_x
+                if x < -side_coy or y < -side_cox:
+                    info["coor_error"] = 1
+                    
+            if ori == "rear_right_camera":
+                x = x + self_width / 2 
+                side_cox = abs(x) * side_co_x
+                if x > side_coy or y < -side_cox:
+                    info["coor_error"] = 1
+                    
+            if ori == "front_middle_camera":
+                front_side_coy = abs(y) * front_co
+                if y > 0 or x < - front_side_coy or x > front_side_coy:
+                    info["coor_error"] = 1
+                    
+            if ori == "rear_middle_camera":
+                y = y - self_length / 6 - self_length / 2
+                front_side_coy = abs(y) * front_co
+                if y < 0 or x < - front_side_coy or x > front_side_coy:
+                    info["coor_error"] = 1
+            
+    
+    def bbox_checker(info: dict, width: int = None, height: int = None) -> None:
+        """
+        Summary
+        -------
+            Check if the bbox has error, and assign the corresponding flag for the bbox_error
+                1: x/y/w/h out of bounds
+                2: x+w/y+h out of bounds
+
+        Parameters
+        ----------
+            info: dict
+                the info json object
+                
+        """
+        width = info["img_width"] if width is None else width
+        height = info["img_height"] if height is None else height
+        
+        if (info["bbox_x"] > (width * 1.02)) \
+        or (info["bbox_y"] > (height * 1.02)) \
+        or (info["bbox_x"] < - (width * 0.02)) \
+        or (info["bbox_y"] < -(height * 0.02)) \
+        or (info["bbox_w"] < 0) \
+        or (info["bbox_h"] < 0) \
+        or (info["bbox_w"] > width * 1.02) \
+        or (info["bbox_h"] > height * 1.02):
+            info["bbox_error"] = 1
+        
+        elif (info["bbox_x"] + info["bbox_w"] > (width * 1.02)) \
+        or (info["bbox_y"] + info["bbox_h"] > (height * 1.02)):
+            info["bbox_error"] = 2
+            
+            
 if __name__ == '__main__':
     logistic_doctor = LogisticDoctor(LogisticDoctorConfig)
     logistic_doctor.df = pd.read_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/reproject_dataframe.pkl")["df"]
     if logistic_doctor.vis:
         logistic_doctor.visualization(100)
+        

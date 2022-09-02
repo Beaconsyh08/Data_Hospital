@@ -41,10 +41,13 @@ class MatchingDoctor():
     def rules_decider(self,) -> set:
         df_miss = self.df[((self.df['flag'] == 'miss') & (self.df['case_flag']=='0')) & (self.df['priority'] == 'P0')]
         self.df_selected = df_miss[(df_miss.dis_ratio > 0.5) & (df_miss.euclidean_dis_diff > 5)]
+        
         matching_jsons = set(self.df_selected.json_path)
         self.logger.debug("2D3D Matching Frame Number: %d" % len(matching_jsons))
+        
         new_df = self.df[~self.df.json_path.isin(matching_jsons)]
         self.save_to_pickle(new_df, self.new_df_path)
+        
         return matching_jsons
     
     

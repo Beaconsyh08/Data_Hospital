@@ -47,6 +47,11 @@ function check_dependencies() {
     fi
 }
 
+function set_configs() {
+    echo -e "${green_start}Set Config Name: ${conifg_name} ${green_end}\n"
+    sed -i "1c from configs.config_${conifg_name} import *" configs/config.py 
+}
+
 function execute_analysis() {
     # execute scripts according to different input modules
     echo -e "${green_start}Start Analyzing ${module_name} ... ${green_end}\n"
@@ -72,8 +77,12 @@ function execute_analysis() {
     return 0
 }
 
-while getopts "dm" arg; do
+while getopts "c:dm" arg; do
     case ${arg} in
+    c)
+        conifg_name=${OPTARG}
+        set_configs
+        ;;
     d)
         dataset_y=${2:-dataset/dataset.yaml}
         dataset_yaml=${PWD}"/"${dataset_y}

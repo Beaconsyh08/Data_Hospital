@@ -1,6 +1,6 @@
 import json
 
-PATH = "/share/analysis/result/qa_res/overall/V2.2.8.1.json"
+PATH = "/share/analysis/result/qa_res/overall/V2.2.8.0.json"
 NEW = True
 
 def get_f1(dic: dict):
