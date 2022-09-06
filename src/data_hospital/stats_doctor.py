@@ -1,34 +1,39 @@
-from src.utils.logger import get_logger
-import matplotlib.pyplot as plt
 import os
 
+import folium
+import matplotlib.pyplot as plt
+from folium.plugins import HeatMap, MarkerCluster
 from src.data_manager.data_manager import load_from_pickle
+from src.data_manager.data_manager_creator import data_manager_creator
+from src.utils.logger import get_logger
 
 plt.rc('font', size=16)
 plt.rc('axes', titlesize=24) 
 plt.rc('axes', labelsize=20)
 from datetime import time
+
 import pandas as pd
 
-
 TYPE_MAP = {'car': 'car', 'van': 'car', 
-    'truck': 'truck', 'forklift': 'truck',
-    'bus':'bus', 
-    'rider':'rider',
-    'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
-    'rider_bicycle': 'rider', 'rider_motorcycle':'rider',
-    'bicycle': 'bicycle', 'motorcycle': 'bicycle',
-    'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 
-    'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
-    'static': 'static', 'trafficCone': 'static', 'water-filledBarrier': 'static', 'other': 'static', 'accident': 'static', 'construction': 'static', 'traffic-cone': 'static', 'other-vehicle': 'static', 'attached': 'static', 'accident': 'static', 'traffic_cone': 'static', 'other-static': 'static', 'water-filled-barrier': 'static', 'other_static': 'static', 'water_filled_barrier': 'static', 'dynamic': 'static', 'other_vehicle': 'static', 'trafficcone': 'static', 'water-filledbarrier': 'static',
-    }
+            'truck': 'truck', 'forklift': 'truck',
+            'bus':'bus', 
+            'rider':'rider',
+            'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
+            'rider_bicycle': 'rider', 'rider_motorcycle':'rider',
+            'bicycle': 'bicycle', 'motorcycle': 'bicycle',
+            'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 
+            'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
+            'static': 'static', 'trafficCone': 'static', 'water-filledBarrier': 'static', 'other': 'static', 'accident': 'static', 'construction': 'static', 'traffic-cone': 'static', 'other-vehicle': 'static', 'attached': 'static', 'accident': 'static', 'traffic_cone': 'static', 'other-static': 'static', 'water-filled-barrier': 'static', 'other_static': 'static', 'water_filled_barrier': 'static', 'dynamic': 'static', 'other_vehicle': 'static', 'trafficcone': 'static', 'water-filledbarrier': 'static',
+            }
 
 
 class StatsDoctor():
     def __init__(self, cfg: dict) -> None:
-        self.df = load_from_pickle(cfg.DATAFRAME_PATH)
+        self.cfg = cfg
+        self.df = self.build_df()
+        # self.df = load_from_pickle("/root/data_hospital_data/0728v60/sidecam_ori/dataframes/reproject_dataframe.pkl")
         self.df['class_name_map'] = self.df['class_name'].map(TYPE_MAP)
-        self.save_dir = cfg.SAVE_DIR
+        self.save_dir = self.cfg.SAVE_DIR
         self.logger = get_logger()
         os.makedirs(self.save_dir, exist_ok=True)
         self.logger.info("DataFrame Loaded")
@@ -73,11 +78,28 @@ class StatsDoctor():
 
         ### cal ratio
         df_concat = pd.concat([df,df_ratio],axis=1)
+        df_concat.set_axis(["Amount", "Ratio"], 'columns', inplace=True)
         print(df_concat)
-        df_concat.to_excel(save_path, index=True,header=False)
+        df_concat.to_excel(save_path, index=True, header=True)
         
         self.logger.debug("City Stats Saved in %s" % save_path)
         
+        
+    def city_heat_distribution(self, ) -> None:
+        m = folium.Map([39.904989, 116.405285], tiles='stamentoner', zoom_start=10)
+        df = self.df.drop_duplicates(subset="json_path", keep='first', inplace=True)
+        df = self.df[self.df["lon"].notna()]
+        
+        lons = df.lon.to_list()
+        lats = df.lat.to_list()
+        
+        comb = [[lats[i], lons[i], 1] for i in range(len(lats))]
+        HeatMap(comb).add_to(m)
+        
+        save_path = "%s/city_heatmap.html" % self.save_dir
+        m.save(save_path)
+        self.logger.debug("City Heat Map Saved in: %s" % save_path)
+    
     
     def time_stats(self,):
         
@@ -117,8 +139,9 @@ class StatsDoctor():
 
         ### cal ratio
         df_concat = pd.concat([df,df_ratio],axis=1)
+        df_concat.set_axis(["Amount", "Ratio"], 'columns', inplace=True)
         print(df_concat)
-        df_concat.to_excel(save_path, index=True,header=False)
+        df_concat.to_excel(save_path, index=True, header=True)
         self.logger.debug("Time Stats Saved in %s" % save_path)
     
     
@@ -141,9 +164,10 @@ class StatsDoctor():
             self.logger.debug("%s Hist Saved in %s" % (info.capitalize(), path))
 
             df = pd.concat([self.df[info].value_counts(),self.df[info].value_counts(normalize=True)],axis=1)
+            df.set_axis(["Amount", "Ratio"], 'columns', inplace=True)
             print(df)
             save_path = "%s/%s_stats_result.xlsx" % (self.save_dir, info)
-            df.to_excel(save_path, index=True,header=False)
+            df.to_excel(save_path, index=True, header=True)
             
             self.logger.debug("%s Stats Saved in %s" % (info.capitalize(), save_path))
             
@@ -159,15 +183,23 @@ class StatsDoctor():
         res_pd.index = ["bigcar", "closedvru"]
         print(res_pd)
         save_path = "%s/scenario_stats_result.xlsx" % self.save_dir
-        res_pd.to_excel(save_path, index=True,header=False)
+        res_pd.to_excel(save_path, index=True, header=True)
         self.logger.debug("Scenario Stats Saved in %s" % save_path)
 
 
-    def diagnose(self):
+    def build_df(self, ) -> pd.DataFrame:
+        dm = data_manager_creator(self.cfg)
+        dm.load_from_json()
+        dm.save_to_pickle(self.cfg.VIS_DATAFRAME_PATH)
+        return dm.df
+    
+    
+    def diagnose(self, ):
         self.city_stats()
         self.time_stats()
         self.info_stats()
         self.scenario_bbox_stats()
+        self.city_heat_distribution()
 
     
 if __name__ == '__main__':

@@ -10,6 +10,7 @@ Copyright (c) HAOMO.AI, Inc. and its affiliates. All Rights Reserved
 """
 
 import pandas as pd
+from configs.config_data_hospital import DataHospitalConfig, LogisticDoctorConfig
 from src.data_hospital.logistic_doctor import LogisticDoctor
 from src.data_manager.data_manager import DataManager
 
@@ -65,23 +66,25 @@ class TrainCam3dManager(DataManager):
         
         for obj in objs:
             info = dict()
-            info["class_name"] = obj["className"]
-            info["card_id"], info["car_id"] = card_id, car_id
-            
-            try:
-                info["uuid"] = obj["uuid"]
-            except:
-                pass
-            
-            info["id"] = obj["id"]
-            info["camera_orientation"], info["camera_type"], info["producer"] = camera_orientation, camera_type, producer
-            info["lon"], info["lat"], info["city"] = lon, lat, city
-            
             # bbox =1, xy out; =2, xywh <0; =3 x+w/y+h out; =4 null
             # 2d_null =1, null; =2 []
             # 3d_null =1, null
             # coor =1, coor trans error
-            info["bbox_error"], info["2d_null_error"], info["3d_null_error"], info["coor_error"] = 0, 0, 0, 0
+            # res =1, res error
+            for error in LogisticDoctorConfig.CHECK_ERROR_LIST:
+                info[error] = 0
+            
+            info["class_name"] = obj["className"]
+            info["img_url"] = img_url
+            info["card_id"], info["car_id"] = card_id, car_id
+            info["img_width"], info["img_height"] = img_width, img_height
+            info["uuid"] = obj.get("uuid")
+            info["id"] = obj["id"]
+            info["camera_orientation"], info["camera_type"], info["producer"] = camera_orientation, camera_type, producer
+            info["lon"], info["lat"], info["city"] = lon, lat, city
+            
+            if DataHospitalConfig.ORIENTATION != "SIDE":
+                LogisticDoctor.resolution_checker(info)
             
             try:
                 super().bbox_calculator(obj, info)    
@@ -96,11 +99,9 @@ class TrainCam3dManager(DataManager):
             except KeyError:
                 has_2D = False
                 info["2d_null_error"] = 1
-                info["truncation"] = None
             except TypeError:
                 has_2D = False
                 info["2d_null_error"] = 2
-                info["truncation"] = None
                 
             if not has_2D:
                 info["truncation"] = super().truncation_generator(info, img_width, img_height)    
@@ -121,7 +122,12 @@ class TrainCam3dManager(DataManager):
 
             info["index_list"] = "/%s@%d" % (img_url, info["id"])
             
-            info["has_error"] = 1 if info["bbox_error"] != 0 or info["coor_error"] != 0 else 0
+            info["has_error"] = 0
+            for error in LogisticDoctorConfig.ERROR_LIST:
+                if info[error] != 0:
+                    info["has_error"] = 1 
+                    break
+                    
             info["carday_id"] = car_id + "_" + str(info["date"])
                     
             total_lst.append(info)

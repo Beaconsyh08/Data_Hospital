@@ -13,7 +13,7 @@ class DataHospitalPasser():
         
         logger.critical("Data Hospital Passer Running")
         
-        if "Inference" in self.modules:
+        if "Inference" in self.modules and self.cfg.ORIENTATION == "SIDE":
             print(DataHospitalConfig.ORIENTATION)
             print(InferenceConfig.INF_MODEL_PATH)
             print(CoorTransConfig.OUTPUT_PATH)

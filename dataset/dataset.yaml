@@ -23,6 +23,24 @@ cards_conf:
       media_name: night
       project: icu30
 
+
+  - file_name: /data_path/v71_train.txt
+    cards:
+    - card_id: 62e9100e2f748ee9eddd7b08
+      media_name: side_cam_v71
+      project: icu30
+    - card_id: 62e90fea2f748ee9edd44f44
+      media_name: side_cam_v71
+      project: icu30
+    - card_id: 62e90fc32f748ee9edcb1f1f
+      media_name: side_cam_v71
+      project: icu30
+    - card_id: 62e90f9c2f748ee9edc1f404
+      media_name: side_cam_v71
+      project: icu30
+
+
+
   # - file_name: /data_path/train31_total.txt
   #   cards:
   #   - card_id: 63043bf2232e1c5fe2c6ca0d

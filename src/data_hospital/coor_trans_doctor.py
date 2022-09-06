@@ -32,7 +32,6 @@ class CoorTransDoctor():
     
     def __init__(self, cfg: dict):
         self.cfg = cfg
-        self.coor = cfg.COOR
         self.output_dir = cfg.OUTPUT_DIR
         os.makedirs(self.output_dir, exist_ok=True)
         self.input_path = cfg.INPUT_PATH

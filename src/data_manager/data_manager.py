@@ -501,7 +501,7 @@ class DataManager:
                         combined_lst.extend(json_lst)
                     except json.JSONDecodeError:
                         self.logger.error("JSONDECODEERROR: %s" % json_path)
-
+                    
             
             with ThreadPool(processes = 40) as pool:
                 list(tqdm(pool.imap(worker, json_paths), total=len(json_paths), desc='DataFrame Loading'))

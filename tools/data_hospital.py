@@ -16,7 +16,7 @@ class DataHospital():
         
     def run(self, ) -> None:
         
-        logger.critical("Data Hospital Running")
+        logger.critical("Data Hospital I Running")
         logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
         
         if "Duplicated" in self.modules:
@@ -39,6 +39,8 @@ class DataHospital():
             logger.critical("Coor Trans Doctor Diagnosing")
             coor_trans_doctor = CoorTransDoctor(CoorTransConfig)
             coor_trans_doctor.diagnose()
+        
+        logger.critical("Data Hospital I Completed")
         
 
 if __name__ == '__main__':

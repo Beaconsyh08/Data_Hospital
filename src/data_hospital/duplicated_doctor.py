@@ -8,11 +8,14 @@ from multiprocessing.pool import ThreadPool
 
 import pandas as pd
 from src.utils.logger import get_logger
+from configs.config import LogisticDoctorConfig
+from src.data_manager.data_manager_creator import data_manager_creator
 from tqdm import tqdm
 
 
 class DuplicatedDoctor():
     def __init__(self, cfg: dict) -> None:
+        self.cfg = cfg
         self.ROOT_PATH = "%s/duplicated_doctor" % cfg.ROOT
         os.makedirs(self.ROOT_PATH, exist_ok=True)
         self.logger = get_logger()
@@ -138,11 +141,18 @@ class DuplicatedDoctor():
                     
         print("Duplicted Stats", self.stats_dict)
                 
+                
+    def build_logistic_df(self, ):
+        dm = data_manager_creator(LogisticDoctorConfig)
+        dm.load_from_json()
+        dm.save_to_pickle(self.cfg.LOGISTIC_DATAFRAME_PATH)
+        
         
     def self_diagnose(self,) -> None:
         dup_dict = self.self_duplicated_finder(self.ORI_DATA, self.stats_dict)
         self.time_checker(dup_dict)
         self.save_results()
+        self.build_logistic_df()
 
 
 if __name__ == '__main__':

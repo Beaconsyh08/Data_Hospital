@@ -1,4 +1,4 @@
-NAME = "train31_test2"
+NAME = "yayun_night"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
@@ -8,12 +8,12 @@ class Config:
     BADCASE_DATAFRAME_PATH = '%s/dataframes/badcase_dataframe.pkl' % ROOT
     BADCASE_DATAFRAME_PATH_DMISS = '%s/dataframes/badcase_dmiss_dataframe.pkl' % ROOT
     BADCASE_DATAFRAME_PATH_DMATCH = '%s/dataframes/badcase_dmiss_dataframe.pkl' % ROOT
-    
+    VIS_DATAFRAME_PATH = '%s/dataframes/vis.pkl' % ROOT
     
     TYPE_MAP = {'car': 'car', 'van': 'car', 
                 'truck': 'truck', 'forklift': 'truck',
                 'bus':'bus', 
-                'rider':'rider',
+                'rider':'rider', 'rider_bicycle': 'rider', 'rider_motorcycle': 'rider',
                 'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
                 'bicycle': 'bicycle', 'motorcycle': 'bicycle',
                 'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
@@ -22,8 +22,10 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    MODULES = ["Duplicated", "Logistic", "Reproject", "CoorTrans", "Inference", "Evaluate", "MissAnno", "Matching"]
-    # MODULES = ["MissAnno", "Matching"]
+    MODULES = ["Duplicated", "Logistic", "Reproject", "CoorTrans", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    # MODULES = ["Duplicated", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    
+    
     ORIENTATION = "SIDE"
     COOR = "Lidar"
     VIS = False
@@ -42,7 +44,8 @@ class LogisticDoctorConfig(Config):
     JSON_PATH = '%s/duplicated_doctor/clean.txt' % Config.ROOT
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
-    ERROR_LIST = ["bbox_error", "coor_error"]
+    ERROR_LIST = ["bbox_error", "coor_error", "res_error"]
+    CHECK_ERROR_LIST = ERROR_LIST + ["2d_null_error", "3d_null_error"]
     SAVE_DIR = "%s/logistic_doctor" % Config.ROOT
     COOR = DataHospitalConfig.COOR
     ONLINE = False
@@ -95,6 +98,9 @@ class MatchingDoctorConfig(Config):
 
 
 class StatsDoctorConfig(Config):
+    JSON_PATH = '%s/matching_doctor/clean.txt' % Config.ROOT
+    JSON_TYPE = "txt"
+    DATA_TYPE = "train_cam3d"
     SAVE_DIR = "%s/stats_doctor" % Config.ROOT
     
     

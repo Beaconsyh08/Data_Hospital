@@ -112,6 +112,9 @@ class EvaluateDoctor():
                 self.result_flag = True
                 self.logger.critical("Evaluate Completed")
                 break
+            elif result["desc"].endswith("x"):
+                self.logger.error("QA Evaluator Not Available, Contact QA")
+                sys.exit(0)
             sleep(600)
         
         save_path = "%s/result.json" % self.output_dir
@@ -141,19 +144,19 @@ if __name__ == '__main__':
     evaluator = EvaluateDoctor(Config1)
     # evaluator.eval_data = [{"gt_card": {'project': 'icu30', 'id': '62d173f328f4f2a8671b2874', 'name': 'trans_zhouping_side_gt'}, 
     #                         "dt_card":{'project': 'qa', 'id': '62e90c382f748ee9edbfb0f6', 'name': '0804_SIDECAM'}}]
-    evaluator.evaluate()
-    evaluator.request_id = '0825_syh_test'
+    # evaluator.evaluate()
+    evaluator.request_id = '/share/analysis/syh/models/2.2.4.0-0714-M-PT230-288-U_yayun_night_2022-09-02 20:53:48.959431'
     result = evaluator.get_result()
     print(result)
     
-    save_path = "%s/result.json" % Config1.OUTPUT_DIR
-    with open(save_path, 'w') as output_file:
-        json.dump(result, output_file)
+    # save_path = "%s/result.json" % Config1.OUTPUT_DIR
+    # with open(save_path, 'w') as output_file:
+    #     json.dump(result, output_file)
         
-    print("Result Has Been Saved in: %s" % save_path)
+    # print("Result Has Been Saved in: %s" % save_path)
     
-    badcase_card = result["data"]["badcase_card"]
-    evaluator.append_2_yaml(badcase_card)
-    evaluator.build_badcase_df()
+    # badcase_card = result["data"]["badcase_card"]
+    # evaluator.append_2_yaml(badcase_card)
+    # evaluator.build_badcase_df()
         
     

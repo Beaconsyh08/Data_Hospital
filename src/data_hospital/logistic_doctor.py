@@ -1,3 +1,4 @@
+from PIL import Image
 import shutil
 import json
 import os
@@ -8,8 +9,6 @@ import pandas as pd
 import tqdm
 from configs.config import (OutputConfig, ReprojectDoctorConfig, VisualizationConfig, CoorTransConfig, LogisticDoctorConfig)
 from src.data_hospital.coor_trans_doctor import CoorTransDoctor
-from src.data_manager.data_manager import DataManager, load_from_pickle
-from src.data_manager.data_manager_creator import data_manager_creator
 from src.utils.logger import get_logger
 from src.utils.struct import parse_obs
 from src.visualization.visualization import Visualizer
@@ -20,14 +19,11 @@ self_width = 1.96
 self_length = 4.875
 
 
-class LogisticDoctor(DataManager):
+class LogisticDoctor():
     def __init__(self, cfg: dict) -> None:
         self.logger = get_logger()
-                
-        dm = data_manager_creator(cfg)
-        dm.load_from_json()
-        dm.save_to_pickle(cfg.LOGISTIC_DATAFRAME_PATH)
-        self.df = dm.df
+        self.cfg = cfg       
+        self.df = pd.read_pickle(self.cfg.LOGISTIC_DATAFRAME_PATH)["df"]
         
         with open(cfg.JSON_PATH) as total_file:
             self.total_frames = set([_.strip() for _ in total_file])
@@ -49,6 +45,7 @@ class LogisticDoctor(DataManager):
         self.error_list = ["bbox_error", "coor_error"]
         self.vis = cfg.VIS
         self.coor = cfg.COOR
+        
         
     def instance_erros(self, ) -> None:
         """
@@ -183,7 +180,7 @@ class LogisticDoctor(DataManager):
 
                 
     def txt_for_reproejct(self, ) -> None:
-        df_reproject = load_from_pickle(ReprojectDoctorConfig.REPROJECT_DATAFRAME_PATH)
+        df_reproject = pd.read_pickle(ReprojectDoctorConfig.REPROJECT_DATAFRAME_PATH)["df"]
         carday_ids = set(df_reproject.carday_id)
         self.logger.debug("Reproject Ready File Has Been Saved in %s" % ReprojectDoctorConfig.LOAD_PATH)
         for carday_id in tqdm.tqdm(carday_ids, desc="Spliting Json Paths Based on CarDay"):
@@ -439,6 +436,13 @@ class LogisticDoctor(DataManager):
         elif (info["bbox_x"] + info["bbox_w"] > (width * 1.02)) \
         or (info["bbox_y"] + info["bbox_h"] > (height * 1.02)):
             info["bbox_error"] = 2
+            
+    
+    def resolution_checker(info: dict) -> None:
+        true_width, true_height = Image.open("/" + info["img_url"]).size
+        
+        if true_width != info["img_width"] or true_height != info["img_height"]:
+            info["res_error"] = 1
             
             
 if __name__ == '__main__':

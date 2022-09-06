@@ -13,7 +13,7 @@ class Config:
     TYPE_MAP = {'car': 'car', 'van': 'car', 
                 'truck': 'truck', 'forklift': 'truck',
                 'bus':'bus', 
-                'rider':'rider',
+                'rider':'rider', 'rider_bicycle': 'rider', 'rider_motorcycle': 'rider',
                 'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
                 'bicycle': 'bicycle', 'motorcycle': 'bicycle',
                 'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
@@ -22,8 +22,8 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    # MODULES = ["CoorTrans", "Inference", "Evaluate",]
-    MODULES = ["Inference", "Evaluate",]
+    MODULES = ["CoorTrans", "Inference", "Evaluate",]
+    # MODULES = ["Inference", "Evaluate",]
     ORIENTATION = "SIDE"
     COOR = "Lidar"
     VIS = False
@@ -63,7 +63,7 @@ class ReprojectDoctorConfig(Config):
     
 class CoorTransConfig(Config):
     OUTPUT_DIR = '%s/coor_trans_doctor/trans/' % Config.ROOT
-    INPUT_PATH = '%s/reproject_doctor/clean.txt' % Config.ROOT
+    INPUT_PATH = "/data_path/%s.txt" % NAME
     OUTPUT_PATH = "/data_path/%s.txt" % NAME if "CoorTrans" not in DataHospitalConfig.MODULES else '%s/coor_trans_doctor/to_be_inf.txt' % Config.ROOT
     MAPPING = True
     
