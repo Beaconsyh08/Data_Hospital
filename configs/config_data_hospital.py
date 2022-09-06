@@ -1,8 +1,8 @@
-NAME = "yayun_night"
+NAME = "v71_train"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
-    LOGISTIC_DATAFRAME_PATH = '%s/dataframes/logistic_dataframe.pkl' % ROOT
+    LOGICAL_DATAFRAME_PATH = '%s/dataframes/logical_dataframe.pkl' % ROOT
     REPROJECT_DATAFRAME_PATH = '%s/dataframes/reproject_dataframe.pkl' % ROOT
     FINAL_DATAFRAME_PATH = '%s/dataframes/final_dataframe.pkl' % ROOT
     BADCASE_DATAFRAME_PATH = '%s/dataframes/badcase_dataframe.pkl' % ROOT
@@ -22,9 +22,8 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    MODULES = ["Duplicated", "Logistic", "Reproject", "CoorTrans", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
-    # MODULES = ["Duplicated", "Evaluate", "MissAnno", "Matching", "Statistics"]
-    
+    # MODULES = ["Duplicated", "Logical", "Reproject", "CoorTrans", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    MODULES = ["Duplicated"]
     
     ORIENTATION = "SIDE"
     COOR = "Lidar"
@@ -40,20 +39,20 @@ class DuplicatedDoctorConfig(Config):
     METHOD = "Total"
     
     
-class LogisticDoctorConfig(Config):
+class LogicalCheckerConfig(Config):
     JSON_PATH = '%s/duplicated_doctor/clean.txt' % Config.ROOT
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
     ERROR_LIST = ["bbox_error", "coor_error", "res_error"]
     CHECK_ERROR_LIST = ERROR_LIST + ["2d_null_error", "3d_null_error"]
-    SAVE_DIR = "%s/logistic_doctor" % Config.ROOT
+    SAVE_DIR = "%s/logical_doctor" % Config.ROOT
     COOR = DataHospitalConfig.COOR
     ONLINE = False
     VIS = False
     
     
 class ReprojectDoctorConfig(Config):
-    JSON_PATH = '%s/logistic_doctor/clean.txt' % Config.ROOT
+    JSON_PATH = '%s/logical_doctor/clean.txt' % Config.ROOT
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
     SAVE_DIR = "%s/reproject_doctor" % Config.ROOT
@@ -114,5 +113,5 @@ class OutputConfig(Config):
 
 
 class VisualizationConfig(Config):
-    SAVE_DIR = "%s/logistic_doctor/images/" % Config.ROOT
+    SAVE_DIR = "%s/logical_doctor/images/" % Config.ROOT
     

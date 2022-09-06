@@ -205,7 +205,7 @@ class StatsDoctor():
 if __name__ == '__main__':
     class StatsDoctorConfig:
         NAME = "sidecam_ori"
-        DATAFRAME_PATH = "/root/data_hospital_data/0728v60/%s/dataframes/logistic_dataframe.pkl" % NAME
+        DATAFRAME_PATH = "/root/data_hospital_data/0728v60/%s/dataframes/logical_dataframe.pkl" % NAME
         SAVE_DIR = "/root/data_hospital_data/0728v60/%s/stats_doctor" % NAME
         
     stats_doctor = StatsDoctor(StatsDoctorConfig)

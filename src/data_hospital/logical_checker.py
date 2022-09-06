@@ -7,7 +7,7 @@ import math
 
 import pandas as pd
 import tqdm
-from configs.config import (OutputConfig, ReprojectDoctorConfig, VisualizationConfig, CoorTransConfig, LogisticDoctorConfig)
+from configs.config import (OutputConfig, ReprojectDoctorConfig, VisualizationConfig, CoorTransConfig, LogicalCheckerConfig)
 from src.data_hospital.coor_trans_doctor import CoorTransDoctor
 from src.utils.logger import get_logger
 from src.utils.struct import parse_obs
@@ -19,11 +19,11 @@ self_width = 1.96
 self_length = 4.875
 
 
-class LogisticDoctor():
+class LogicalChecker():
     def __init__(self, cfg: dict) -> None:
         self.logger = get_logger()
         self.cfg = cfg       
-        self.df = pd.read_pickle(self.cfg.LOGISTIC_DATAFRAME_PATH)["df"]
+        self.df = pd.read_pickle(self.cfg.LOGICAL_DATAFRAME_PATH)["df"]
         
         with open(cfg.JSON_PATH) as total_file:
             self.total_frames = set([_.strip() for _ in total_file])
@@ -257,10 +257,10 @@ class LogisticDoctor():
             
     
     def coor_checker(info:dict) -> None:
-        if LogisticDoctorConfig.COOR == "Car":
-            LogisticDoctor.coor_checker_car(info)
+        if LogicalCheckerConfig.COOR == "Car":
+            LogicalChecker.coor_checker_car(info)
         else:
-            LogisticDoctor.coor_checker_lidar(info)
+            LogicalChecker.coor_checker_lidar(info)
         
         
     def coor_checker_car(info: dict) -> None:
@@ -446,8 +446,8 @@ class LogisticDoctor():
             
             
 if __name__ == '__main__':
-    logistic_doctor = LogisticDoctor(LogisticDoctorConfig)
-    logistic_doctor.df = pd.read_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/reproject_dataframe.pkl")["df"]
-    if logistic_doctor.vis:
-        logistic_doctor.visualization(100)
+    logical_doctor = LogicalChecker(LogicalCheckerConfig)
+    logical_doctor.df = pd.read_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/reproject_dataframe.pkl")["df"]
+    if logical_doctor.vis:
+        logical_doctor.visualization(100)
         

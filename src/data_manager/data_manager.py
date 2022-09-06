@@ -25,6 +25,8 @@ from PIL import Image
 from shapely.geometry import Point, Polygon
 from configs.config import Config
 from src.utils.logger import get_logger
+from itertools import zip_longest
+
 
 
 class DataManager:
@@ -196,24 +198,6 @@ class DataManager:
                 
         """
         
-        # try:
-        #     occlusion, crowding = obj["occlusion"], obj["crowding"]
-        # except KeyError:
-        #     occlusion, crowding = None, None
-            
-        # pos_x, pos_y = obj["x"], obj["y"]
-        # priority = 'P0'
-        # if obj["camera_orientation"] == "front_middle_camera":
-        #     if  pos_x > 60 or abs(pos_y) > 10 or pos_x < 0:
-        #         priority = 'P1'
-        # else:
-        #     if abs(pos_x) > 20 or abs(pos_y) > 20:
-        #         priority = 'P1'  
-        # if (occlusion != None and int(occlusion) > 0) or (crowding != None and int(crowding) > 0):
-        #     priority = 'P1'
-            
-        # obj["priority"] = priority
-        
         try:
             occlusion, crowding = obj["occlusion"], obj["crowding"]
         except KeyError:
@@ -221,12 +205,6 @@ class DataManager:
             
         pos_x, pos_y = obj["x"], obj["y"]
         priority = 'P0'
-        
-        # try:
-        #     if obj["euclidean_dis_diff"] < 0.3:
-        #         priority = 'P1'
-        # except KeyError:
-        #     pass
                 
         if obj["camera_orientation"] == "front_middle_camera":
             if  pos_x > 60 or abs(pos_y) > 10 or pos_x < 0:
@@ -474,7 +452,7 @@ class DataManager:
 
             else:
                 self.logger.critical("Make sure the json_type is chosen from ['txt', 'folder'], you could suggest more json_type to be added")               
-
+            
             return json_paths
 
 
@@ -502,19 +480,9 @@ class DataManager:
                     except json.JSONDecodeError:
                         self.logger.error("JSONDECODEERROR: %s" % json_path)
                     
-            
             with ThreadPool(processes = 40) as pool:
                 list(tqdm(pool.imap(worker, json_paths), total=len(json_paths), desc='DataFrame Loading'))
                 pool.terminate()
-                
-            # combined_lst = []
-            # for json_path in tqdm(json_paths, desc='DataFrame Loading'):
-            #     json_path = json_path.strip()
-            #     with open(json_path) as json_obj:
-            #         json_info = json.load(json_obj)
-            #         json_lst = self.json_extractor(json_info, json_path)
-                    
-            #         combined_lst.extend(json_lst)
                     
             self.df = pd.DataFrame(combined_lst)
             self.add_columns([self.df.index], ["emb_id"])
@@ -523,57 +491,31 @@ class DataManager:
             except KeyError:
                 self.logger.error("Perhaps the DataFrame Contains No Data")
                 sys.exit(-1)
-                
-                
-        # def __json_reader(json_paths: list) -> None:
-        #     """
-        #     Summary
-        #     -------
-        #         read each json object, pass the object to the json extractor
-                
-        #     Parameters
-        #     ----------
-        #         json_paths: list
-        #             list of json paths
-                    
-        #     """
-
-        #     combined_lst = []
-        #     def worker(_):
-        #         json_path = _.strip()
-        #         with open(json_path) as json_obj:
-        #             try:
-        #                 json_info = json.load(json_obj)
-        #                 json_lst = self.json_extractor(json_info, json_path)
-        #                 combined_lst.extend(json_lst)
-        #             except json.JSONDecodeError:
-        #                 self.logger.error("JSONDECODEERROR: %s" % json_path)
-
-            
-        #     with ThreadPool(processes = 40) as pool:
-        #         list(tqdm(pool.imap(worker, json_paths), total=len(json_paths), desc='DataFrame Loading'))
-        #         pool.terminate()
-                
-        #     # combined_lst = []
-        #     # for json_path in tqdm(json_paths, desc='DataFrame Loading'):
-        #     #     json_path = json_path.strip()
-        #     #     with open(json_path) as json_obj:
-        #     #         json_info = json.load(json_obj)
-        #     #         json_lst = self.json_extractor(json_info, json_path)
-                    
-        #     #         combined_lst.extend(json_lst)
-                    
-        #     self.df = pd.DataFrame(combined_lst)
-        #     self.add_columns([self.df.index], ["emb_id"])
-        #     try:
-        #         self.df = self.df.set_index("index_list")
-        #     except KeyError:
-        #         self.logger.error("Perhaps the DataFrame Contains No Data")
-        #         sys.exit(-1)
             
         self.logger.critical("DataFrame Loading Started: %s" % load_path)
-        __json_reader(__json_path_getter(load_path))
+        json_paths = __json_path_getter(load_path)
+        
+        MAX_DF_LEN = 400000
+        DF_NUMBER = int(len(json_paths) / MAX_DF_LEN)
+        self.logger.debug("Split to %d DataFrame to Loading" % DF_NUMBER)
+        temp_dir = "/root/data_hospital_data/temp_dataframes"
+        os.makedirs(temp_dir, exist_ok=True)
+        def group_elements(n, iterable, padvalue=None):
+            return zip_longest(*[iter(iterable)]*n, fillvalue=padvalue)
+        
+        group_items = group_elements(MAX_DF_LEN, json_paths)
+        for ind, lst in enumerate(tqdm(group_items)):
+            clean_lst = [_ for _ in lst if _ is not None]
+            __json_reader(clean_lst)
+            self.save_to_pickle("%s/%d.pkl" % (temp_dir, ind))
+            self.total_df_number = ind + 1
+        
+        total_df_lst = []
+        for df_ind in range(self.total_df_number):
+            total_df_lst.append(load_from_pickle("%s/%d.pkl" % (temp_dir, df_ind)))
+        self.df = pd.concat(total_df_lst)
         print(self.df)
+            
         self.logger.info("DataFrame Loading Finished")
         self.logger.info("DataFrame shape is: %s" % str(self.df.shape))
     

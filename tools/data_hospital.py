@@ -1,7 +1,7 @@
-from configs.config import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig, LogisticDoctorConfig, ReprojectDoctorConfig, CoorTransConfig, InferenceConfig
+from configs.config import DataHospitalConfig, DuplicatedDoctorConfig, StatsDoctorConfig, LogicalCheckerConfig, ReprojectDoctorConfig, CoorTransConfig, InferenceConfig
 from src.data_hospital.coor_trans_doctor import CoorTransDoctor
 from src.data_hospital.reproject_doctor import ReprojectDoctor
-from src.data_hospital.logistic_doctor import LogisticDoctor
+from src.data_hospital.logical_checker import LogicalChecker
 from src.data_hospital.duplicated_doctor import DuplicatedDoctor
 from src.data_hospital.stats_doctor import StatsDoctor
 from src.utils.logger import get_logger
@@ -24,11 +24,11 @@ class DataHospital():
             duplicated_doctor = DuplicatedDoctor(DuplicatedDoctorConfig)
             duplicated_doctor.self_diagnose()
         
-        if "Logistic" in self.modules:
-            logger.critical("Logistic Doctor Diagnosing")
-            logistic_doctor = LogisticDoctor(LogisticDoctorConfig)
-            logistic_doctor.diagnose()
-            logistic_doctor.txt_for_reproejct()
+        if "Logical" in self.modules:
+            logger.critical("Logical Doctor Diagnosing")
+            logical_doctor = LogicalChecker(LogicalCheckerConfig)
+            logical_doctor.diagnose()
+            logical_doctor.txt_for_reproejct()
             
         if "Reproject" in self.modules:
             logger.critical("Reproject Doctor Diagnosing")

@@ -10,8 +10,8 @@ Copyright (c) HAOMO.AI, Inc. and its affiliates. All Rights Reserved
 """
 
 import pandas as pd
-from configs.config_data_hospital import DataHospitalConfig, LogisticDoctorConfig
-from src.data_hospital.logistic_doctor import LogisticDoctor
+from configs.config_data_hospital import DataHospitalConfig, LogicalCheckerConfig
+from src.data_hospital.logical_checker import LogicalChecker
 from src.data_manager.data_manager import DataManager
 
 class TrainCam3dManager(DataManager):
@@ -71,7 +71,7 @@ class TrainCam3dManager(DataManager):
             # 3d_null =1, null
             # coor =1, coor trans error
             # res =1, res error
-            for error in LogisticDoctorConfig.CHECK_ERROR_LIST:
+            for error in LogicalCheckerConfig.CHECK_ERROR_LIST:
                 info[error] = 0
             
             info["class_name"] = obj["className"]
@@ -84,11 +84,11 @@ class TrainCam3dManager(DataManager):
             info["lon"], info["lat"], info["city"] = lon, lat, city
             
             if DataHospitalConfig.ORIENTATION != "SIDE":
-                LogisticDoctor.resolution_checker(info)
+                LogicalChecker.resolution_checker(info)
             
             try:
                 super().bbox_calculator(obj, info)    
-                LogisticDoctor.bbox_checker(info, img_width, img_height) 
+                LogicalChecker.bbox_checker(info, img_width, img_height) 
             except TypeError:
                 info["bbox_error"] = 3
                 # continue
@@ -108,7 +108,7 @@ class TrainCam3dManager(DataManager):
             
             if obj.get("3D_attributes"):
                 super().attributes_extractor_3d(obj["3D_attributes"], info)
-                LogisticDoctor.coor_checker(info)
+                LogicalChecker.coor_checker(info)
                 
                 if has_2D:
                     super().define_priority(info)
@@ -123,7 +123,7 @@ class TrainCam3dManager(DataManager):
             info["index_list"] = "/%s@%d" % (img_url, info["id"])
             
             info["has_error"] = 0
-            for error in LogisticDoctorConfig.ERROR_LIST:
+            for error in LogicalCheckerConfig.ERROR_LIST:
                 if info[error] != 0:
                     info["has_error"] = 1 
                     break

@@ -2,7 +2,7 @@
 # Now We Have
 ## Duplicated Doctor
 
-## Logistic Doctor
+## Logical Doctor
 
 ## Reproject Doctor
 

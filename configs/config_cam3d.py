@@ -30,7 +30,7 @@ class TrainDataFrameConfig(Config):
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
 
-class LogisticDoctorConfig(Config):
+class LogicalCheckerConfig(Config):
     ERROR_LIST = ["bbox_error", "coor_error"]
     # ERROR_LIST = ["quality_error"]
     IGNORE_LIST = []

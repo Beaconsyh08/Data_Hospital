@@ -8,7 +8,7 @@ from multiprocessing.pool import ThreadPool
 
 import pandas as pd
 from src.utils.logger import get_logger
-from configs.config import LogisticDoctorConfig
+from configs.config import LogicalCheckerConfig
 from src.data_manager.data_manager_creator import data_manager_creator
 from tqdm import tqdm
 
@@ -35,23 +35,23 @@ class DuplicatedDoctor():
         else:
             self.json_paths_new = []
             
-        self.json_paths = self.json_paths_ori + self.json_paths_new
+        # self.json_paths = self.json_paths_ori + self.json_paths_new
         
-        self.nodup_jsons = self.json_duplicated()
-        self.nodup_jsons_new = self.nodup_jsons - set(self.json_paths_ori) - set(self.dup_jsons)
+        # self.nodup_jsons = self.json_duplicated()
+        # self.nodup_jsons_new = self.nodup_jsons - set(self.json_paths_ori) - set(self.dup_jsons)
         
-        if self.PKL_READY:
-            self.ORI_DATA = pd.read_pickle(self.ORI_PKL_PATH)
-        else:
-            res_dict = defaultdict(list)            
-            self.ORI_DATA = self.map_loader(res_dict, self.nodup_jsons)
-            self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
+        # if self.PKL_READY:
+        #     self.ORI_DATA = pd.read_pickle(self.ORI_PKL_PATH)
+        # else:
+        #     res_dict = defaultdict(list)            
+        #     self.ORI_DATA = self.map_loader(res_dict, self.nodup_jsons)
+        #     self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
         
-        if self.method == "total" or len(self.nodup_jsons_new) == 0:
-            self.TOTAL_DATA = self.ORI_DATA
-        else:            
-            self.TOTAL_DATA = self.map_loader(self.ORI_DATA, self.nodup_jsons_new)    
-            self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
+        # if self.method == "total" or len(self.nodup_jsons_new) == 0:
+        #     self.TOTAL_DATA = self.ORI_DATA
+        # else:            
+        #     self.TOTAL_DATA = self.map_loader(self.ORI_DATA, self.nodup_jsons_new)    
+        #     self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
                 
     
     def json_duplicated(self,) -> set:
@@ -142,17 +142,17 @@ class DuplicatedDoctor():
         print("Duplicted Stats", self.stats_dict)
                 
                 
-    def build_logistic_df(self, ):
-        dm = data_manager_creator(LogisticDoctorConfig)
+    def build_logical_df(self, ):
+        dm = data_manager_creator(LogicalCheckerConfig)
         dm.load_from_json()
-        dm.save_to_pickle(self.cfg.LOGISTIC_DATAFRAME_PATH)
+        dm.save_to_pickle(self.cfg.LOGICAL_DATAFRAME_PATH)
         
         
     def self_diagnose(self,) -> None:
-        dup_dict = self.self_duplicated_finder(self.ORI_DATA, self.stats_dict)
-        self.time_checker(dup_dict)
-        self.save_results()
-        self.build_logistic_df()
+        # dup_dict = self.self_duplicated_finder(self.ORI_DATA, self.stats_dict)
+        # self.time_checker(dup_dict)
+        # self.save_results()
+        self.build_logical_df()
 
 
 if __name__ == '__main__':
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     class Config:
         # ROOT = '/share/analysis/result/data_hospital/0628/%s' % NAME
         ROOT = '/root/data_hospital/0728v60/%s' % NAME
-        LOGISTIC_DATAFRAME_PATH = '%s/dataframes/logistic_dataframe.pkl' % ROOT
+        LOGICAL_DATAFRAME_PATH = '%s/dataframes/logical_dataframe.pkl' % ROOT
         REPROJECT_DATAFRAME_PATH = '%s/dataframes/reproject_dataframe.pkl' % ROOT
         FINAL_DATAFRAME_PATH = '%s/dataframes/final_dataframe.pkl' % ROOT
     class DuplicatedDoctorConfig(Config):
