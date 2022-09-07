@@ -5,39 +5,45 @@ cards_conf:
   #     media_name: rear_middle_v30
   #     project: icu30
 
-  - file_name: /data_path/train31.txt
-    cards:
-    - card_id: 62f4bd465320fb93027a9415
-      media_name: side_cam
-      project: icu30
+  # - file_name: /data_path/train31.txt
+  #   cards:
+  #   - card_id: 62f4bd465320fb93027a9415
+  #     media_name: side_cam
+  #     project: icu30
 
-  - file_name: /data_path/train31_test.txt
-    cards:
-    - card_id: 63043bf2232e1c5fe2c6ca0d
-      media_name: side_cam
-      project: icu30
+  # - file_name: /data_path/train31_test.txt
+  #   cards:
+  #   - card_id: 63043bf2232e1c5fe2c6ca0d
+  #     media_name: side_cam
+  #     project: icu30
   
-  - file_name: /data_path/yayun_night.txt
+  # - file_name: /data_path/yayun_night.txt
+  #   cards:
+  #   - card_id: 6305b8d792f478a3b3e5ab74
+  #     media_name: night
+  #     project: icu30
+
+  - file_name: /data_path/yayun_night_new.txt
     cards:
-    - card_id: 6305b8d792f478a3b3e5ab74
-      media_name: night
+    - card_id: 6316eacc9fda9ffd5198d611
+      media_name: yayun
       project: icu30
 
 
-  - file_name: /data_path/v71_train.txt
-    cards:
-    - card_id: 62e9100e2f748ee9eddd7b08
-      media_name: side_cam_v71
-      project: icu30
-    - card_id: 62e90fea2f748ee9edd44f44
-      media_name: side_cam_v71
-      project: icu30
-    - card_id: 62e90fc32f748ee9edcb1f1f
-      media_name: side_cam_v71
-      project: icu30
-    - card_id: 62e90f9c2f748ee9edc1f404
-      media_name: side_cam_v71
-      project: icu30
+  # - file_name: /data_path/v71_train.txt
+  #   cards:
+  #   - card_id: 62e9100e2f748ee9eddd7b08
+  #     media_name: side_cam_v71
+  #     project: icu30
+  #   - card_id: 62e90fea2f748ee9edd44f44
+  #     media_name: side_cam_v71
+  #     project: icu30
+  #   - card_id: 62e90fc32f748ee9edcb1f1f
+  #     media_name: side_cam_v71
+  #     project: icu30
+  #   - card_id: 62e90f9c2f748ee9edc1f404
+  #     media_name: side_cam_v71
+  #     project: icu30
 
 
 
@@ -144,11 +150,11 @@ cards_conf:
 
 
 
-  # - file_name: /data_path/qa_cmh.txt
-  #   cards:
-  #   - card_id: 62d173f328f4f2a8671b2874
-  #     media_name: trans_zhouping_side_gt
-  #     project: icu30 
+  - file_name: /data_path/qa_cmh.txt
+    cards:
+    - card_id: 62d173f328f4f2a8671b2874
+      media_name: trans_zhouping_side_gt
+      project: icu30 
 
 #   - file_name: /data_path/qa_cmh_1205.txt
 #     cards:

@@ -164,21 +164,21 @@ class CoorTransDoctor():
             #     continue
             x, y, w, h = obj_ann['bbox']
 
-            try:
-                if w < 0 or h < 0 or w > (image_width+20) or h > (image_height+20) or x < 0 or y < 0 or x > (image_width+20) or y > (image_width+20):
-                    continue
-                if (x + w) > (image_width+20) or (y + h) > (image_height+20):
-                    continue
-                if (x + 0.5 * w) >= image_width or (y + 0.5 * h) >= image_height:
-                    continue
-            except Exception:
-                continue
+            # try:
+            #     if w < 0 or h < 0 or w > (image_width+20) or h > (image_height+20) or x < 0 or y < 0 or x > (image_width+20) or y > (image_width+20):
+            #         continue
+            #     if (x + w) > (image_width+20) or (y + h) > (image_height+20):
+            #         continue
+            #     if (x + 0.5 * w) >= image_width or (y + 0.5 * h) >= image_height:
+            #         continue
+            # except Exception:
+            #     continue
 
-            inter_w = max(0, min(x + w, image_width))
-            inter_h = max(0, min(y + h, image_height))
-            if 0 == inter_w * inter_h:
-                continue
-            # 小于15*15的障碍物不需要
+            # inter_w = max(0, min(x + w, image_width))
+            # inter_h = max(0, min(y + h, image_height))
+            # if 0 == inter_w * inter_h:
+            #     continue
+            # 小于15*15的障碍物不需要``
             # if w * h <= 15*15 or w < 1 or h < 1:
             #     continue
             bbox = [x, y, x + w, y + h]

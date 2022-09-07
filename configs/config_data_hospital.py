@@ -1,4 +1,4 @@
-NAME = "v71_train"
+NAME = "qa_cmh"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
@@ -23,10 +23,9 @@ class Config:
 
 class DataHospitalConfig(Config):
     # MODULES = ["Duplicated", "Logical", "Reproject", "CoorTrans", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
-    MODULES = ["Duplicated"]
-    
+    MODULES = ["Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
     ORIENTATION = "SIDE"
-    COOR = "Lidar"
+    COOR = "Car"
     VIS = False
     
     
@@ -72,7 +71,8 @@ class CoorTransConfig(Config):
 
 class InferenceConfig(Config):
     INF_OUTPUT_DIR = '%s/inference_doctor/'% Config.ROOT
-    INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
+    # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
+    INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
     
     
 class EvaluateConfig(Config):
