@@ -7,8 +7,8 @@ import math
 
 import pandas as pd
 import tqdm
-from configs.config import (OutputConfig, ReprojectDoctorConfig, VisualizationConfig, CoorTransConfig, LogicalCheckerConfig)
-from src.data_hospital.coor_trans_doctor import CoorTransDoctor
+from configs.config import (OutputConfig, CalibrationCheckerConfig, VisualizationConfig, CoordinateConverterConfig, LogicalCheckerConfig)
+from src.data_hospital.coordinate_converter import CoordinateConverter
 from src.utils.logger import get_logger
 from src.utils.struct import parse_obs
 from src.visualization.visualization import Visualizer
@@ -180,13 +180,13 @@ class LogicalChecker():
 
                 
     def txt_for_reproejct(self, ) -> None:
-        df_reproject = pd.read_pickle(ReprojectDoctorConfig.REPROJECT_DATAFRAME_PATH)["df"]
-        carday_ids = set(df_reproject.carday_id)
-        self.logger.debug("Reproject Ready File Has Been Saved in %s" % ReprojectDoctorConfig.LOAD_PATH)
+        df_calibration = pd.read_pickle(CalibrationCheckerConfig.CALIBRATION_DATAFRAME_PATH)["df"]
+        carday_ids = set(df_calibration.carday_id)
+        self.logger.debug("Calibration Ready File Has Been Saved in %s" % CalibrationCheckerConfig.LOAD_PATH)
         for carday_id in tqdm.tqdm(carday_ids, desc="Spliting Json Paths Based on CarDay"):
-            json_paths = list(set(df_reproject[df_reproject['carday_id'] == carday_id].json_path.tolist()))
-            shutil.os.makedirs(ReprojectDoctorConfig.LOAD_PATH, exist_ok=True)
-            with open("%s/%s.txt" % (ReprojectDoctorConfig.LOAD_PATH, carday_id), "w") as output_file:
+            json_paths = list(set(df_calibration[df_calibration['carday_id'] == carday_id].json_path.tolist()))
+            shutil.os.makedirs(CalibrationCheckerConfig.LOAD_PATH, exist_ok=True)
+            with open("%s/%s.txt" % (CalibrationCheckerConfig.LOAD_PATH, carday_id), "w") as output_file:
                 for json_path in json_paths:
                     output_file.writelines(json_path + "\n")
         
@@ -200,7 +200,7 @@ class LogicalChecker():
         """
         
         self.logger.debug("Example Error Images Saved in: %s" % self.ver.save_dir)
-        coor_trans = CoorTransDoctor(CoorTransConfig)
+        coor_trans = CoordinateConverter(CoordinateConverterConfig)
         for error_type in self.error_list:
             for flag in self.df[error_type].unique().tolist():
                 # if flag != 0:
@@ -238,26 +238,26 @@ class LogicalChecker():
                         output_file.writelines(info)
                             
     
-    def construct_reproject_dataframe(self, ) -> None:
+    def construct_calibration_dataframe(self, ) -> None:
         reporject_df = self.df[~self.df.json_path.isin(self.df[self.df.has_error == 1].json_path)]
         pickle_obj = {"info": {}, "df": reporject_df}
-        with open(ReprojectDoctorConfig.REPROJECT_DATAFRAME_PATH, "wb") as pickle_file: 
+        with open(CalibrationCheckerConfig.CALIBRATION_DATAFRAME_PATH, "wb") as pickle_file: 
             pickle.dump(pickle_obj, pickle_file)
         
-        self.logger.critical("DataFrame Saved: %s" % ReprojectDoctorConfig.REPROJECT_DATAFRAME_PATH)
+        self.logger.critical("DataFrame Saved: %s" % CalibrationCheckerConfig.CALIBRATION_DATAFRAME_PATH)
         
                 
     def diagnose(self,):
         self.instance_erros()
         self.frame_errors()
-        self.construct_reproject_dataframe()
+        self.construct_calibration_dataframe()
         
         if self.vis:
             self.visualization(100)
             
     
     def coor_checker(info:dict) -> None:
-        if LogicalCheckerConfig.COOR == "Car":
+        if LogicalCheckerConfig.COOR == "Vehicle":
             LogicalChecker.coor_checker_car(info)
         else:
             LogicalChecker.coor_checker_lidar(info)
@@ -446,8 +446,8 @@ class LogicalChecker():
             
             
 if __name__ == '__main__':
-    logical_doctor = LogicalChecker(LogicalCheckerConfig)
-    logical_doctor.df = pd.read_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/reproject_dataframe.pkl")["df"]
-    if logical_doctor.vis:
-        logical_doctor.visualization(100)
+    logical_checker = LogicalChecker(LogicalCheckerConfig)
+    logical_checker.df = pd.read_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/calibration_dataframe.pkl")["df"]
+    if logical_checker.vis:
+        logical_checker.visualization(100)
         

@@ -1,8 +1,9 @@
-from configs.config import DataHospitalConfig, EvaluateConfig, MissAnnoDoctorConfig, MatchingDoctorConfig, StatsDoctorConfig
-from src.data_hospital.evaluate_doctor import EvaluateDoctor
-from src.data_hospital.matching_doctor import MatchingDoctor
-from src.data_hospital.miss_anno_doctor import MissAnnoDoctor
-from src.data_hospital.stats_doctor import StatsDoctor
+from configs.config import DataHospitalConfig, EvaluateProcessorConfig, MissAnnoCheckerConfig, MatchingCheckerConfig, StatisticsManagerConfig
+from src.data_hospital.evaluate_processor_lucas import EvaluateProcessorLucas
+from src.data_hospital.evaluate_processor_qa import EvaluateProcessorQA
+from src.data_hospital.matching_checker import MatchingChecker
+from src.data_hospital.miss_anno_checker import MissAnnoChecker
+from src.data_hospital.statistics_manager import StatisticsManager
 from src.utils.logger import get_logger
 
 
@@ -19,21 +20,21 @@ class DataHospital2():
             logger.critical("Data Hospital II Running")
             logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
             
-            if "Inference" in self.modules:
-                evaluate_doctor = EvaluateDoctor(EvaluateConfig)
-                evaluate_doctor.diagnose()
-            
+            if "Evaluate" in self.modules:
+                evaluate_processor = EvaluateProcessorLucas(EvaluateProcessorConfig) if self.cfg.EVALUATOR == "LUCAS" else EvaluateProcessorQA(EvaluateProcessorConfig)
+                evaluate_processor.diagnose()
+                    
             if "MissAnno" in self.modules:
-                miss_anno_doctor = MissAnnoDoctor(MissAnnoDoctorConfig)
-                miss_anno_doctor.diagnose()
+                miss_anno_checker = MissAnnoChecker(MissAnnoCheckerConfig)
+                miss_anno_checker.diagnose()
                 
             if "Matching" in self.modules:
-                matching_doctor = MatchingDoctor(MatchingDoctorConfig)
-                matching_doctor.diagnose()
+                matching_checker = MatchingChecker(MatchingCheckerConfig)
+                matching_checker.diagnose()
                 
             if "Statistics" in self.modules:
-                stats_doctor = StatsDoctor(StatsDoctorConfig)
-                stats_doctor.diagnose()
+                statistics_manager = StatisticsManager(StatisticsManagerConfig)
+                statistics_manager.diagnose()
             
         logger.critical("Data Hospital II Completed")
             

@@ -25,16 +25,16 @@ function download_dataset() {
 
     echo -e "${green_start}Download Dataset Completed!${green_end}\n"
 
-    sleep 1
-    rm -rf /oss: /bucket-dataengine
-    sleep 1
-    mkdir /oss:
-    sleep 1
-    mkdir /bucket-dataengine
-    sleep 1
-    ln -s /data-engine/* /oss:
-    sleep 1
-    ln -s /data-engine/bucket-dataengine/* /bucket-dataengine
+    # sleep 1
+    # rm -rf /oss: /bucket-dataengine
+    # sleep 1
+    # mkdir /oss:
+    # sleep 1
+    # mkdir /bucket-dataengine
+    # sleep 1
+    # ln -s /data-engine/* /oss:
+    # sleep 1
+    # ln -s /data-engine/bucket-dataengine/* /bucket-dataengine
 
     echo -e "${green_start}Data Re-Link Completed!${green_end}\n"
 }

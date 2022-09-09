@@ -36,7 +36,7 @@ class LogicalCheckerConfig(Config):
     IGNORE_LIST = []
     MF = "Miss" # ["Miss", "False"]
     THRESHOLD = 0.3
-    COOR = "Car"
+    COOR = "Vehicle"
     
     
 # class SamplerConfig(Config):

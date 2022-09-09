@@ -1,6 +1,6 @@
 import pandas as pd
 
-df_path = "/root/data_hospital_data/0728v60/test0809/dataframes/reproject_dataframe.pkl"
+df_path = "/root/data_hospital_data/0728v60/test0809/dataframes/calibration_dataframe.pkl"
 df = pd.read_pickle(df_path)["df"]
 print(df.groupby("yaw").size())
 selected_df = df[df.class_name.isin(["trafficCone", "traffic-cone"])]

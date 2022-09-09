@@ -20,6 +20,8 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 from src.data_manager.data_manager import DataManager
+from src.data_hospital.logical_checker import LogicalChecker
+
 import math
 
 
@@ -272,8 +274,7 @@ class QaCam3dTempManager(DataManager):
         res_obj["time"] = objs_info["time"]
         res_obj["case_flag"] = case_flag
         res_obj['bev_case_flag'] = bev_case_flag
-        res_obj["img_width"] = objs_info["img_width"]
-        res_obj["img_height"] = objs_info["img_height"]
+        super().width_height_extractor(res_obj, objs_info)
     
     
     def distance_attribute_calculator(self, dt_info: dict, gt_info: dict) -> None:
@@ -342,7 +343,7 @@ class QaCam3dTempManager(DataManager):
         info = dict()
         self.input_obj_basic_infos(obj, info, iou, dtgt, objs_info, json_path, case_flag, bev_case_flag)
         super().bbox_calculator(obj, info)
-        super().bbox_checker(info) 
+        LogicalChecker.bbox_checker(info)  
         try:
             super().attributes_extractor_2d(obj["2D_attributes"], info)
         except KeyError:

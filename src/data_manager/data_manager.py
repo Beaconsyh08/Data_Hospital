@@ -293,7 +293,11 @@ class DataManager:
     
     
     def width_height_extractor(self, info: dict, json_info: dict) -> int:
-        width, height = json_info["width"], json_info["height"]
+        try:
+            width, height = json_info["width"], json_info["height"]
+        except:
+            width, height = json_info["img_width"], json_info["img_height"]
+            
         if type(width) != int or type(height) != int:
             try:
                 image_szie = Image.open("/" + info["img_url"]).size
@@ -496,7 +500,7 @@ class DataManager:
         json_paths = __json_path_getter(load_path)
         
         MAX_DF_LEN = 400000
-        DF_NUMBER = int(len(json_paths) / MAX_DF_LEN)
+        DF_NUMBER = int(len(json_paths) / MAX_DF_LEN) + 1
         self.logger.debug("Split to %d DataFrame to Loading" % DF_NUMBER)
         temp_dir = "/root/data_hospital_data/temp_dataframes"
         os.makedirs(temp_dir, exist_ok=True)
@@ -504,14 +508,19 @@ class DataManager:
             return zip_longest(*[iter(iterable)]*n, fillvalue=padvalue)
         
         group_items = group_elements(MAX_DF_LEN, json_paths)
-        for ind, lst in enumerate(tqdm(group_items)):
+        self.total_df_number = 0
+        for ind, lst in tqdm(enumerate(group_items), total=DF_NUMBER, desc="DataFrames Loading"):
             clean_lst = [_ for _ in lst if _ is not None]
             __json_reader(clean_lst)
             self.save_to_pickle("%s/%d.pkl" % (temp_dir, ind))
             self.total_df_number = ind + 1
+            
+        if self.total_df_number == 0:
+            self.logger.error("Check Path: %s" % load_path)
+            sys.exit(-1)
         
         total_df_lst = []
-        for df_ind in range(self.total_df_number):
+        for df_ind in tqdm(range(self.total_df_number), desc="Concatenating DataFrames"):
             total_df_lst.append(load_from_pickle("%s/%d.pkl" % (temp_dir, df_ind)))
         self.df = pd.concat(total_df_lst)
         print(self.df)

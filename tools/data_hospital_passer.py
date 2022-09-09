@@ -1,4 +1,4 @@
-from configs.config import DataHospitalConfig, InferenceConfig, CoorTransConfig
+from configs.config import DataHospitalConfig, InferenceConfig, CoordinateConverterConfig
 from src.utils.logger import get_logger
 
 
@@ -16,7 +16,7 @@ class DataHospitalPasser():
         if "Inference" in self.modules and self.cfg.ORIENTATION == "SIDE":
             print(DataHospitalConfig.ORIENTATION)
             print(InferenceConfig.INF_MODEL_PATH)
-            print(CoorTransConfig.OUTPUT_PATH)
+            print(CoordinateConverterConfig.OUTPUT_PATH)
             print(InferenceConfig.INF_OUTPUT_DIR)
             print("inference")
         

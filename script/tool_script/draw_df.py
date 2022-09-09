@@ -40,7 +40,7 @@ class VConfig():
     SAVE_DIR = '/cpfs/output/%s/other'
     MAX_TSNE_SAMPLES = 20000
     
-df_path = "/root/data_hospital_data/0728v60/test0809/dataframes/reproject_dataframe.pkl"
+df_path = "/root/data_hospital_data/0728v60/test0809/dataframes/calibration_dataframe.pkl"
 df = pd.read_pickle(df_path)["df"]
 df = df[df.yaw>3.14]
 show_case(df)

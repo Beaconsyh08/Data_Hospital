@@ -16,6 +16,8 @@ import math
 import numpy as np
 import pandas as pd
 from src.data_manager.data_manager import DataManager
+from src.data_hospital.logical_checker import LogicalChecker
+
 import math
 
 
@@ -79,44 +81,58 @@ class QaCam3dManager(DataManager):
                 gt_info["score"] = dt_obj["conf_score"]
                 
                 # DT & GT
-                if gt_obj["3D_attributes"]:
-                    try:
-                        gt_info["points_count"] = gt_obj["3D_attributes"]["pointsCount"]
-                    except KeyError:
-                        gt_info["points_count"] = None
-                    self.distance_attribute_calculator(dt_info, gt_info)
-                    self.yaw_diff_calculator(dt_info, gt_info)
+                try:
+                    if gt_obj["3D_attributes"]:
+                        try:
+                            gt_info["points_count"] = gt_obj["3D_attributes"]["pointsCount"]
+                        except KeyError:
+                            gt_info["points_count"] = None
+                        self.distance_attribute_calculator(dt_info, gt_info)
+                        self.yaw_diff_calculator(dt_info, gt_info)
+                except KeyError:
+                    pass
                 
-                if case_flag == "0" and bev_case_flag in ["0", "None"]:
-                    gt_info["flag"] = "good"
-                    
-                    total_lst.append(gt_info)
-                
-                elif gt_obj["3D_attributes"] and bev_case_flag == "1" and gt_info["euclidean_dis_diff"] < 0.3:
-                    gt_info["flag"] = "good"
-                    
-                    total_lst.append(gt_info)
+                try:
+                    if case_flag == "0" and bev_case_flag in ["0", "None"]:
+                        gt_info["flag"] = "good"
+                        total_lst.append(gt_info)
+                        dt_info["flag"] = "good_dt"
+                        total_lst.append(dt_info)
                         
-                else:
-                    gt_info["flag"] = "miss"
-                    dt_info["flag"] = "false"
-                    
-                    gt_info["peer_id"] = dt_info["index_list"]
-                    dt_info["peer_id"] = gt_info["index_list"]
+                    elif gt_obj["3D_attributes"] and bev_case_flag == "1" and gt_info["euclidean_dis_diff"] < 0.3:
+                        gt_info["flag"] = "good"
+                        total_lst.append(gt_info)
+                        dt_info["flag"] = "good_dt"
+                        total_lst.append(dt_info)
+                            
+                    else:
+                        gt_info["flag"] = "miss"
+                        dt_info["flag"] = "false"
+                        
+                        gt_info["peer_id"] = dt_info["index_list"]
+                        dt_info["peer_id"] = gt_info["index_list"]
 
+                        total_lst.append(gt_info)
+                        total_lst.append(dt_info)
+                
+                except KeyError:
+                    gt_info["flag"] = "no_3d"
                     total_lst.append(gt_info)
-                    total_lst.append(dt_info)
-
+                    
+                    
             # Miss Case, Only GT
             elif case_flag == "1":
                 gt_info = self.general_obj_constructor(gt_obj, iou, "gt", objs_info, json_path, case_flag, bev_case_flag)
-                if gt_obj["3D_attributes"]:
-                    try:
-                        gt_info["points_count"] = gt_obj["3D_attributes"]["pointsCount"]
-                    except KeyError:
-                        gt_info["points_count"] = None
-                    gt_info["self_dis"] = np.linalg.norm(np.array([gt_info["x"], gt_info["y"]]))
+                try:
                 
+                    if gt_obj["3D_attributes"]:
+                        try:
+                            gt_info["points_count"] = gt_obj["3D_attributes"]["pointsCount"]
+                        except KeyError:
+                            gt_info["points_count"] = None
+                        gt_info["self_dis"] = np.linalg.norm(np.array([gt_info["x"], gt_info["y"]]))
+                except KeyError:
+                    pass 
                 gt_info["flag"] = "miss"
                 total_lst.append(gt_info)
                 
@@ -261,8 +277,7 @@ class QaCam3dManager(DataManager):
         res_obj["time"] = objs_info["time"]
         res_obj["case_flag"] = case_flag
         res_obj['bev_case_flag'] = bev_case_flag
-        res_obj["img_width"] = objs_info["img_width"]
-        res_obj["img_height"] = objs_info["img_height"]
+        super().width_height_extractor(res_obj, objs_info)
     
     
     def distance_attribute_calculator(self, dt_info: dict, gt_info: dict) -> None:
@@ -331,7 +346,7 @@ class QaCam3dManager(DataManager):
         info = dict()
         self.input_obj_basic_infos(obj, info, iou, dtgt, objs_info, json_path, case_flag, bev_case_flag)
         super().bbox_calculator(obj, info)
-        super().bbox_checker(info) 
+        LogicalChecker.bbox_checker(info) 
         try:
             super().attributes_extractor_2d(obj["2D_attributes"], info)
         except KeyError:

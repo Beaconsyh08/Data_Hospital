@@ -1,4 +1,10 @@
 cards_conf:
+  - file_name: /data_path/vehicle_test.txt
+    cards:
+    - card_id: 631b03381e394bbe536bc967
+      media_name: side
+      project: icu30
+
   # - file_name: /data_path/yayun_test.txt
   #   cards:
   #   - card_id: 62bb2f5fddf478154fa369c4
@@ -23,11 +29,11 @@ cards_conf:
   #     media_name: night
   #     project: icu30
 
-  - file_name: /data_path/yayun_night_new.txt
-    cards:
-    - card_id: 6316eacc9fda9ffd5198d611
-      media_name: yayun
-      project: icu30
+  # - file_name: /data_path/yayun_night_new.txt
+  #   cards:
+  #   - card_id: 6316eacc9fda9ffd5198d611
+  #     media_name: yayun
+  #     project: icu30
 
 
   # - file_name: /data_path/v71_train.txt
@@ -150,11 +156,11 @@ cards_conf:
 
 
 
-  - file_name: /data_path/qa_cmh.txt
-    cards:
-    - card_id: 62d173f328f4f2a8671b2874
-      media_name: trans_zhouping_side_gt
-      project: icu30 
+  # - file_name: /data_path/qa_cmh.txt
+  #   cards:
+  #   - card_id: 62d173f328f4f2a8671b2874
+  #     media_name: trans_zhouping_side_gt
+  #     project: icu30 
 
 #   - file_name: /data_path/qa_cmh_1205.txt
 #     cards:
@@ -334,67 +340,7 @@ cards_conf:
 #       media_name: rear_cam
 #       project: icu30 
 
-#   - file_name: /data_path/v70_train_2000.txt
-#     cards:
-#     - card_id: 62e9eaa49082586245829dc1
-#       media_name: v70_test
-#       project: icu30 
 
-#   - file_name: /data_path/v71_train_2000.txt
-#     cards:
-#     - card_id: 62e9eaae908258624582d93d
-#       media_name: v71_test
-#       project: icu30 
-
-#   - file_name: /data_path/v70_train_test.txt
-#     cards:
-#     - card_id: 62e76dcfc0cd5161e2e06d18
-#       media_name: v70_test
-#       project: icu30 
-
-#   - file_name: /data_path/v71_train_test.txt
-#     cards:
-#     - card_id: 62e9ea5d908258624580454e
-#       media_name: v71_test
-#       project: icu30 
-      
-#   - file_name: /data_path/v70_train_eval.txt
-#     cards:
-#     - card_id: 62e9eae6908258624583c16c
-#       media_name: v70_test
-#       project: icu30 
-
-#   - file_name: /data_path/v71_train_eval.txt
-#     cards:
-#     - card_id: 62ea1fd5548421eb8604d034
-#       media_name: v71_test
-#       project: icu30 
-      
-
-#   - file_name: /data_path/v70_train_20000.txt
-#     cards:
-#     - card_id: 62ea10a9548421eb86c092c0
-#       media_name: v70_test
-#       project: icu30 
-
-#   - file_name: /data_path/v71_train_20000.txt
-#     cards:
-#     - card_id: 62ea1057548421eb86bf6697
-#       media_name: v71_test
-#       project: icu30 
-
-#   - file_name: /data_path/v70_train_test_20000.txt
-#     cards:
-#     - card_id: 62ea18f4548421eb86e0ec99
-#       media_name: v70_test
-#       project: icu30 
-
-#   - file_name: /data_path/v71_train_test_20000.txt
-#     cards:
-#     - card_id: 62ea1f91548421eb86034e1a
-#       media_name: v71_test
-#       project: icu30 
-      
   # - file_name: /data_path/v70_train.txt
   #   cards:
   #   - card_id: 62dbe864d755145287c40ff1
@@ -415,20 +361,6 @@ cards_conf:
   #   - card_id: 62fc80bf45595539301873af
   #     media_name: frame_sensor_data
   #     project: icu30
-
-    
-
-#   - file_name: /data_path/v70_train_eval_20000.txt
-#     cards:
-#     - card_id: 62ea59c25e7420f0229612f1
-#       media_name: v70_test
-#       project: icu30 
-
-#   - file_name: /data_path/v71_train_eval_20000.txt
-#     cards:
-#     - card_id: 62ea5a875e7420f0229689c6
-#       media_name: v71_test
-#       project: icu30
 
 
 #   - file_name: /data_path/225_badcase.txt

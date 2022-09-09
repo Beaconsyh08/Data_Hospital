@@ -6,8 +6,8 @@ ROOT_PATH = "/root/data_hospital/0728v60/qa_cmh"
 threshold_percent = 0.3
 threshold = 0.6
 
-df = pd.read_excel("%s/reproject_doctor/result.xlsx" % ROOT_PATH)
-df["Mean Iou"].hist(bins=50).get_figure().savefig("%s/reproject_doctor/result_hist.png" % ROOT_PATH)
+df = pd.read_excel("%s/calibration_checker/result.xlsx" % ROOT_PATH)
+df["Mean Iou"].hist(bins=50).get_figure().savefig("%s/calibration_checker/result_hist.png" % ROOT_PATH)
 
 df.sort_values(by="Mean Iou", inplace=True, ascending=False)
 
@@ -18,7 +18,7 @@ print(df_select)
 print("Last Mean Iou: %f" % df_select.iloc[-1]["Mean Iou"])
 
 count = 0
-with open("%s/reproject_doctor/selected.txt" % ROOT_PATH, "w") as output_file:
+with open("%s/calibration_checker/selected.txt" % ROOT_PATH, "w") as output_file:
     for file in tqdm(df_select.Txt):
         with open(file) as select_file:
             lines = [_.strip() for _ in select_file]

@@ -1,13 +1,13 @@
 # 0809 Update 
 # Now We Have
-## Duplicated Doctor
+## Duplicated Checker
 
-## Logical Doctor
+## Logical Checker
 
-## Reproject Doctor
+## Calibration Checker
 
 # On the Way
 
-## Miss Anno Doctor
+## Miss Anno Checker
 
-## Matching Doctor
+## Matching Checker
