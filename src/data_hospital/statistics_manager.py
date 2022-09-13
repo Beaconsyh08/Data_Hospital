@@ -35,7 +35,20 @@ class StatisticsManager():
     def __init__(self, cfg: dict) -> None:
         self.cfg = cfg
         self.df = self.build_df()
-        # self.df = load_from_pickle("/root/data_hospital_data/0728v60/sidecam_ori/dataframes/calibration_dataframe.pkl")
+        # self.df = load_from_pickle("/root/data_hospital_data/v71_train/dataframes/logical_dataframe.pkl")
+        
+                
+        # import random
+        # self.sample_json = random.sample(list(set(list(self.df.json_path))), 300000)
+        # print(len(self.sample_json))
+        # self.df = self.df[self.df.json_path.isin(self.sample_json)]
+        # with open("/data_path/sample0913.txt", "w") as output_file:
+        #     for each in tqdm(self.sample_json):
+        #         output_file.writelines(each + "\n")
+        
+        self.total_frames_number = len(set(list(self.df.json_path)))
+        
+        
         self.df['class_name_map'] = self.df['class_name'].map(TYPE_MAP)
         self.save_dir = self.cfg.SAVE_DIR
         self.logger = get_logger()
@@ -167,7 +180,7 @@ class StatisticsManager():
             
             self.logger.debug("%s Hist Saved in %s" % (info.capitalize(), path))
 
-            df = pd.concat([self.df[info].value_counts(),self.df[info].value_counts(normalize=True)],axis=1)
+            df = pd.concat([self.df[info].value_counts(), self.df[info].value_counts(normalize=True)],axis=1)
             df.set_axis(["Amount", "Ratio"], axis='columns', inplace=True)
             print(df)
             save_path = "%s/%s_stats_result.xlsx" % (self.save_dir, info)
@@ -182,8 +195,10 @@ class StatisticsManager():
         closedvru_df = self.df[(abs(self.df.x) < 8) & (abs(self.df.y) <10) & (self.df.class_name.isin(["pedestrian", "tricycle", "rider"]))]  
         closedvru_df_frame = set(closedvru_df.json_path.to_list())
         
-        res_pd = pd.DataFrame({"bbox_number":[len(bigcar_df), len(closedvru_df)], 
-                                "frame_number": [len(bigcar_df_frame), len(closedvru_df_frame)]})
+        res_pd = pd.DataFrame({"Amount": [len(bigcar_df_frame), len(closedvru_df_frame)],
+                                "Ratio": [(len(bigcar_df_frame)/self.total_frames_number), (len(closedvru_df_frame)/self.total_frames_number)],
+                                "Bbox_Amount": [len(bigcar_df), len(closedvru_df)],
+                                })
         res_pd.index = ["bigcar", "closedvru"]
         print(res_pd)
         save_path = "%s/scenario_stats_result.xlsx" % self.save_dir

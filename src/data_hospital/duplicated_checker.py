@@ -37,21 +37,21 @@ class DuplicatedChecker():
             
         self.json_paths = self.json_paths_ori + self.json_paths_new
         
-        self.nodup_jsons = self.json_duplicated()
-        self.nodup_jsons_new = self.nodup_jsons - set(self.json_paths_ori) - set(self.dup_jsons)
+        # self.nodup_jsons = self.json_duplicated()
+        # self.nodup_jsons_new = self.nodup_jsons - set(self.json_paths_ori) - set(self.dup_jsons)
         
-        if self.PKL_READY:
-            self.ORI_DATA = pd.read_pickle(self.ORI_PKL_PATH)
-        else:
-            res_dict = defaultdict(list)            
-            self.ORI_DATA = self.map_loader(res_dict, self.nodup_jsons)
-            self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
+        # if self.PKL_READY:
+        #     self.ORI_DATA = pd.read_pickle(self.ORI_PKL_PATH)
+        # else:
+        #     res_dict = defaultdict(list)            
+        #     self.ORI_DATA = self.map_loader(res_dict, self.nodup_jsons)
+        #     self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
         
-        if self.method == "total" or len(self.nodup_jsons_new) == 0:
-            self.TOTAL_DATA = self.ORI_DATA
-        else:            
-            self.TOTAL_DATA = self.map_loader(self.ORI_DATA, self.nodup_jsons_new)    
-            self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
+        # if self.method == "total" or len(self.nodup_jsons_new) == 0:
+        #     self.TOTAL_DATA = self.ORI_DATA
+        # else:            
+        #     self.TOTAL_DATA = self.map_loader(self.ORI_DATA, self.nodup_jsons_new)    
+        #     self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
                 
     
     def json_duplicated(self,) -> set:
@@ -149,9 +149,9 @@ class DuplicatedChecker():
         
         
     def self_diagnose(self,) -> None:
-        dup_dict = self.self_duplicated_finder(self.ORI_DATA, self.stats_dict)
-        self.time_checker(dup_dict)
-        self.save_results()
+        # dup_dict = self.self_duplicated_finder(self.ORI_DATA, self.stats_dict)
+        # self.time_checker(dup_dict)
+        # self.save_results()
         self.build_logical_df()
 
 

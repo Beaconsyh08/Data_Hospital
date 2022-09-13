@@ -1,9 +1,9 @@
 cards_conf:
-  - file_name: /data_path/vehicle_test.txt
-    cards:
-    - card_id: 631b03381e394bbe536bc967
-      media_name: side
-      project: icu30
+  # - file_name: /data_path/vehicle_test.txt
+  #   cards:
+  #   - card_id: 631b03381e394bbe536bc967
+  #     media_name: side
+  #     project: icu30
 
   # - file_name: /data_path/yayun_test.txt
   #   cards:
@@ -36,37 +36,21 @@ cards_conf:
   #     project: icu30
 
 
-  # - file_name: /data_path/v71_train.txt
-  #   cards:
-  #   - card_id: 62e9100e2f748ee9eddd7b08
-  #     media_name: side_cam_v71
-  #     project: icu30
-  #   - card_id: 62e90fea2f748ee9edd44f44
-  #     media_name: side_cam_v71
-  #     project: icu30
-  #   - card_id: 62e90fc32f748ee9edcb1f1f
-  #     media_name: side_cam_v71
-  #     project: icu30
-  #   - card_id: 62e90f9c2f748ee9edc1f404
-  #     media_name: side_cam_v71
-  #     project: icu30
+  - file_name: /data_path/v71_train.txt
+    cards:
+    - card_id: 62e9100e2f748ee9eddd7b08
+      media_name: side_cam_v71
+      project: icu30
+    - card_id: 62e90fea2f748ee9edd44f44
+      media_name: side_cam_v71
+      project: icu30
+    - card_id: 62e90fc32f748ee9edcb1f1f
+      media_name: side_cam_v71
+      project: icu30
+    - card_id: 62e90f9c2f748ee9edc1f404
+      media_name: side_cam_v71
+      project: icu30
 
-
-
-  # - file_name: /data_path/train31_total.txt
-  #   cards:
-  #   - card_id: 63043bf2232e1c5fe2c6ca0d
-  #     media_name: side_cam
-  #     project: icu30
-  #   - card_id: 63037d0a0050048827eb2fa6
-  #     media_name: side_cam
-  #     project: icu30
-
-  # - file_name: /data_path/train31_cases.txt
-  #   cards:
-  #   - card_id: 6303a20d2c3d13bcb7b26c8a
-  #     media_name: cases
-  #     project: qa
 
   # - file_name: /data_path/227_cases.txt
   #   cards:
@@ -85,75 +69,6 @@ cards_conf:
   #   - card_id: 62f61a8bee3bc1b91e6dcc80
   #     media_name: cases
   #     project: qa
-
-  # - file_name: /data_path/v31_control.txt
-  #   cards:
-  #   - card_id: 6303316729bcafb90aa1ae22
-  #     media_name: cases
-  #     project: qa  
-      
-  # - file_name: /data_path/v31_.txt
-  #   cards:
-  #   - card_id: 63032c7329bcafb90a8fb067
-  #     media_name: cases
-  #     project: qa
-
-
-      
-  
-  # - file_name: /data_path/gt_qa_tunnel_new_2.txt
-  #   cards:
-  #   - card_id: 62b044233b9b8671dd276573
-  #     media_name: tunnel
-  #     project: icu30
-
-  # - file_name: /data_path/dt_qa_tunnel_new_2.txt
-  #   cards:
-  #   - card_id: 62f3b4482dcbdc786a6987f5
-  #     media_name: tunnel_107w_dt
-  #     project: icu30
-
-  # - file_name: /data_path/gt_night_new_2.txt
-  #   cards:
-  #   - card_id: 62f395222dcbdc786a5dca98
-  #     media_name: qa
-  #     project: icu30
-
-  # - file_name: /data_path/dt_night_new_2.txt
-  #   cards:
-  #   - card_id: 62f3b4972dcbdc786a699639
-  #     media_name: night_107w_dt
-  #     project: icu30
-
-  # - file_name: /data_path/gt_gen_new_2.txt
-  #   cards:
-  #   - card_id: 62f3b5052dcbdc786a6a66cf
-  #     media_name: city_107w_gt
-  #     project: icu30
-
-  # - file_name: /data_path/dt_gen_new_2.txt
-  #   cards:
-  #   - card_id: 62f3b54e2dcbdc786a6ab487
-  #     media_name: city_107w_dt
-  #     project: icu30
-
-  # - file_name: /data_path/test0809.txt
-  #   cards:
-  #   - card_id: 62f1f4336844083467abd6ca
-  #     media_name: front_cam
-  #     project: icu30 
-  # - file_name: /data_path/traffic_cone_test.txt
-  #   cards:
-  #   - card_id: 62f26b22684408346766198d
-  #     media_name: traffic_cone
-  #     project: icu30 
-  # - file_name: /data_path/sidecam_3.1.txt
-  #   cards:
-  #   - card_id: 62f1fcc36844083467ca8224
-  #     media_name: side_cam
-  #     project: icu30 
-
-
 
 
   # - file_name: /data_path/qa_cmh.txt
@@ -363,57 +278,6 @@ cards_conf:
   #     project: icu30
 
 
-#   - file_name: /data_path/225_badcase.txt
-#     cards:
-#     - card_id: 62e3cb79816abb57511de267
-#       media_name: cases
-#       project: qa 
-
-#   - file_name: /data_path/226_badcase.txt
-#     cards:
-#     - card_id: 62e3cb9c8c91eeeef47d3a8b
-#       media_name: cases
-#       project: qa  
-
-
-#   - file_name: /data_path/2211_dt.txt
-#     cards:
-#     - card_id: 62e77629c0cd5161e2027ff2
-#       media_name: 0609_SIDECAM
-#       project: qa
-
-  # - file_name: /data_path/226_dt.txt
-  #   cards:
-  #   - card_id: 62e28386516a7251afb58ec1
-  #     media_name: 0728_SIDECAM
-  #     project: qa  
-
-
-#   # - file_name: /data_path/0630qa.txt
-#   #   cards:
-#   #   - card_id: 62bd4f3d1fa8eb32d95da52d
-#   #     media_name: qa
-#   #     project: icu30
-      
-#   # - file_name: /data_path/0519qa.txt
-#   #   cards:
-#   #   - card_id: 62bd4fd78e1fe7f8baed8aa3
-#   #     media_name: qa
-#   #     project: icu30
-
-
-#   # - file_name: /data_path/0630night.txt
-#   #   cards:
-#   #   - card_id: 62c6cf07e2f763291f327323
-#   #     media_name: qa
-#   #     project: icu30
-      
-#   # - file_name: /data_path/0519night.txt
-#   #   cards:
-#   #   - card_id: 62c6cebb3761f122afca4c3d
-#   #     media_name: qa
-#   #     project: icu30
-
   # - file_name: /data_path/qa_beibao.txt
   #   cards:
   #   - card_id: 6298c5224db89afdac1e41c8
@@ -522,65 +386,6 @@ cards_conf:
 #   #     media_name: qa
 #   #     project: syh_exp
 
-
-#   # - file_name: /data_path/0519bigcar.txt
-#   #   cards:
-#   #   - card_id: 62bd43ac1fa8eb32d92c7fd3
-#   #     media_name: qa_bigcar_139w
-#   #     project: icu30
-
-#   # - file_name: /data_path/0630bigcar.txt
-#   #   cards:
-#   #   - card_id: 62bc074c1fa8eb32d9622517
-#   #     media_name: qa_bigcar_230w
-#   #     project: icu30
-
-#   # - file_name: /data_path/0519.txt
-#   #   cards:
-#   #   - card_id: 62ac9ac522f7a6d0245ad5e9
-#   #     media_name: data_total
-#   #     project: syh_exp
-#   #   - card_id: 62ac9aac22f7a6d02451a977
-#   #     media_name: data_total
-#   #     project: syh_exp
-#   #   - card_id: 62ac9a8f22f7a6d024487e96
-#   #     media_name: data_total
-#   #     project: syh_exp
-#   #   - card_id: 62ac9aff22f7a6d0245dceaa
-#   #     media_name: data_total
-#   #     project: syh_exp
-      
-#   # - file_name: /data_path/0630.txt
-#   #   cards:
-#   #   - card_id: 62af100022f7a6d02460b2f8
-#   #     media_name: clean_20
-#   #     project: icu30 
-#   #   - card_id: 62af0cba22f7a6d0245daf7b
-#   #     media_name: clean_20
-#   #     project: icu30 
-#   #   - card_id: 62af023122f7a6d0245d0889
-#   #     media_name: clean_20
-#   #     project: icu30 
-#   #   - card_id: 62aeff0622f7a6d0245a86bb
-#   #     media_name: clean_20
-#   #     project: icu30 
-#   #   - card_id: 62ac9ac522f7a6d0245ad5e9
-#   #     media_name: data_total
-#   #     project: syh_exp 
-#   #   - card_id: 62ac9aac22f7a6d02451a977
-#   #     media_name: data_total
-#   #     project: syh_exp     
-#   #   - card_id: 62ac9a8f22f7a6d024487e96
-#   #     media_name: data_total
-#   #     project: syh_exp     
-#   #   - card_id: 62ac9aff22f7a6d0245dceaa
-#   #     media_name: data_total
-#   #     project: syh_exp     
-#   #   - card_id: 62aca26f22f7a6d02469d515
-#   #     media_name: data_total
-#   #     project: syh_exp 
-
-
 #   # - file_name: /data_path/exp_qa.txt
 #   #   cards:
 #   #   - card_id: 62c81196cc052738308c6977
@@ -591,95 +396,6 @@ cards_conf:
 #   #   cards:
 #   #   - card_id: 62c811abcc052738308ca069
 #   #     media_name: self_qa
-#   #     project: icu30
-
-
-#   # - file_name: /data_path/qa_all_data2.txt
-#   #   cards:
-#     # - card_id: 62c2b1cae05307228ba7130f
-#     #   media_name: side_cam
-#     #   project: ori
-#     # - card_id: 62c2b1abe05307228b9dde83
-#     #   media_name: side_cam
-#     #   project: ori
-#     # - card_id: 62c2b23de05307228bb5ddd3
-#     #   media_name: side_cam
-#     #   project: ori
-#     # - card_id: 62c2b221e05307228baca3a1
-#     #   media_name: side_cam
-#     #   project: ori
-#     # - card_id: 62c3e7327f2d00be3451457a
-#     #   media_name: side_cam
-#     #   project: ori
-#     # - card_id: 62c652c312d7beae398237ac
-#     #   media_name: side_cam
-#     #   project: icu30
-#     # - card_id: 62bb1d0fddf478154f854b51
-#     #   media_name: front_middle_v30
-#     #   project: icu30
-#     # - card_id: 62c64f5f526a0e03d36c13aa
-#     #   media_name: front_cam
-#     #   project: icu30
-#     # - card_id: 62bb1c8cddf478154f8070d2
-#     #   media_name: rear_middle_v30
-#     #   project: icu30
-#     # - card_id: 62c6513b12d7beae397e97e6
-#     #   media_name: rear_cam
-#     #   project: icu30
-#     # - card_id: 62c3e7997f2d00be346296b9
-#     #   media_name: side_cam
-#     #   project: ori
-#     # - card_id: 62c3e77e7f2d00be3458f368
-#     #   media_name: side_cam
-#     #   project: ori
-#     # - card_id: 62cecfed0a4bcd0612271fed
-#     #   media_name: side_cam
-#     #   project: icu30
-#     # - card_id: 62c5afcf526a0e03d32a60d8
-#     #   media_name: side_cam
-#     #   project: icu30
-#   #   - card_id: 62bb30f1ddf478154fa9c11a
-#   #     media_name: front_middle_v30
-#   #     project: icu30
-#   #   - card_id: 62c58ce47f2d00be34f7f262
-#   #     media_name: front_cam
-#   #     project: icu30
-#   #   - card_id: 62bb2f5fddf478154fa369c4
-#   #     media_name: rear_middle_v30
-#   #     project: icu30
-#   #   - card_id: 62c6533712d7beae3983760c
-#   #     media_name: rear_cam
-#   #     project: icu30
-
-
-#   # - file_name: /data_path/all_qa_res.txt
-#   #   cards:
-#   #   - card_id: 62c153360e9ad5740a0a8fb0
-#   #     media_name: qa_train_data
-#   #     project: icu30
-#   #   - card_id: 62c175b1e05307228b2a261e
-#   #     media_name: qa_train_data
-#   #     project: icu30
-#   #   - card_id: 62c3067f9a66976862a945c7
-#   #     media_name: qa_train_data
-#   #     project: icu30
-#   #   - card_id: 62c2aef9e05307228b9982e1
-#   #     media_name: qa_train_data
-#   #     project: icu30
-#   #   - card_id: 62c2a146e05307228b7e7d16
-#   #     media_name: qa_train_data
-#   #     project: icu30
-#   #   - card_id: 62c15be60e9ad5740a0d375c
-#   #     media_name: qa_train_data
-#   #     project: icu30
-#   #   - card_id: 62c3f09b7f2d00be348b853c
-#   #     media_name: qa_train_data
-#   #     project: icu30
-#   #   - card_id: 62d42c1fcc05273830b719e4
-#   #     media_name: qa_train_data
-#   #     project: icu30
-#   #   - card_id: 62d428b7cc05273830b3b8f2
-#   #     media_name: qa_train_data
 #   #     project: icu30
 
 
@@ -758,31 +474,7 @@ cards_conf:
 #   #   - card_id: 62d561ae0a4bcd0612e43823
 #   #     media_name: side_cam_v50
 #   #     project: icu30
-      
-#   # - file_name: /data_path/qa_new.txt
-#   #   cards:
-#   #   - card_id: 62d650d20a4bcd061231962d
-#   #     media_name: side_cam_v50
-#   #     project: icu30
-#   #   - card_id: 62d650b40a4bcd061227862a
-#   #     media_name: side_cam_v50
-#   #     project: icu30
-#   #   - card_id: 62d5620a0a4bcd0612fae54e
-#   #     media_name: side_cam_v50
-#   #     project: icu30
-#   #   - card_id: 62d561ea0a4bcd0612f1bd4f
-#   #     media_name: side_cam_v50
-#   #     project: icu30
-#   #   - card_id: 62d561910a4bcd0612de5dde
-#   #     media_name: side_cam_v50
-#   #     project: icu30
-#   #   - card_id: 62d561d20a4bcd0612ed6022
-#   #     media_name: side_cam_v50
-#   #     project: icu30
-#   #   - card_id: 62d561ae0a4bcd0612e43823
-#   #     media_name: side_cam_v50
-#   #     project: icu30
-      
+  
 
 #   # - file_name: /data_path/v50_front.txt
 #   #   cards:

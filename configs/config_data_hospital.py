@@ -1,4 +1,4 @@
-NAME = "v71_test"
+NAME = "v71_train"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
@@ -22,8 +22,8 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    MODULES = ["Duplicated", "Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
-    # MODULES = ["Duplicated"]
+    # MODULES = ["Duplicated", "Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    MODULES = ["Duplicated"]
     EVALUATOR = "LUCAS"
     ORIENTATION = "SIDE"
     COOR = "Lidar"
