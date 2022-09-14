@@ -11,6 +11,7 @@ import os
 import math
 from concurrent.futures import ThreadPoolExecutor
 import warnings
+from src.data_manager.data_manager import load_from_pickle
 warnings.filterwarnings("ignore")
 from src.utils.logger import get_logger
 import pandas as pd
@@ -33,6 +34,7 @@ class CalibrationChecker():
         self.threshold = cfg.THRESHOLD
         self.txt_paths = [self.load_path + "/" + _ for _ in os.listdir(self.load_path)]
         self.res_pd = pd.DataFrame()
+        self.prob_lst = []
         
 
 # 获取相机标定参数
@@ -695,6 +697,7 @@ class CalibrationChecker():
                         with open(key) as input_file:
                             for line in input_file:
                                 prob_file.write(line)
+                                self.prob_lst.append(line)
                                 prob += 1
         
         self.logger.debug("\nClean Frame: %d \nProb Frame: %d" % (clean, prob))
@@ -705,6 +708,19 @@ class CalibrationChecker():
         self.res_pd["Mean Iou"].hist(bins=20).get_figure().savefig(hist_path)
         self.logger.debug("Result Stats Has Been Saved in: %s" % excel_path)
     
+    
+    def save_dataframes(self,):
+        self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        self.df["calibration_error"] = 0
+        
+        df_error = self.df[self.df.json_path.isin(self.prob_lst)]
+        
+        df_error["calibration_error"] = 1
+        cali_dict = df_error.calibration_error.to_dict()
+        self.df['calibration_error'] = [cali_dict.get(_, None) for _ in self.df.index]
+        
+        self.save_to_pickle(self.df, self.cfg.DATAFRAME_PATH)
+        
     
     def diagnose(self,):
         # tag = 'label'  # 'inference'

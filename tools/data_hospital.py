@@ -16,37 +16,38 @@ class DataHospital():
         
     def run(self, ) -> None:
         
-        logger.critical("Data Hospital I Running")
+        logger.critical("Data Checking I Running")
         logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
         
         if "Duplicated" in self.modules:
-            logger.critical("Duplicated Checker Diagnosing")
+            logger.critical("Duplicated Checker Running")
             duplicated_checker = DuplicatedChecker(DuplicatedCheckerConfig)
             duplicated_checker.self_diagnose()
         
         if "Logical" in self.modules:
-            logger.critical("Logical Checker Diagnosing")
+            logger.critical("Logical Checker Running")
             logical_checker = LogicalChecker(LogicalCheckerConfig)
             logical_checker.diagnose()
             logical_checker.txt_for_reproejct()
             
         if "Calibration" in self.modules:
-            logger.critical("Calibration Checker Diagnosing")
+            logger.critical("Calibration Checker Running")
             calibration_checker = CalibrationChecker(CalibrationCheckerConfig)
             calibration_checker.diagnose()
         
         if DataHospitalConfig.COOR == "Lidar":
             if "CoordinateConverter" in self.modules:
-                logger.critical("Coor Trans Checker Diagnosing")
+                logger.critical("Coor Converter Running")
                 coordinate_converter = CoordinateConverter(CoordinateConverterConfig)
                 coordinate_converter.diagnose()
         elif DataHospitalConfig.COOR == "Vehicle":
             if "CoordinateConverter" in self.modules:
+                logger.critical("Coor Converter Running")
                 os.makedirs(CoordinateConverterConfig.OUTPUT_DIR, exist_ok=True)
                 os.system("cp %s %s" % (CoordinateConverterConfig.INPUT_PATH, CoordinateConverterConfig.OUTPUT_PATH))
             
         
-        logger.critical("Data Hospital I Completed")
+        logger.critical("Data Checking I Completed")
         
 
 if __name__ == '__main__':

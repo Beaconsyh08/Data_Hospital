@@ -502,7 +502,7 @@ class DataManager:
         MAX_DF_LEN = 400000
         DF_NUMBER = int(len(json_paths) / MAX_DF_LEN) + 1
         self.logger.debug("Split to %d DataFrame to Loading" % DF_NUMBER)
-        temp_dir = "/root/data_hospital_data/temp_dataframes"
+        temp_dir = self.cfg.TEMP_DIR
         os.makedirs(temp_dir, exist_ok=True)
         def group_elements(n, iterable, padvalue=None):
             return zip_longest(*[iter(iterable)]*n, fillvalue=padvalue)
@@ -521,7 +521,9 @@ class DataManager:
         
         total_df_lst = []
         for df_ind in tqdm(range(self.total_df_number), desc="Concatenating DataFrames"):
-            total_df_lst.append(load_from_pickle("%s/%d.pkl" % (temp_dir, df_ind)))
+            df_path = "%s/%d.pkl" % (temp_dir, df_ind)
+            print(df_path)
+            total_df_lst.append(load_from_pickle(df_path))
         self.df = pd.concat(total_df_lst)
         print(self.df)
             
@@ -662,5 +664,9 @@ def load_from_pickle(load_path: str, dforinfo: str = "df") -> pd.DataFrame or di
     """
     
     with open(load_path, "rb") as pickle_file:
-        return pickle.load(pickle_file)[dforinfo]
+        pickle_obj = pickle.load(pickle_file)
+        if type(pickle_obj) == dict:
+            return pickle_obj[dforinfo]
+        else:
+            return pickle_obj
     

@@ -1,6 +1,7 @@
 import pandas as pd    
 import threading
-import os 
+import os
+from src.data_manager.data_manager import load_from_pickle 
 from src.utils.struct import Obstacle, parse_obs
 from pathlib import Path
 from src.visualization.visualization import Visualizer
@@ -15,14 +16,12 @@ class MatchingChecker():
     def __init__(self, cfg: dict) -> None:
         self.cfg = cfg
         self.logger = get_logger()
-        self.df = pd.read_pickle(self.cfg.BADCASE_DATAFRAME_PATH_DMISS)        
+        self.df_path = self.cfg.BADCASE_DATAFRAME_PATH
+        self.df = load_from_pickle(self.df_path)
         self.logger.info("Bad Case DataFrame Loaded")
-        
         self.save_dir = cfg.SAVE_DIR
         os.makedirs(self.save_dir, exist_ok=True)
-        
         self.vis = cfg.VIS
-        self.new_df_path = cfg.BADCASE_DATAFRAME_PATH_DMATCH
             
             
     def save_to_pickle(self, pickle_obj: dict, save_path: str) -> None:
@@ -33,30 +32,41 @@ class MatchingChecker():
     def result_output(self, jsons: set, save_name: str):
         with open("%s/%s.txt" % (self.save_dir, save_name), "w") as to_del_file:
             for json_path in tqdm(jsons):
-                with open(json_path) as f:
-                    json_obj = json.load(f)
-                    to_del_file.writelines(json_obj["ori_path"] + "\n")
+                to_del_file.writelines(json_path + "\n")
                     
     
     def rules_decider(self,) -> set:
         df_miss = self.df[((self.df['flag'] == 'miss') & (self.df['case_flag']=='0')) & (self.df['priority'] == 'P0')]
         self.df_selected = df_miss[(df_miss.dis_ratio > 0.5) & (df_miss.euclidean_dis_diff > 5)]
         
-        matching_jsons = set(self.df_selected.json_path)
+        self.df_selected["matching_error"] = 1
+        self.matching_dict = self.df_selected.matching_error.to_dict()
+        self.df['matching_error'] = [self.matching_dict.get(_, 0) for _ in self.df.index]
+        
+        matching_jsons = set(self.df_selected.ori_path)
         self.logger.debug("2D3D Matching Frame Number: %d" % len(matching_jsons))
         
-        new_df = self.df[~self.df.json_path.isin(matching_jsons)]
-        self.save_to_pickle(new_df, self.new_df_path)
+        self.save_to_pickle(self.df, self.df_path)
         
         return matching_jsons
+    
+    
+    def save_result_to_ori_df(self,):
+        df_selected_ori = self.df_selected.set_index("ori_path")
+        matching_dict = df_selected_ori.to_dict()
+        ori_df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        ori_df["matching_error"] = [matching_dict.get(_, 0) for _ in ori_df.index]
+        self.save_to_pickle(ori_df, self.cfg.DATAFRAME_PATH)
+        self.logger.debug("Update Result to Ori DataFrame: %s" % self.cfg.DATAFRAME_PATH)
     
     
     def diagnose(self,):
         matching_jsons = self.rules_decider()
         self.result_output(matching_jsons, "matching_error")    
-        total_jsons = set(self.df.json_path)
+        total_jsons = set(self.df.ori_path)
         clean_jsons = total_jsons - matching_jsons
         self.result_output(clean_jsons, "clean")
+        self.save_result_to_ori_df()
         if self.vis:
             self.visualization(self.df_selected.sample(500))
         

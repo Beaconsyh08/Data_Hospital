@@ -200,6 +200,7 @@ class QaCam3dManager(DataManager):
         res["camera_type"] = json_info["camera_type"]
         res["img_url"] = json_info["imgUrl"]
         res["producer"] = json_info["producer"]
+        res["ori_path"] = json_info.get("ori_path") 
         # Convert the Unix Time to Local Date Time, ignore microsecond
         # date_time = datetime.fromtimestamp(int(str()[:10]))
         # res["date"] = date_time.date()
@@ -272,6 +273,7 @@ class QaCam3dManager(DataManager):
         res_obj["camera_orientation"] = objs_info["camera_orientation"]
         res_obj["camera_type"] = objs_info["camera_type"]
         res_obj["producer"] = objs_info["producer"]
+        res_obj["ori_path"] = objs_info["ori_path"]
         res_obj["date"] = objs_info["date"]
         res_obj["time"] = objs_info["time"]
         res_obj["case_flag"] = case_flag

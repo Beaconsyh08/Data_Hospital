@@ -36,20 +36,20 @@ cards_conf:
   #     project: icu30
 
 
-  - file_name: /data_path/v71_train.txt
-    cards:
-    - card_id: 62e9100e2f748ee9eddd7b08
-      media_name: side_cam_v71
-      project: icu30
-    - card_id: 62e90fea2f748ee9edd44f44
-      media_name: side_cam_v71
-      project: icu30
-    - card_id: 62e90fc32f748ee9edcb1f1f
-      media_name: side_cam_v71
-      project: icu30
-    - card_id: 62e90f9c2f748ee9edc1f404
-      media_name: side_cam_v71
-      project: icu30
+  # - file_name: /data_path/v71_train.txt
+  #   cards:
+  #   - card_id: 62e9100e2f748ee9eddd7b08
+  #     media_name: side_cam_v71
+  #     project: icu30
+  #   - card_id: 62e90fea2f748ee9edd44f44
+  #     media_name: side_cam_v71
+  #     project: icu30
+  #   - card_id: 62e90fc32f748ee9edcb1f1f
+  #     media_name: side_cam_v71
+  #     project: icu30
+  #   - card_id: 62e90f9c2f748ee9edc1f404
+  #     media_name: side_cam_v71
+  #     project: icu30
 
 
   # - file_name: /data_path/227_cases.txt
@@ -190,38 +190,38 @@ cards_conf:
 #   #     project: icu30
 
 
-  # - file_name: /data_path/sidecam_ori.txt
-  #   cards:
-  #   - card_id: 62c3e77e7f2d00be3458f368
-  #     media_name: side_cam
-  #     project: ori 
-  #   - card_id: 62c3e7997f2d00be346296b9
-  #     media_name: side_cam
-  #     project: ori 
-  #   - card_id: 62cecfed0a4bcd0612271fed
-  #     media_name: side_cam
-  #     project: icu30 
-  #   - card_id: 62c5afcf526a0e03d32a60d8
-  #     media_name: side_cam
-  #     project: icu30
-  #   - card_id: 62c3e7327f2d00be3451457a
-  #     media_name: side_cam
-  #     project: ori
-  #   - card_id: 62c652c312d7beae398237ac
-  #     media_name: side_cam
-  #     project: icu30
-  #   - card_id: 62c2b1cae05307228ba7130f
-  #     media_name: side_cam
-  #     project: ori 
-  #   - card_id: 62c2b1abe05307228b9dde83
-  #     media_name: side_cam
-  #     project: ori 
-  #   - card_id: 62c2b23de05307228bb5ddd3
-  #     media_name: side_cam
-  #     project: ori 
-  #   - card_id: 62c2b221e05307228baca3a1
-  #     media_name: side_cam
-  #     project: ori 
+  - file_name: /data_path/sidecam_ori.txt
+    cards:
+    - card_id: 62c3e77e7f2d00be3458f368
+      media_name: side_cam
+      project: ori 
+    - card_id: 62c3e7997f2d00be346296b9
+      media_name: side_cam
+      project: ori 
+    - card_id: 62cecfed0a4bcd0612271fed
+      media_name: side_cam
+      project: icu30 
+    - card_id: 62c5afcf526a0e03d32a60d8
+      media_name: side_cam
+      project: icu30
+    - card_id: 62c3e7327f2d00be3451457a
+      media_name: side_cam
+      project: ori
+    - card_id: 62c652c312d7beae398237ac
+      media_name: side_cam
+      project: icu30
+    - card_id: 62c2b1cae05307228ba7130f
+      media_name: side_cam
+      project: ori 
+    - card_id: 62c2b1abe05307228b9dde83
+      media_name: side_cam
+      project: ori 
+    - card_id: 62c2b23de05307228bb5ddd3
+      media_name: side_cam
+      project: ori 
+    - card_id: 62c2b221e05307228baca3a1
+      media_name: side_cam
+      project: ori 
 
 
 #   - file_name: /data_path/frontcam_ori.txt

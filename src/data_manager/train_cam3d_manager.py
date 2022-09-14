@@ -83,7 +83,7 @@ class TrainCam3dManager(DataManager):
             info["camera_orientation"], info["camera_type"], info["producer"] = camera_orientation, camera_type, producer
             info["lon"], info["lat"], info["city"] = lon, lat, city
             
-            if DataHospitalConfig.ORIENTATION != "SIDE":
+            if camera_orientation in ["front_middle_camera", "rear_middle_camera"]:
                 LogicalChecker.resolution_checker(info)
             
             try:
@@ -121,13 +121,6 @@ class TrainCam3dManager(DataManager):
             info["objects_amount"] = len(objs)
 
             info["index_list"] = "/%s@%d" % (img_url, info["id"])
-            
-            info["has_error"] = 0
-            for error in LogicalCheckerConfig.ERROR_LIST:
-                if info[error] != 0:
-                    info["has_error"] = 1 
-                    break
-                    
             info["carday_id"] = car_id + "_" + str(info["date"])
                     
             total_lst.append(info)

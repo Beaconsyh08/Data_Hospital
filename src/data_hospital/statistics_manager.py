@@ -3,6 +3,7 @@ import os
 import folium
 import matplotlib.pyplot as plt
 from folium.plugins import HeatMap, MarkerCluster
+from configs.config_data_hospital import DuplicatedCheckerConfig, LogicalCheckerConfig
 from src.data_manager.data_manager import load_from_pickle
 from src.data_manager.data_manager_creator import data_manager_creator
 from src.utils.logger import get_logger
@@ -34,33 +35,33 @@ TYPE_MAP = {'car': 'car', 'van': 'car',
 class StatisticsManager():
     def __init__(self, cfg: dict) -> None:
         self.cfg = cfg
-        self.df = self.build_df()
-        # self.df = load_from_pickle("/root/data_hospital_data/v71_train/dataframes/logical_dataframe.pkl")
-        
-                
-        # import random
-        # self.sample_json = random.sample(list(set(list(self.df.json_path))), 300000)
-        # print(len(self.sample_json))
-        # self.df = self.df[self.df.json_path.isin(self.sample_json)]
-        # with open("/data_path/sample0913.txt", "w") as output_file:
-        #     for each in tqdm(self.sample_json):
-        #         output_file.writelines(each + "\n")
-        
+        self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        self.checking_stats()
         self.total_frames_number = len(set(list(self.df.json_path)))
-        
-        
         self.df['class_name_map'] = self.df['class_name'].map(TYPE_MAP)
         self.save_dir = self.cfg.SAVE_DIR
         self.logger = get_logger()
         os.makedirs(self.save_dir, exist_ok=True)
         self.logger.info("DataFrame Loaded")
 
-        
+
     def addlabels(self, x, y):
         for i in range(len(x)):
             plt.text(i, y[i], y[i], ha = 'center')
         
+    
+    def checking_stats(self,):
+        dup_jsons = [_.strip() for _ in open("%s/duplicated_jsons.txt" % DuplicatedCheckerConfig.SAVE_DIR)]
+        dup_imgs = [_.strip() for _ in open("%s/duplicated_imgs.txt" % DuplicatedCheckerConfig.SAVE_DIR)]
+        ori_empty = [_.strip() for _ in open("%s/empty.txt" % LogicalCheckerConfig.SAVE_DIR)]
+        checked_jsons = set(list(self.df.json_path))
         
+        print(len(dup_jsons))
+        print(len(dup_imgs))
+        print(len(ori_empty))
+        print(len(checked_jsons))
+    
+    
     def city_stats(self,):
         frame_df = self.df.groupby(["json_path", "city"]).size().unstack(fill_value=0)
         city_lst = frame_df.columns.to_list()
@@ -209,7 +210,8 @@ class StatisticsManager():
     def build_df(self, ) -> pd.DataFrame:
         dm = data_manager_creator(self.cfg)
         dm.load_from_json()
-        dm.save_to_pickle(self.cfg.VIS_DATAFRAME_PATH)
+        dm.save_to_pickle(self.cfg.FINAL_DATAFRAME_PATH)
+        
         return dm.df
     
     

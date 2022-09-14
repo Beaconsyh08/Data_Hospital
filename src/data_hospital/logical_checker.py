@@ -8,7 +8,9 @@ import math
 import pandas as pd
 import tqdm
 from configs.config import (OutputConfig, CalibrationCheckerConfig, VisualizationConfig, CoordinateConverterConfig, LogicalCheckerConfig)
+from configs.config_data_hospital import DataHospitalConfig
 from src.data_hospital.coordinate_converter import CoordinateConverter
+from src.data_manager.data_manager import load_from_pickle
 from src.utils.logger import get_logger
 from src.utils.struct import parse_obs
 from src.visualization.visualization import Visualizer
@@ -23,7 +25,7 @@ class LogicalChecker():
     def __init__(self, cfg: dict) -> None:
         self.logger = get_logger()
         self.cfg = cfg       
-        self.df = pd.read_pickle(self.cfg.LOGICAL_DATAFRAME_PATH)["df"]
+        self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
         
         with open(cfg.JSON_PATH) as total_file:
             self.total_frames = set([_.strip() for _ in total_file])
@@ -42,7 +44,7 @@ class LogicalChecker():
         self.res_dict = dict()
         self.online = cfg.ONLINE
         self.empty_frames = []
-        self.error_list = ["bbox_error", "coor_error"]
+        self.error_list = self.cfg.ERROR_LIST
         self.vis = cfg.VIS
         self.coor = cfg.COOR
         
@@ -180,11 +182,10 @@ class LogicalChecker():
 
                 
     def txt_for_reproejct(self, ) -> None:
-        df_calibration = pd.read_pickle(CalibrationCheckerConfig.CALIBRATION_DATAFRAME_PATH)["df"]
-        carday_ids = set(df_calibration.carday_id)
+        carday_ids = set(self.df.carday_id)
         self.logger.debug("Calibration Ready File Has Been Saved in %s" % CalibrationCheckerConfig.LOAD_PATH)
         for carday_id in tqdm.tqdm(carday_ids, desc="Spliting Json Paths Based on CarDay"):
-            json_paths = list(set(df_calibration[df_calibration['carday_id'] == carday_id].json_path.tolist()))
+            json_paths = list(set(self.df[self.df['carday_id'] == carday_id].json_path.tolist()))
             shutil.os.makedirs(CalibrationCheckerConfig.LOAD_PATH, exist_ok=True)
             with open("%s/%s.txt" % (CalibrationCheckerConfig.LOAD_PATH, carday_id), "w") as output_file:
                 for json_path in json_paths:
@@ -238,19 +239,9 @@ class LogicalChecker():
                         output_file.writelines(info)
                             
     
-    def construct_calibration_dataframe(self, ) -> None:
-        reporject_df = self.df[~self.df.json_path.isin(self.df[self.df.has_error == 1].json_path)]
-        pickle_obj = {"info": {}, "df": reporject_df}
-        with open(CalibrationCheckerConfig.CALIBRATION_DATAFRAME_PATH, "wb") as pickle_file: 
-            pickle.dump(pickle_obj, pickle_file)
-        
-        self.logger.critical("DataFrame Saved: %s" % CalibrationCheckerConfig.CALIBRATION_DATAFRAME_PATH)
-        
-                
     def diagnose(self,):
         self.instance_erros()
         self.frame_errors()
-        self.construct_calibration_dataframe()
         
         if self.vis:
             self.visualization(100)
@@ -447,7 +438,7 @@ class LogicalChecker():
             
 if __name__ == '__main__':
     logical_checker = LogicalChecker(LogicalCheckerConfig)
-    logical_checker.df = pd.read_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/calibration_dataframe.pkl")["df"]
+    logical_checker.df = load_from_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/calibration_dataframe.pkl")
     if logical_checker.vis:
         logical_checker.visualization(100)
         

@@ -25,7 +25,7 @@ def card_generator(k: int, project: str, media_name: str, paths: list):
         
             print("Card ID: %s, Project: %s, Media Name: %s, Frame Amount: %d" % (str(card_id_train), str(project), str(media_name), len(clean_lst)))
 
-PATHS = ['/root/data_hospital_data/v71_2000/coordinate_converter/to_be_inf.txt']
+PATHS = ['/data_path/v71_train_30W.txt']
 K = 600000
 PROJECT = "icu30"
 MEDIA_NAME = "side"

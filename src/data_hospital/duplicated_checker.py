@@ -7,6 +7,7 @@ from collections import Counter, defaultdict
 from multiprocessing.pool import ThreadPool
 
 import pandas as pd
+from src.data_manager.data_manager import load_from_pickle
 from src.utils.logger import get_logger
 from configs.config import LogicalCheckerConfig
 from src.data_manager.data_manager_creator import data_manager_creator
@@ -16,8 +17,8 @@ from tqdm import tqdm
 class DuplicatedChecker():
     def __init__(self, cfg: dict) -> None:
         self.cfg = cfg
-        self.ROOT_PATH = "%s/duplicated_checker" % cfg.ROOT
-        os.makedirs(self.ROOT_PATH, exist_ok=True)
+        self.save_dir = self.cfg.SAVE_DIR
+        os.makedirs(self.save_dir, exist_ok=True)
         self.logger = get_logger()
 
         self.NEW_DATA_PATH = cfg.JSON_PATH
@@ -26,7 +27,7 @@ class DuplicatedChecker():
         self.ORI_PKL_PATH = cfg.ORI_PKL_PATH
         self.SAVE_PKL_PATH = cfg.SAVE_PKL_PATH
         self.stats_dict = dict()
-        self.to_del_paths = []
+        # self.to_del_paths = []
         self.method = cfg.METHOD.lower()
         
         self.json_paths_ori = [_.strip() for _ in list(open(self.ORI_DATA_PATH, "r"))]
@@ -37,27 +38,27 @@ class DuplicatedChecker():
             
         self.json_paths = self.json_paths_ori + self.json_paths_new
         
-        # self.nodup_jsons = self.json_duplicated()
-        # self.nodup_jsons_new = self.nodup_jsons - set(self.json_paths_ori) - set(self.dup_jsons)
+        self.nodup_jsons = self.json_duplicated()
+        self.nodup_jsons_new = self.nodup_jsons - set(self.json_paths_ori) - set(self.dup_jsons)
         
-        # if self.PKL_READY:
-        #     self.ORI_DATA = pd.read_pickle(self.ORI_PKL_PATH)
-        # else:
-        #     res_dict = defaultdict(list)            
-        #     self.ORI_DATA = self.map_loader(res_dict, self.nodup_jsons)
-        #     self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
+        if self.PKL_READY:
+            self.ORI_DATA = load_from_pickle(self.ORI_PKL_PATH)
+        else:
+            res_dict = defaultdict(list)            
+            self.ORI_DATA = self.map_loader(res_dict, self.nodup_jsons)
+            self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
         
-        # if self.method == "total" or len(self.nodup_jsons_new) == 0:
-        #     self.TOTAL_DATA = self.ORI_DATA
-        # else:            
-        #     self.TOTAL_DATA = self.map_loader(self.ORI_DATA, self.nodup_jsons_new)    
-        #     self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
+        if self.method == "total" or len(self.nodup_jsons_new) == 0:
+            self.TOTAL_DATA = self.ORI_DATA
+        else:            
+            self.TOTAL_DATA = self.map_loader(self.ORI_DATA, self.nodup_jsons_new)    
+            self.save_to_pickle(self.ORI_DATA, self.SAVE_PKL_PATH)
                 
     
     def json_duplicated(self,) -> set:
         nodup_paths = set(self.json_paths)
-        self.dup_jsons = [_ for _, count in Counter(self.json_paths).items() if count > 1]
-        self.to_del_paths += self.dup_jsons
+        self.dup_jsons = set([_ for _, count in Counter(self.json_paths).items() if count > 1])
+        # self.to_del_paths += self.dup_jsons
         self.logger.debug("Duplicated Json Number: %d" % len(self.dup_jsons))
         self.stats_dict["dup_json"] = len(self.dup_jsons)
         
@@ -121,21 +122,25 @@ class DuplicatedChecker():
             list(tqdm(pool.imap(worker, list(dup_dict.values())), total=len(list(dup_dict.values())), desc='ImgUrl Searching'))
             pool.terminate()
         
-        self.to_del_paths += to_del_paths
+        self.dup_imgs = set(to_del_paths)
     
     
     def save_results(self, ) -> None:
-        with open ("%s/duplicated_error.txt" % self.ROOT_PATH, "w") as to_del_file:
-            for json_path in self.to_del_paths:
+        with open ("%s/duplicated_jsons.txt" % self.save_dir, "w") as to_del_file:
+            for json_path in self.dup_jsons:
                 to_del_file.writelines(json_path + "\n")
                 
-        with open("%s/clean.txt" % self.ROOT_PATH, "w") as clean_file:
+        with open ("%s/duplicated_imgs.txt" % self.save_dir, "w") as to_del_file:
+            for json_path in self.dup_imgs:
+                to_del_file.writelines(json_path + "\n")
+                
+        with open("%s/clean.txt" % self.save_dir, "w") as clean_file:
             with open (self.ORI_DATA_PATH) as ori_file:
                 ori_jsons = [_.strip() for _ in ori_file]
                 if self.method == "total":
-                    clean_jsons = (set(ori_jsons) - set(self.to_del_paths)) | set(self.dup_jsons)
+                    clean_jsons = set(ori_jsons) - set(self.dup_imgs)
                 elif self.method == "inference":
-                    clean_jsons = (set(ori_jsons) - set(self.to_del_paths))
+                    clean_jsons = set(ori_jsons) - set(self.dup_imgs) - set(self.dup_jsons)
                 for json_path in clean_jsons:
                     clean_file.writelines(json_path + "\n")
                     
@@ -145,13 +150,13 @@ class DuplicatedChecker():
     def build_logical_df(self, ):
         dm = data_manager_creator(LogicalCheckerConfig)
         dm.load_from_json()
-        dm.save_to_pickle(self.cfg.LOGICAL_DATAFRAME_PATH)
+        dm.save_to_pickle(self.cfg.DATAFRAME_PATH)
         
         
     def self_diagnose(self,) -> None:
-        # dup_dict = self.self_duplicated_finder(self.ORI_DATA, self.stats_dict)
-        # self.time_checker(dup_dict)
-        # self.save_results()
+        dup_dict = self.self_duplicated_finder(self.ORI_DATA, self.stats_dict)
+        self.time_checker(dup_dict)
+        self.save_results()
         self.build_logical_df()
 
 
