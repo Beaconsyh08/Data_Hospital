@@ -15,6 +15,7 @@ from src.data_manager.data_manager import load_from_pickle
 warnings.filterwarnings("ignore")
 from src.utils.logger import get_logger
 import pandas as pd
+import pickle
 
 
 class CalibrationChecker():
@@ -697,7 +698,7 @@ class CalibrationChecker():
                         with open(key) as input_file:
                             for line in input_file:
                                 prob_file.write(line)
-                                self.prob_lst.append(line)
+                                self.prob_lst.append(line.strip())
                                 prob += 1
         
         self.logger.debug("\nClean Frame: %d \nProb Frame: %d" % (clean, prob))
@@ -709,15 +710,19 @@ class CalibrationChecker():
         self.logger.debug("Result Stats Has Been Saved in: %s" % excel_path)
     
     
+    def save_to_pickle(self, pickle_obj: dict, save_path: str) -> None:
+        with open(save_path, "wb") as pickle_file: 
+            pickle.dump(pickle_obj, pickle_file)
+    
     def save_dataframes(self,):
         self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
         self.df["calibration_error"] = 0
         
         df_error = self.df[self.df.json_path.isin(self.prob_lst)]
-        
+        df_error.set_index("json_path", inplace=True)
         df_error["calibration_error"] = 1
         cali_dict = df_error.calibration_error.to_dict()
-        self.df['calibration_error'] = [cali_dict.get(_, None) for _ in self.df.index]
+        self.df['calibration_error'] = [cali_dict.get(_, 0) for _ in self.df.json_path]
         
         self.save_to_pickle(self.df, self.cfg.DATAFRAME_PATH)
         
@@ -737,7 +742,9 @@ class CalibrationChecker():
         self.res_pd["Txt"] = txt_lst
         self.res_pd["Mean Iou"] = iou_lst
         self.res_pd["Count"] = count_lst
+        print("hahahaha")
         
         self.output_result()
+        self.save_dataframes()
 
         

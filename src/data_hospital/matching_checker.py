@@ -1,3 +1,4 @@
+from re import match
 import pandas as pd    
 import threading
 import os
@@ -52,8 +53,8 @@ class MatchingChecker():
     
     
     def save_result_to_ori_df(self,):
-        df_selected_ori = self.df_selected.set_index("ori_path")
-        matching_dict = df_selected_ori.to_dict()
+        self.df_selected.index = [_[:-3] for _ in list(self.df_selected.index)]   
+        matching_dict = self.df_selected.matching_error.to_dict()
         ori_df = load_from_pickle(self.cfg.DATAFRAME_PATH)
         ori_df["matching_error"] = [matching_dict.get(_, 0) for _ in ori_df.index]
         self.save_to_pickle(ori_df, self.cfg.DATAFRAME_PATH)

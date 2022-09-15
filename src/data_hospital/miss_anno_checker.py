@@ -1,5 +1,6 @@
 from pathlib import Path
 from configs.config import VisualizationConfig
+from configs.config_data_hospital import DataHospitalConfig
 from src.data_manager.data_manager import load_from_pickle
 from src.utils.struct import Obstacle, parse_obs
 from src.visualization.visualization import Visualizer
@@ -22,11 +23,13 @@ class MissAnnoChecker():
         self.save_dir = cfg.SAVE_DIR
         os.makedirs(self.save_dir, exist_ok=True)
         self.vis = cfg.VIS
+        self.total_error_list = DataHospitalConfig.ERROR_LIST + DataHospitalConfig.PROBLEMATIC_LIST + ["2d_null_error", "3d_null_error"]
         
         
     def rules_decider(self,) -> set:
         self.df_selected = self.df[(self.df.priority == "P0") & (self.df.case_flag == "2") & (self.df.iou == -1)]
-        
+        for error in self.total_error_list:
+            self.df_selected[error] = 0
         self.df_selected["miss_anno_error"] = 1
         miss_anno_dict = self.df_selected.miss_anno_error.to_dict()
         self.df['miss_anno_error'] = [miss_anno_dict.get(_, 0) for _ in self.df.index]
@@ -51,10 +54,11 @@ class MissAnnoChecker():
         
         
     def save_result_to_ori_df(self,):
-        df_selected_ori = self.df_selected.set_index("ori_path")
-        miss_anno_dict = df_selected_ori.to_dict()
+        self.df_selected.json_path = self.df_selected.ori_path
+
         ori_df = load_from_pickle(self.cfg.DATAFRAME_PATH)
-        ori_df["miss_anno_error"] = [miss_anno_dict.get(_, 0) for _ in ori_df.index]
+        ori_df = pd.concat([ori_df, self.df_selected])
+        ori_df.drop_duplicates(inplace=True)
         self.save_to_pickle(ori_df, self.cfg.DATAFRAME_PATH)
         self.logger.debug("Update Result to Ori DataFrame: %s" % self.cfg.DATAFRAME_PATH)
     

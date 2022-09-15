@@ -71,7 +71,7 @@ class TrainCam3dManager(DataManager):
             # 3d_null =1, null
             # coor =1, coor trans error
             # res =1, res error
-            for error in LogicalCheckerConfig.CHECK_ERROR_LIST:
+            for error in DataHospitalConfig.ERROR_LIST + DataHospitalConfig.PROBLEMATIC_LIST + ["2d_null_error", "3d_null_error"]:
                 info[error] = 0
             
             info["class_name"] = obj["className"]

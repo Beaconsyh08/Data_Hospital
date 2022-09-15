@@ -21,9 +21,11 @@ class Config:
 
 class DataHospitalConfig(Config):
     MODULES = ["Duplicated", "Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
-    # MODULES = ["Statistics"]
+    # MODULES = [""]
+    # MODULES = ["MissAnno", "Matching", "Statistics"]
     EVALUATOR = "LUCAS"
-    ERROR_LIST = ["bbox_error", "coor_error", "res_error"]
+    PROBLEMATIC_LIST = ["dup_json", "dup_img", "empty"]
+    ERROR_LIST = ["bbox_error", "coor_error", "res_error", "calibration_error", "miss_anno_error", "matching_error"]
     ORIENTATION = "SIDE"
     COOR = "Lidar"
     VIS = False
@@ -44,7 +46,6 @@ class LogicalCheckerConfig(Config):
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
     ERROR_LIST = ["bbox_error", "coor_error", "res_error"]
-    CHECK_ERROR_LIST = ERROR_LIST + ["2d_null_error", "3d_null_error"]
     SAVE_DIR = "%s/logical_checker" % Config.ROOT
     COOR = DataHospitalConfig.COOR
     ONLINE = False
@@ -79,7 +80,7 @@ class InferenceConfig(Config):
 class EvaluateProcessorConfig(Config):
     NAME = NAME
     MODEL_NAME = InferenceConfig.INF_MODEL_PATH[:-4]
-    INPUT_DIR = '%s/data_inferencer/'% Config.ROOT
+    INPUT_DIR = '%s/data_inferencer'% Config.ROOT
     OUTPUT_DIR = '%s/evaluate_processor' % Config.ROOT
     
     JSON_PATH = '%s/data_hospital_badcase.txt' % OUTPUT_DIR

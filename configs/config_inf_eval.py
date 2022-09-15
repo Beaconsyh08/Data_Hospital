@@ -1,14 +1,12 @@
-NAME = "yayun_night"
+NAME = "test0914"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
-    LOGICAL_DATAFRAME_PATH = '%s/dataframes/logical_dataframe.pkl' % ROOT
-    CALIBRATION_DATAFRAME_PATH = '%s/dataframes/calibration_dataframe.pkl' % ROOT
-    FINAL_DATAFRAME_PATH = '%s/dataframes/final_dataframe.pkl' % ROOT
+    DATAFRAME_PATH = '%s/dataframes/dataframe.pkl' % ROOT
     BADCASE_DATAFRAME_PATH = '%s/dataframes/badcase_dataframe.pkl' % ROOT
-    BADCASE_DATAFRAME_PATH_DMISS = '%s/dataframes/badcase_dmiss_dataframe.pkl' % ROOT
-    BADCASE_DATAFRAME_PATH_DMATCH = '%s/dataframes/badcase_dmiss_dataframe.pkl' % ROOT
-    
+    FINAL_DATAFRAME_PATH = '%s/dataframes/final_dataframe.pkl' % ROOT
+    TEMP_DIR = '%s/temp_dataframes' % ROOT 
+    JSON_PATH = "/data_path/%s.txt" % NAME
     
     TYPE_MAP = {'car': 'car', 'van': 'car', 
                 'truck': 'truck', 'forklift': 'truck',
@@ -22,27 +20,31 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    MODULES = ["CoordinateConverter", "Inference", "Evaluate",]
-    # MODULES = ["Inference", "Evaluate",]
+    MODULES = ["Inference", "Evaluate"]
+    # MODULES = ["Statistics"]
+    EVALUATOR = "LUCAS"
+    ERROR_LIST = ["bbox_error", "coor_error", "res_error"]
     ORIENTATION = "SIDE"
-    COOR = "Lidar"
+    COOR = "Vehicle"
     VIS = False
     
     
 class DuplicatedCheckerConfig(Config):
-    JSON_PATH = "/data_path/%s.txt" % NAME
-    ORI_JSON_PATH = "/data_path/%s.txt" % NAME
+    JSON_PATH = Config.JSON_PATH
+    ORI_JSON_PATH = Config.JSON_PATH
     ORI_PKL_PATH = "/root/data_hospital_data/dataframes/sidecam_ori.pkl"
     SAVE_PKL_PATH = "/root/data_hospital_data/dataframes/%s.pkl" % NAME
+    SAVE_DIR = "%s/duplicated_checker" % Config.ROOT
     PKL_READY = False
     METHOD = "Total"
     
     
 class LogicalCheckerConfig(Config):
-    JSON_PATH = '%s/duplicated_checker/clean.txt' % Config.ROOT
+    JSON_PATH = Config.JSON_PATH
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
-    ERROR_LIST = ["bbox_error", "coor_error"]
+    ERROR_LIST = ["bbox_error", "coor_error", "res_error"]
+    CHECK_ERROR_LIST = ERROR_LIST + ["2d_null_error", "3d_null_error"]
     SAVE_DIR = "%s/logical_checker" % Config.ROOT
     COOR = DataHospitalConfig.COOR
     ONLINE = False
@@ -50,7 +52,7 @@ class LogicalCheckerConfig(Config):
     
     
 class CalibrationCheckerConfig(Config):
-    JSON_PATH = '%s/logical_checker/clean.txt' % Config.ROOT
+    JSON_PATH = Config.JSON_PATH
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
     SAVE_DIR = "%s/calibration_checker" % Config.ROOT
@@ -63,14 +65,15 @@ class CalibrationCheckerConfig(Config):
     
 class CoordinateConverterConfig(Config):
     OUTPUT_DIR = '%s/coordinate_converter/trans/' % Config.ROOT
-    INPUT_PATH = "/data_path/%s.txt" % NAME
-    OUTPUT_PATH = "/data_path/%s.txt" % NAME if "CoordinateConverter" not in DataHospitalConfig.MODULES else '%s/coordinate_converter/to_be_inf.txt' % Config.ROOT
+    INPUT_PATH = Config.JSON_PATH
+    OUTPUT_PATH = '%s/coordinate_converter/to_be_inf.txt' % Config.ROOT
     MAPPING = True
     
 
 class InferenceConfig(Config):
     INF_OUTPUT_DIR = '%s/data_inferencer/'% Config.ROOT
-    INF_MODEL_PATH = '/share/analysis/syh/models/2.2.4.0-0714-M-PT230-288-U.pth'
+    # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
+    INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
     
     
 class EvaluateProcessorConfig(Config):
@@ -79,11 +82,11 @@ class EvaluateProcessorConfig(Config):
     INPUT_DIR = '%s/data_inferencer/'% Config.ROOT
     OUTPUT_DIR = '%s/evaluate_processor' % Config.ROOT
     
-    JSON_PATH = '/data_path/data_hospital_badcase.txt'
+    JSON_PATH = '%s/data_hospital_badcase.txt' % OUTPUT_DIR
     JSON_TYPE = "txt"
-    DATA_TYPE = "qa_cam3d_temp"
+    DATA_TYPE = "qa_cam3d" if DataHospitalConfig.EVALUATOR == "LUCAS" else "qa_cam3d_temp"
     
-
+    
 class MissAnnoCheckerConfig(Config):
     SAVE_DIR = "%s/miss_anno_checker" % Config.ROOT
     VIS = DataHospitalConfig.VIS
@@ -92,9 +95,12 @@ class MissAnnoCheckerConfig(Config):
 class MatchingCheckerConfig(Config):
     SAVE_DIR = "%s/matching_checker" % Config.ROOT
     VIS = DataHospitalConfig.VIS
-    
-    
+
+
 class StatisticsManagerConfig(Config):
+    JSON_PATH = Config.JSON_PATH
+    JSON_TYPE = "txt"
+    DATA_TYPE = "train_cam3d"
     SAVE_DIR = "%s/statistics_manager" % Config.ROOT
     
     
@@ -104,7 +110,7 @@ class LogConfig(Config):
 
 class OutputConfig(Config):
     OUTPUT_DIR = '/cpfs/output'
-    OUTPUT_ANNOTATION_PATH = '%s/card/annotation' % OUTPUT_DIR
+    OUTPUT_CLEAN_PATH = '%s/card/clean' % OUTPUT_DIR
 
 
 class VisualizationConfig(Config):

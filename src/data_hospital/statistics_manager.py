@@ -3,7 +3,7 @@ import os
 import folium
 import matplotlib.pyplot as plt
 from folium.plugins import HeatMap, MarkerCluster
-from configs.config_data_hospital import DuplicatedCheckerConfig, LogicalCheckerConfig
+from configs.config_data_hospital import DataHospitalConfig, DuplicatedCheckerConfig, LogicalCheckerConfig, Config, CalibrationCheckerConfig
 from src.data_manager.data_manager import load_from_pickle
 from src.data_manager.data_manager_creator import data_manager_creator
 from src.utils.logger import get_logger
@@ -16,33 +16,19 @@ plt.rc('font', size=16)
 plt.rc('axes', titlesize=24) 
 plt.rc('axes', labelsize=20)
 from datetime import time
-
 import pandas as pd
-
-TYPE_MAP = {'car': 'car', 'van': 'car', 
-            'truck': 'truck', 'forklift': 'truck',
-            'bus':'bus', 
-            'rider':'rider',
-            'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
-            'rider_bicycle': 'rider', 'rider_motorcycle':'rider',
-            'bicycle': 'bicycle', 'motorcycle': 'bicycle',
-            'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 
-            'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
-            'static': 'static', 'trafficCone': 'static', 'water-filledBarrier': 'static', 'other': 'static', 'accident': 'static', 'construction': 'static', 'traffic-cone': 'static', 'other-vehicle': 'static', 'attached': 'static', 'accident': 'static', 'traffic_cone': 'static', 'other-static': 'static', 'water-filled-barrier': 'static', 'other_static': 'static', 'water_filled_barrier': 'static', 'dynamic': 'static', 'other_vehicle': 'static', 'trafficcone': 'static', 'water-filledbarrier': 'static',
-            }
 
 
 class StatisticsManager():
     def __init__(self, cfg: dict) -> None:
         self.cfg = cfg
         self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
-        self.checking_stats()
         self.total_frames_number = len(set(list(self.df.json_path)))
-        self.df['class_name_map'] = self.df['class_name'].map(TYPE_MAP)
+        self.df['class_name_map'] = self.df['class_name'].map(Config.TYPE_MAP)
         self.save_dir = self.cfg.SAVE_DIR
         self.logger = get_logger()
         os.makedirs(self.save_dir, exist_ok=True)
-        self.logger.info("DataFrame Loaded")
+        self.checking_stats()
 
 
     def addlabels(self, x, y):
@@ -50,17 +36,46 @@ class StatisticsManager():
             plt.text(i, y[i], y[i], ha = 'center')
         
     
-    def checking_stats(self,):
-        dup_jsons = [_.strip() for _ in open("%s/duplicated_jsons.txt" % DuplicatedCheckerConfig.SAVE_DIR)]
-        dup_imgs = [_.strip() for _ in open("%s/duplicated_imgs.txt" % DuplicatedCheckerConfig.SAVE_DIR)]
-        ori_empty = [_.strip() for _ in open("%s/empty.txt" % LogicalCheckerConfig.SAVE_DIR)]
-        checked_jsons = set(list(self.df.json_path))
+    def set_loader(self, load_path: str):
+        return set([_.strip() for _ in open(load_path)])
         
-        print(len(dup_jsons))
-        print(len(dup_imgs))
-        print(len(ori_empty))
-        print(len(checked_jsons))
     
+    def checking_stats(self,):
+        dup_jsons = self.set_loader("%s/duplicated_jsons.txt" % DuplicatedCheckerConfig.SAVE_DIR)
+        dup_imgs = self.set_loader("%s/duplicated_imgs.txt" % DuplicatedCheckerConfig.SAVE_DIR)
+        ori_empty = self.set_loader("%s/empty.txt" % LogicalCheckerConfig.SAVE_DIR)
+        checked_jsons = set(list(self.df.json_path))
+        real_empty_frame = ori_empty - checked_jsons
+        
+        problem_frame, problem_bbox = set(), set()
+        total_frame = checked_jsons | dup_jsons | dup_imgs | ori_empty
+        total_frame_amount = len(total_frame) + len(dup_jsons)
+        problem_frame = dup_jsons | dup_imgs | real_empty_frame
+        print(total_frame_amount, len(dup_jsons), len(dup_imgs), len(ori_empty), len(checked_jsons))
+        
+        res_pd = pd.DataFrame()
+        res_pd.set_axis(DataHospitalConfig.PROBLEMATIC_LIST + DataHospitalConfig.ERROR_LIST, inplace=True)
+        
+        res_pd.at["dup_json", "Frame_Amount"], res_pd.at["dup_json", "Frame_Ratio"] = len(dup_jsons), len(dup_jsons) / total_frame_amount
+        res_pd.at["dup_img", "Frame_Amount"], res_pd.at["dup_img", "Frame_Ratio"] = len(dup_imgs), len(dup_imgs) / total_frame_amount
+        res_pd.at["empty", "Frame_Amount"], res_pd.at["empty", "Frame_Ratio"] = len(real_empty_frame), len(real_empty_frame) / total_frame_amount
+        
+        total_instance_amount = len(self.df)
+        for error in DataHospitalConfig.ERROR_LIST:
+            error_df = self.df[self.df[error] != 0]
+            error_instance_amount = len(error_df)
+            error_frame = set(list(error_df.json_path))
+            problem_frame |= error_frame
+            error_frame_amount = len(error_frame)
+            res_pd.at[error, "Instance_Amount"], res_pd.at[error, "Instance_Ratio"] = error_instance_amount, error_instance_amount / total_instance_amount
+            res_pd.at[error, "Frame_Amount"], res_pd.at[error, "Frame_Ratio"] = error_frame_amount, error_frame_amount / total_frame_amount 
+        
+        res_pd.at["total_error", "Frame_Amount"], res_pd.at["total_error", "Frame_Ratio"] = len(problem_frame), len(problem_frame) / total_frame_amount
+        save_path = "%s/error_stats.xlsx" % self.save_dir
+        res_pd.to_excel(save_path, index=True, header=True)
+        print(res_pd)
+        self.logger.debug("Error Stats Saved in: %s" % save_path)
+        
     
     def city_stats(self,):
         frame_df = self.df.groupby(["json_path", "city"]).size().unstack(fill_value=0)
@@ -228,7 +243,7 @@ class StatisticsManager():
         self.time_stats()
         self.info_stats()
         self.scenario_bbox_stats()
-        self.city_heat_distribution()
+        self.city_heat_distribution()  
 
     
 if __name__ == '__main__':
