@@ -10,8 +10,7 @@ Copyright (c) HAOMO.AI, Inc. and its affiliates. All Rights Reserved
 """
 
 import pandas as pd
-from configs.config_data_hospital import DataHospitalConfig, LogicalCheckerConfig
-from src.data_hospital.logical_checker import LogicalChecker
+from configs.config_data_hospital import DataHospitalConfig
 from src.data_manager.data_manager import DataManager
 
 class TrainCam3dManager(DataManager):
@@ -83,12 +82,8 @@ class TrainCam3dManager(DataManager):
             info["camera_orientation"], info["camera_type"], info["producer"] = camera_orientation, camera_type, producer
             info["lon"], info["lat"], info["city"] = lon, lat, city
             
-            if camera_orientation in ["front_middle_camera", "rear_middle_camera"]:
-                LogicalChecker.resolution_checker(info)
-            
             try:
                 super().bbox_calculator(obj, info)    
-                LogicalChecker.bbox_checker(info, img_width, img_height) 
             except TypeError:
                 info["bbox_error"] = 3
                 # continue
@@ -108,7 +103,6 @@ class TrainCam3dManager(DataManager):
             
             if obj.get("3D_attributes"):
                 super().attributes_extractor_3d(obj["3D_attributes"], info)
-                LogicalChecker.coor_checker(info)
                 
                 if has_2D:
                     super().define_priority(info)

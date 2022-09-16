@@ -16,38 +16,37 @@ class DataHospital():
         
     def run(self, ) -> None:
         
-        logger.critical("Data Checking I Running")
-        logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
+        logger.warning("Data Checking I Running")
+        logger.warning("Activated Modules: %s" % ', '.join(map(str, self.modules)))
         
         if "Duplicated" in self.modules:
-            logger.critical("Duplicated Checker Running")
+            logger.warning("Duplicated Checker Running")
             duplicated_checker = DuplicatedChecker(DuplicatedCheckerConfig)
             duplicated_checker.self_diagnose()
         
         if "Logical" in self.modules:
-            logger.critical("Logical Checker Running")
+            logger.warning("Logical Checker Running")
             logical_checker = LogicalChecker(LogicalCheckerConfig)
             logical_checker.diagnose()
-            logical_checker.txt_for_reproejct()
             
         if "Calibration" in self.modules:
-            logger.critical("Calibration Checker Running")
+            logger.warning("Calibration Checker Running")
             calibration_checker = CalibrationChecker(CalibrationCheckerConfig)
             calibration_checker.diagnose()
         
         if DataHospitalConfig.COOR == "Lidar":
             if "CoordinateConverter" in self.modules:
-                logger.critical("Coor Converter Running")
+                logger.warning("Coor Converter Running")
                 coordinate_converter = CoordinateConverter(CoordinateConverterConfig)
                 coordinate_converter.diagnose()
         elif DataHospitalConfig.COOR == "Vehicle":
             if "CoordinateConverter" in self.modules:
-                logger.critical("Coor Converter Running")
+                logger.warning("Coor Converter Running")
                 os.makedirs(CoordinateConverterConfig.OUTPUT_DIR, exist_ok=True)
                 os.system("cp %s %s" % (CoordinateConverterConfig.INPUT_PATH, CoordinateConverterConfig.OUTPUT_PATH))
             
         
-        logger.critical("Data Checking I Completed")
+        logger.warning("Data Checking I Completed")
         
 
 if __name__ == '__main__':

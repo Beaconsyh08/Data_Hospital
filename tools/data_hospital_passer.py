@@ -11,7 +11,7 @@ class DataHospitalPasser():
         
     def run(self, ) -> None:
         
-        logger.critical("Data Hospital Passer Running")
+        logger.warning("Data Hospital Passer Running")
         
         if "Inference" in self.modules and self.cfg.ORIENTATION == "SIDE":
             print(DataHospitalConfig.ORIENTATION)

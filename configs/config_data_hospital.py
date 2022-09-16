@@ -1,4 +1,4 @@
-NAME = "test0914"
+NAME = "yayun0916"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
@@ -20,12 +20,24 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    MODULES = ["Duplicated", "Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
-    # MODULES = [""]
-    # MODULES = ["MissAnno", "Matching", "Statistics"]
+    # Full Data Checking 
+    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    
+    # Data Checking Phase I
+    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "Statistics"]
+    
+    # Data Checking Phase II
+    # MODULES = ["CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    
+    # Fast Single Frame
+    # MODULES = ["Duplicated", "Logical", "Outlier", "Statistics"]
+
+    MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    # MODULES = ["Statistics"]
+    
     EVALUATOR = "LUCAS"
     PROBLEMATIC_LIST = ["dup_json", "dup_img", "empty"]
-    ERROR_LIST = ["bbox_error", "coor_error", "res_error", "calibration_error", "miss_anno_error", "matching_error"]
+    ERROR_LIST = ["bbox_error", "coor_error", "res_error", "outlier_error", "calibration_error", "miss_anno_error", "matching_error"]
     ORIENTATION = "SIDE"
     COOR = "Lidar"
     VIS = False
@@ -49,6 +61,14 @@ class LogicalCheckerConfig(Config):
     SAVE_DIR = "%s/logical_checker" % Config.ROOT
     COOR = DataHospitalConfig.COOR
     ONLINE = False
+    VIS = False
+
+
+class OutlierCheckerConfig(Config):
+    JSON_PATH = Config.JSON_PATH
+    JSON_TYPE = "txt"
+    DATA_TYPE = "train_cam3d"
+    SAVE_DIR = "%s/outlier_checker" % Config.ROOT
     VIS = False
     
     
@@ -111,7 +131,7 @@ class LogConfig(Config):
 
 class OutputConfig(Config):
     OUTPUT_DIR = '/cpfs/output'
-    OUTPUT_CLEAN_PATH = '%s/card/clean' % OUTPUT_DIR
+    OUTPUT_CARD_DIR = '%s/card' % OUTPUT_DIR
 
 
 class VisualizationConfig(Config):

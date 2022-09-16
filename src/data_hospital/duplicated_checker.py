@@ -9,8 +9,6 @@ from multiprocessing.pool import ThreadPool
 import pandas as pd
 from src.data_manager.data_manager import load_from_pickle
 from src.utils.logger import get_logger
-from configs.config import LogicalCheckerConfig
-from src.data_manager.data_manager_creator import data_manager_creator
 from tqdm import tqdm
 
 
@@ -147,17 +145,10 @@ class DuplicatedChecker():
         print("Duplicted Stats", self.stats_dict)
                 
                 
-    def build_logical_df(self, ):
-        dm = data_manager_creator(LogicalCheckerConfig)
-        dm.load_from_json()
-        dm.save_to_pickle(self.cfg.DATAFRAME_PATH)
-        
-        
     def self_diagnose(self,) -> None:
         dup_dict = self.self_duplicated_finder(self.ORI_DATA, self.stats_dict)
         self.time_checker(dup_dict)
         self.save_results()
-        self.build_logical_df()
 
 
 if __name__ == '__main__':

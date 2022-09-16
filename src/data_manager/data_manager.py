@@ -28,6 +28,7 @@ from src.utils.logger import get_logger
 from itertools import zip_longest
 
 
+logger = get_logger()
 
 class DataManager:
     """

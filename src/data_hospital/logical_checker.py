@@ -6,11 +6,11 @@ import pickle
 import math
 
 import pandas as pd
-import tqdm
-from configs.config import (OutputConfig, CalibrationCheckerConfig, VisualizationConfig, CoordinateConverterConfig, LogicalCheckerConfig)
-from configs.config_data_hospital import DataHospitalConfig
+from tqdm import tqdm
+from configs.config import (OutputConfig, VisualizationConfig, CoordinateConverterConfig)
 from src.data_hospital.coordinate_converter import CoordinateConverter
-from src.data_manager.data_manager import load_from_pickle
+from src.data_manager.data_manager_creator import data_manager_creator
+
 from src.utils.logger import get_logger
 from src.utils.struct import parse_obs
 from src.visualization.visualization import Visualizer
@@ -25,7 +25,8 @@ class LogicalChecker():
     def __init__(self, cfg: dict) -> None:
         self.logger = get_logger()
         self.cfg = cfg       
-        self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        self.dm = self.build_df()
+        self.df = self.dm.df
         
         with open(cfg.JSON_PATH) as total_file:
             self.total_frames = set([_.strip() for _ in total_file])
@@ -37,7 +38,6 @@ class LogicalChecker():
         self.clean_instances = set()
         self.frames = set(self.df.json_path.to_list())
         self.noemp_frame_number = len(self.frames)
-        self.total_frame_number = len(self.total_frames)
         self.ver = Visualizer(VisualizationConfig)
         self.txt_output_dir = cfg.SAVE_DIR
         self.json_output_dir = OutputConfig.OUTPUT_DIR
@@ -47,6 +47,12 @@ class LogicalChecker():
         self.error_list = self.cfg.ERROR_LIST
         self.vis = cfg.VIS
         self.coor = cfg.COOR
+        
+        
+    def build_df(self, ):
+        dm = data_manager_creator(self.cfg)
+        dm.load_from_json()
+        return dm
         
         
     def instance_erros(self, ) -> None:
@@ -117,22 +123,21 @@ class LogicalChecker():
 
         self.clean_frames = self.frames - self.prob_frames
         self.empty_frames = self.total_frames - self.prob_frames - self.clean_frames
-        clean_empty = self.clean_frames | self.empty_frames
+        self.clean_empty = self.clean_frames | self.empty_frames
+        
+        def format_output(text: str, lst: list):
+            frame_dict[text] = len(lst)
+            frame_per_dict[text] = round(len(lst) / len(self.total_frames), 4)
 
-        frame_dict["error_sum"] = len(self.prob_frames)
-        frame_per_dict["error_sum"] = round(frame_dict["error_sum"] / self.total_frame_number, 4)
-        frame_dict["total"] = self.total_frame_number
-        frame_per_dict["total"] = round(frame_dict["total"] / self.total_frame_number, 4)
-        frame_dict["clean"] = len(self.clean_frames)
-        frame_per_dict["clean"] = round(frame_dict["clean"] / self.total_frame_number, 4)
-        frame_dict["empty"] = len(self.empty_frames)
-        frame_per_dict["empty"] = round(frame_dict["empty"] / self.total_frame_number, 4)
-        frame_dict["clean_empty"] = len(clean_empty)
-        frame_per_dict["clean_empty"] = round(frame_dict["clean_empty"] / self.total_frame_number, 4)
+        format_output("error_sum", self.prob_frames)
+        format_output("total", self.total_frames)
+        format_output("clean", self.clean_frames)
+        format_output("empty", self.empty_frames)
+        format_output("clean_empty", self.clean_empty)
         
         self.output_result_txt(self.clean_frames, "clean")
         self.output_result_txt(self.empty_frames, "empty")
-        self.output_result_txt(clean_empty, "clean_empty")
+        self.output_result_txt(self.clean_empty, "clean_empty")
         
         self.res_dict["frame"] = frame_dict
         self.res_dict["frame_per"] = frame_per_dict
@@ -145,12 +150,6 @@ class LogicalChecker():
         self.logger.debug("Error Stats Saved in %s" % save_path)
         
         
-    def card_errors(self, ) -> None:
-        gb_df = self.df.groupby(["card_id", "has_error"]).size().unstack(fill_value=0)
-        gb_df["error_rate"] = gb_df[1] / gb_df[1] + gb_df[0]
-        print(gb_df)
-    
-    
     def output_result_txt(self, json_paths: list, file_name: str) -> None:
         """
         Summary
@@ -180,17 +179,6 @@ class LogicalChecker():
                 for json_path in json_paths:
                     output_file.writelines(json_path + "\n")
 
-                
-    def txt_for_reproejct(self, ) -> None:
-        carday_ids = set(self.df.carday_id)
-        self.logger.debug("Calibration Ready File Has Been Saved in %s" % CalibrationCheckerConfig.LOAD_PATH)
-        for carday_id in tqdm.tqdm(carday_ids, desc="Spliting Json Paths Based on CarDay"):
-            json_paths = list(set(self.df[self.df['carday_id'] == carday_id].json_path.tolist()))
-            shutil.os.makedirs(CalibrationCheckerConfig.LOAD_PATH, exist_ok=True)
-            with open("%s/%s.txt" % (CalibrationCheckerConfig.LOAD_PATH, carday_id), "w") as output_file:
-                for json_path in json_paths:
-                    output_file.writelines(json_path + "\n")
-        
                 
     def visualization(self, sample_no: int) -> None:
         """
@@ -231,7 +219,7 @@ class LogicalChecker():
                 else:
                     objs = [parse_obs(error_df.iloc[_]) for _ in range(len(error_df))]
                     
-                for ind, obj in tqdm.tqdm(enumerate(objs), desc="Saving %s_%d Images" % (error_type, flag)):
+                for ind, obj in tqdm(enumerate(objs), desc="Saving %s_%d Images" % (error_type, flag)):
                     self.ver.draw_bbox_0([obj], "%s/%s_%d/%d.jpg" % (self.ver.save_dir, error_type, flag, ind))
                     self.ver.plot_bird_view([obj], "%s/%s_%d/%d_bev.jpg" % (self.ver.save_dir, error_type, flag, ind))
                     with open("%s/%s_%d/%d.txt" % (self.ver.save_dir, error_type, flag, ind), "w") as output_file:
@@ -240,6 +228,13 @@ class LogicalChecker():
                             
     
     def diagnose(self,):
+        self.bbox_checker()
+        self.coor_checker()
+        self.resolution_checker()
+        
+        print(self.df)
+        self.dm.save_to_pickle(self.cfg.DATAFRAME_PATH)
+        
         self.instance_erros()
         self.frame_errors()
         
@@ -247,14 +242,18 @@ class LogicalChecker():
             self.visualization(100)
             
     
-    def coor_checker(info:dict) -> None:
-        if LogicalCheckerConfig.COOR == "Vehicle":
-            LogicalChecker.coor_checker_car(info)
-        else:
-            LogicalChecker.coor_checker_lidar(info)
+    def coor_checker(self,) -> None:
+        coor_result = []
+        for row in tqdm(self.df.itertuples(), desc="Coor Checking", total=len(self.df)):
+            if self.cfg.COOR == "Vehicle":
+                coor_result.append(self.coor_checker_car(row))
+            else:
+                coor_result.append(self.coor_checker_lidar(row))
+                
+        self.df["coor_error"] = coor_result
         
         
-    def coor_checker_car(info: dict) -> None:
+    def coor_checker_car(self, row: pd.Series) -> int:
         """
         Summary
         -------
@@ -268,15 +267,15 @@ class LogicalChecker():
                 
         """
         
-        ori = info["camera_orientation"]
-        x, y, z, h = info["x"], info["y"], info["z"], info["height"]
+        ori = row.camera_orientation
+        x, y, z, h = row.x, row.y, row.z, row.height
         
-        if (info["truncation"] in [1, 2]) and (abs(info["x"]) < 50) and (abs(info["y"]) < 50):
+        if (row.truncation in [1, 2]) and (abs(x) < 50) and (abs(y) < 50):
             if z - h / 2 < -1:
                 if abs(x) < 10 and abs(y) < 10:
-                    info["coor_error"] = 3
+                    return 3
                 else:
-                    info["coor_error"] = 2
+                    return 2
             
         else:
             x = x - 2 * self_length / 3
@@ -294,39 +293,41 @@ class LogicalChecker():
                 y = y - self_width / 2
                 side_coy = abs(y) * side_co_y
                 if x < -side_coy or y < -side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             elif ori == "front_right_camera":
                 y = y + self_width / 2
                 side_coy = abs(y) * side_co_y
                 if x < -side_coy or y > side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             elif ori == "rear_left_camera": 
                 y = y - self_width / 2
                 side_coy = abs(y) * side_co_y
                 if x > side_coy or y < -side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             elif ori == "rear_right_camera":
                 y = y + self_width / 2
                 side_coy = abs(y) * side_co_y
                 if x > side_coy or y > side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             elif ori == "front_middle_camera": 
                 front_side_cox = abs(x) * front_co
                 if x < 0 or y < - front_side_cox or y > front_side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             elif ori == "rear_middle_camera": 
                 x = x + 2 * self_length / 3
                 front_side_cox = abs(x) * front_co
                 if x > 0 or y < - front_side_cox or y > front_side_cox: 
-                    info["coor_error"] = 1
+                    return 1
+                
+        return 0
                     
     
-    def coor_checker_lidar(info: dict) -> None:
+    def coor_checker_lidar(self, row:pd.Series) -> int:
         """
         Summary
         -------
@@ -340,15 +341,15 @@ class LogicalChecker():
                 
         """
         
-        ori = info["camera_orientation"]
-        x, y, z, h = info["x"], info["y"], info["z"], info["height"]
+        ori = row.camera_orientation
+        x, y, z, h = row.x, row.y, row.z, row.height
         
-        if (info["truncation"] in [1, 2]) and (abs(info["x"]) < 50) and (abs(info["y"]) < 50):
+        if (row.truncation in [1, 2]) and (abs(row.x) < 50) and (abs(row.y) < 50):
             if z - h / 2 > -1:
                 if abs(x) < 10 and abs(y) < 10:
-                    info["coor_error"] = 3
+                    return 3
                 else:
-                    info["coor_error"] = 2
+                    return 2
         
         else:
             y = y + self_length / 6
@@ -365,80 +366,81 @@ class LogicalChecker():
                 x = x - self_width / 2
                 side_cox = abs(x) * side_co_x
                 if x < -side_coy or y > side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             if ori == "front_right_camera":
                 x = x + self_width / 2
                 side_cox = abs(x) * side_co_x
                 if x > side_coy or y > side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             if ori == "rear_left_camera":
                 x = x - self_width / 2
                 side_cox = abs(x) * side_co_x
                 if x < -side_coy or y < -side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             if ori == "rear_right_camera":
                 x = x + self_width / 2 
                 side_cox = abs(x) * side_co_x
                 if x > side_coy or y < -side_cox:
-                    info["coor_error"] = 1
+                    return 1
                     
             if ori == "front_middle_camera":
                 front_side_coy = abs(y) * front_co
                 if y > 0 or x < - front_side_coy or x > front_side_coy:
-                    info["coor_error"] = 1
+                    return 1
                     
             if ori == "rear_middle_camera":
                 y = y - self_length / 6 - self_length / 2
                 front_side_coy = abs(y) * front_co
                 if y < 0 or x < - front_side_coy or x > front_side_coy:
-                    info["coor_error"] = 1
-            
-    
-    def bbox_checker(info: dict, width: int = None, height: int = None) -> None:
-        """
-        Summary
-        -------
-            Check if the bbox has error, and assign the corresponding flag for the bbox_error
-                1: x/y/w/h out of bounds
-                2: x+w/y+h out of bounds
-
-        Parameters
-        ----------
-            info: dict
-                the info json object
+                    return 1
                 
-        """
-        width = info["img_width"] if width is None else width
-        height = info["img_height"] if height is None else height
-        
-        if (info["bbox_x"] > (width * 1.02)) \
-        or (info["bbox_y"] > (height * 1.02)) \
-        or (info["bbox_x"] < - (width * 0.02)) \
-        or (info["bbox_y"] < -(height * 0.02)) \
-        or (info["bbox_w"] < 0) \
-        or (info["bbox_h"] < 0) \
-        or (info["bbox_w"] > width * 1.02) \
-        or (info["bbox_h"] > height * 1.02):
-            info["bbox_error"] = 1
-        
-        elif (info["bbox_x"] + info["bbox_w"] > (width * 1.02)) \
-        or (info["bbox_y"] + info["bbox_h"] > (height * 1.02)):
-            info["bbox_error"] = 2
+        return 0
             
     
-    def resolution_checker(info: dict) -> None:
-        true_width, true_height = Image.open("/" + info["img_url"]).size
+    def bbox_checker(self,) -> None:
+        bbox_result = []
+        for row in tqdm(self.df.itertuples(), desc="Bbox Checking", total=len(self.df)):
+            if (row.bbox_x > (row.img_width * 1.02)) \
+            or (row.bbox_y > (row.img_height * 1.02)) \
+            or (row.bbox_x < - (row.img_width * 0.02)) \
+            or (row.bbox_y < -(row.img_height * 0.02)) \
+            or (row.bbox_w < 0) \
+            or (row.bbox_h < 0) \
+            or (row.bbox_w > row.img_width * 1.02) \
+            or (row.bbox_h > row.img_height * 1.02):
+                bbox_result.append(1)
+
+            elif (row.bbox_x + row.bbox_w > (row.img_width * 1.02)) \
+            or (row.bbox_y + row.bbox_h > (row.img_height * 1.02)):
+                bbox_result.append(2)
+                
+            elif row.bbox_error == 3:
+                bbox_result.append(3)
+                
+            else:
+                bbox_result.append(0)
+                
+        self.df["bbox_error"] = bbox_result
+    
+    
+    def resolution_checker(self,) -> None:
+        res_result = []
+        for row in tqdm(self.df.itertuples(), desc="Resolution Checking", total=len(self.df)):
+            if row.camera_orientation in ["front_middle_camera", "rear_middle_camera"]:
+                true_width, true_height = Image.open("/" + row.img_url).size
+                if true_width != row.img_width or true_height != row.img_height:
+                    res_result.append(1)
+                else:
+                    res_result.append(0)
+            else:
+                res_result.append(None)
         
-        if true_width != info["img_width"] or true_height != info["img_height"]:
-            info["res_error"] = 1
+        self.df["res_error"] = res_result
             
             
 if __name__ == '__main__':
-    logical_checker = LogicalChecker(LogicalCheckerConfig)
-    logical_checker.df = load_from_pickle("/root/data_hospital_data/0728v60/v31_0823/dataframes/calibration_dataframe.pkl")
-    if logical_checker.vis:
-        logical_checker.visualization(100)
+    pass
         

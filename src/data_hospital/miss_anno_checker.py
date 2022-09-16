@@ -29,8 +29,9 @@ class MissAnnoChecker():
     def rules_decider(self,) -> set:
         self.df_selected = self.df[(self.df.priority == "P0") & (self.df.case_flag == "2") & (self.df.iou == -1)]
         for error in self.total_error_list:
-            self.df_selected[error] = 0
-        self.df_selected["miss_anno_error"] = 1
+            self.df_selected[error] = [0 for _ in range(len(self.df_selected))]
+            
+        self.df_selected = self.df_selected.assign(miss_anno_error=1)
         miss_anno_dict = self.df_selected.miss_anno_error.to_dict()
         self.df['miss_anno_error'] = [miss_anno_dict.get(_, 0) for _ in self.df.index]
         

@@ -40,7 +40,7 @@ class MatchingChecker():
         df_miss = self.df[((self.df['flag'] == 'miss') & (self.df['case_flag']=='0')) & (self.df['priority'] == 'P0')]
         self.df_selected = df_miss[(df_miss.dis_ratio > 0.5) & (df_miss.euclidean_dis_diff > 5)]
         
-        self.df_selected["matching_error"] = 1
+        self.df_selected = self.df_selected.assign(matching_error=1)
         self.matching_dict = self.df_selected.matching_error.to_dict()
         self.df['matching_error'] = [self.matching_dict.get(_, 0) for _ in self.df.index]
         

@@ -22,6 +22,12 @@ class CalibrationChecker():
     def __init__(self, cfg: dict) -> None:
         self.cfg = cfg
         self.logger = get_logger()
+        
+        try:
+            self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        except FileNotFoundError:
+            self.logger.error("Please Check If the File Exists")    
+
         self.coor = cfg.COOR
         self.vis = cfg.VIS
         self.vis_path = cfg.VIS_PATH
@@ -32,6 +38,7 @@ class CalibrationChecker():
             
         self.save_dir = cfg.SAVE_DIR
         self.load_path = cfg.LOAD_PATH
+        os.makedirs(self.load_path, exist_ok=True)
         self.threshold = cfg.THRESHOLD
         self.txt_paths = [self.load_path + "/" + _ for _ in os.listdir(self.load_path)]
         self.res_pd = pd.DataFrame()
@@ -701,7 +708,7 @@ class CalibrationChecker():
                                 self.prob_lst.append(line.strip())
                                 prob += 1
         
-        self.logger.debug("\nClean Frame: %d \nProb Frame: %d" % (clean, prob))
+        self.logger.critical("\nClean Frame: %d \nProb Frame: %d" % (clean, prob))
         self.logger.debug("Cleaned Path Has Been Saved in: %s" % clean_path)
         excel_path = "%s/result.xlsx" % self.save_dir
         self.res_pd.to_excel(excel_path)
@@ -714,8 +721,8 @@ class CalibrationChecker():
         with open(save_path, "wb") as pickle_file: 
             pickle.dump(pickle_obj, pickle_file)
     
+    
     def save_dataframes(self,):
-        self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
         self.df["calibration_error"] = 0
         
         df_error = self.df[self.df.json_path.isin(self.prob_lst)]
@@ -726,8 +733,21 @@ class CalibrationChecker():
         
         self.save_to_pickle(self.df, self.cfg.DATAFRAME_PATH)
         
-    
+        
+    def txt_for_reproejct(self, ) -> None:
+        carday_ids = set(self.df.carday_id)
+        self.logger.debug("Calibration Ready File Has Been Saved in %s" % self.cfg.LOAD_PATH)
+        for carday_id in tqdm(carday_ids, desc="Spliting Json Paths Based on CarDay"):
+            json_paths = list(set(self.df[self.df['carday_id'] == carday_id].json_path.tolist()))
+            shutil.os.makedirs(self.cfg.LOAD_PATH, exist_ok=True)
+            with open("%s/%s.txt" % (self.cfg.LOAD_PATH, carday_id), "w") as output_file:
+                for json_path in json_paths:
+                    output_file.writelines(json_path + "\n")
+                    
+                    
     def diagnose(self,):
+        self.txt_for_reproejct()
+        
         # tag = 'label'  # 'inference'
         tag = 'label'
         img_count = 'basename'  # 0
@@ -742,9 +762,7 @@ class CalibrationChecker():
         self.res_pd["Txt"] = txt_lst
         self.res_pd["Mean Iou"] = iou_lst
         self.res_pd["Count"] = count_lst
-        print("hahahaha")
         
         self.output_result()
         self.save_dataframes()
 
-        

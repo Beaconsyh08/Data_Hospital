@@ -17,30 +17,29 @@ class DataHospital2():
     def run(self, ) -> None:
         
         if self.cfg.ORIENTATION == "SIDE":
-            logger.critical("Data Checking II Running")
-            logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
+            logger.warning("Data Checking II Running")
             
             if "Evaluate" in self.modules:
-                logger.critical("Evaluator Processor Running")
+                logger.warning("Evaluator Processor Running")
                 evaluate_processor = EvaluateProcessorLucas(EvaluateProcessorConfig) if self.cfg.EVALUATOR == "LUCAS" else EvaluateProcessorQA(EvaluateProcessorConfig)
                 evaluate_processor.diagnose()
                     
             if "MissAnno" in self.modules:
-                logger.critical("Miss Annotation Checker Running")
+                logger.warning("Miss Annotation Checker Running")
                 miss_anno_checker = MissAnnoChecker(MissAnnoCheckerConfig)
                 miss_anno_checker.diagnose()
                 
             if "Matching" in self.modules:
-                logger.critical("2D-3D Matching Checker Running")
+                logger.warning("2D-3D Matching Checker Running")
                 matching_checker = MatchingChecker(MatchingCheckerConfig)
                 matching_checker.diagnose()
                 
             if "Statistics" in self.modules:
-                logger.critical("Statistics Manager Running")
+                logger.warning("Statistics Manager Running")
                 statistics_manager = StatisticsManager(StatisticsManagerConfig)
                 statistics_manager.diagnose()
             
-        logger.critical("Data Checking II Completed")
+        logger.warning("Data Checking II Completed")
             
             
 if __name__ == '__main__':

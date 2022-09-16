@@ -1,9 +1,10 @@
 import os
+from tabnanny import check
 
 import folium
 import matplotlib.pyplot as plt
 from folium.plugins import HeatMap, MarkerCluster
-from configs.config_data_hospital import DataHospitalConfig, DuplicatedCheckerConfig, LogicalCheckerConfig, Config, CalibrationCheckerConfig
+from configs.config_data_hospital import DataHospitalConfig, DuplicatedCheckerConfig, LogicalCheckerConfig, Config, OutputConfig
 from src.data_manager.data_manager import load_from_pickle
 from src.data_manager.data_manager_creator import data_manager_creator
 from src.utils.logger import get_logger
@@ -22,14 +23,22 @@ import pandas as pd
 class StatisticsManager():
     def __init__(self, cfg: dict) -> None:
         self.cfg = cfg
-        self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        self.logger = get_logger()
+        
+        try:
+            self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        except FileNotFoundError:
+            self.logger.error("Please Check If the File Exists")
+            sys.exit()     
+            
         self.total_frames_number = len(set(list(self.df.json_path)))
         self.df['class_name_map'] = self.df['class_name'].map(Config.TYPE_MAP)
         self.save_dir = self.cfg.SAVE_DIR
-        self.logger = get_logger()
         os.makedirs(self.save_dir, exist_ok=True)
         self.checking_stats()
-
+        self.card_dir = OutputConfig.OUTPUT_CARD_DIR
+        os.makedirs(self.card_dir, exist_ok=True)
+        
 
     def addlabels(self, x, y):
         for i in range(len(x)):
@@ -41,43 +50,59 @@ class StatisticsManager():
         
     
     def checking_stats(self,):
+        self.logger.critical("Data Checking Error Stats Summary")
         dup_jsons = self.set_loader("%s/duplicated_jsons.txt" % DuplicatedCheckerConfig.SAVE_DIR)
         dup_imgs = self.set_loader("%s/duplicated_imgs.txt" % DuplicatedCheckerConfig.SAVE_DIR)
         ori_empty = self.set_loader("%s/empty.txt" % LogicalCheckerConfig.SAVE_DIR)
         checked_jsons = set(list(self.df.json_path))
-        real_empty_frame = ori_empty - checked_jsons
+        self.real_empty_frame = ori_empty - checked_jsons
         
-        problem_frame, problem_bbox = set(), set()
-        total_frame = checked_jsons | dup_jsons | dup_imgs | ori_empty
-        total_frame_amount = len(total_frame) + len(dup_jsons)
-        problem_frame = dup_jsons | dup_imgs | real_empty_frame
-        print(total_frame_amount, len(dup_jsons), len(dup_imgs), len(ori_empty), len(checked_jsons))
+        self.problem_frame, self.problem_bbox = set(), set()
+        self.total_frame = checked_jsons | dup_jsons | dup_imgs | ori_empty
+        total_frame_amount = len(self.total_frame) + len(dup_jsons)
+        self.problem_frame = dup_jsons | dup_imgs | self.real_empty_frame
         
         res_pd = pd.DataFrame()
         res_pd.set_axis(DataHospitalConfig.PROBLEMATIC_LIST + DataHospitalConfig.ERROR_LIST, inplace=True)
         
         res_pd.at["dup_json", "Frame_Amount"], res_pd.at["dup_json", "Frame_Ratio"] = len(dup_jsons), len(dup_jsons) / total_frame_amount
         res_pd.at["dup_img", "Frame_Amount"], res_pd.at["dup_img", "Frame_Ratio"] = len(dup_imgs), len(dup_imgs) / total_frame_amount
-        res_pd.at["empty", "Frame_Amount"], res_pd.at["empty", "Frame_Ratio"] = len(real_empty_frame), len(real_empty_frame) / total_frame_amount
+        res_pd.at["empty", "Frame_Amount"], res_pd.at["empty", "Frame_Ratio"] = len(self.real_empty_frame), len(self.real_empty_frame) / total_frame_amount
         
         total_instance_amount = len(self.df)
         for error in DataHospitalConfig.ERROR_LIST:
-            error_df = self.df[self.df[error] != 0]
+            error_df = self.df[~self.df[error].isin([0, None])]
             error_instance_amount = len(error_df)
             error_frame = set(list(error_df.json_path))
-            problem_frame |= error_frame
+            self.problem_frame |= error_frame
             error_frame_amount = len(error_frame)
             res_pd.at[error, "Instance_Amount"], res_pd.at[error, "Instance_Ratio"] = error_instance_amount, error_instance_amount / total_instance_amount
             res_pd.at[error, "Frame_Amount"], res_pd.at[error, "Frame_Ratio"] = error_frame_amount, error_frame_amount / total_frame_amount 
         
-        res_pd.at["total_error", "Frame_Amount"], res_pd.at["total_error", "Frame_Ratio"] = len(problem_frame), len(problem_frame) / total_frame_amount
+        res_pd.at["total_error", "Frame_Amount"], res_pd.at["total_error", "Frame_Ratio"] = len(self.problem_frame), len(self.problem_frame) / total_frame_amount
         save_path = "%s/error_stats.xlsx" % self.save_dir
         res_pd.to_excel(save_path, index=True, header=True)
         print(res_pd)
-        self.logger.debug("Error Stats Saved in: %s" % save_path)
         
+        self.real_clean_frame = self.total_frame - self.real_empty_frame - self.problem_frame
+        self.logger.debug("Error Stats Saved in: %s" % save_path)
+    
+    
+    def json_outputer(self, file_name: str, json_paths: list):
+        save_path = "%s/%s.txt" % (self.card_dir, file_name)
+        with open(save_path, "w") as output_file:
+            for json_path in tqdm(json_paths, desc= "%s Saving" % file_name):
+                output_file.writelines(json_path + "\n")
+        self.logger.debug("%s has been saved in: %s" % (file_name, save_path))
+            
+    def output_wrapper(self, ): 
+        self.json_outputer("problem", self.problem_frame)
+        self.json_outputer("real_empty", self.real_empty_frame)
+        self.json_outputer("real_clean", self.real_clean_frame)
+
     
     def city_stats(self,):
+        self.logger.critical("Data City Stats Summary")
         frame_df = self.df.groupby(["json_path", "city"]).size().unstack(fill_value=0)
         city_lst = frame_df.columns.to_list()
         city_dict = dict()
@@ -110,7 +135,7 @@ class StatisticsManager():
         save_path = "%s/city_stats_result.xlsx" % self.save_dir
 
         ### cal ratio
-        df_concat = pd.concat([df,df_ratio],axis=1)
+        df_concat = pd.concat([df, df_ratio],axis=1)
         df_concat.set_axis(["Amount", "Ratio"], axis='columns', inplace=True)
         print(df_concat)
         df_concat.to_excel(save_path, index=True, header=True)
@@ -119,6 +144,7 @@ class StatisticsManager():
         
         
     def city_heat_distribution(self, ) -> None:
+        self.logger.critical("Data City Heat Stats")
         m = folium.Map([39.904989, 116.405285], tiles='stamentoner', zoom_start=10)
         df = self.df.drop_duplicates(subset="json_path", keep='first', inplace=True)
         df = self.df[self.df["lon"].notna()]
@@ -135,7 +161,7 @@ class StatisticsManager():
     
     
     def time_stats(self,):
-        
+        self.logger.critical("Clean Data Time Stats Summary")
         time_dict = dict()
         time_ratio_dict = dict()
         night_df = self.df[(self.df["time"] < time(6, 0, 0)) | (self.df["time"] > time(19, 0, 0))]
@@ -180,6 +206,7 @@ class StatisticsManager():
     
     def info_stats(self,):
         for info in ["class_name_map", "camera_orientation"]:
+            self.logger.critical("Clean Data %s Stats Summary" % info.capitalize())
             fig = plt.figure(figsize=(25, 20))
             cat_num = len(self.df[info].unique())
 
@@ -206,6 +233,7 @@ class StatisticsManager():
             
             
     def scenario_bbox_stats(self,):
+        self.logger.critical("Clean Data Scenario Stats Summary")
         bigcar_df = self.df[(abs(self.df.x) < 8) & (abs(self.df.y) <10) & (self.df.class_name.isin(["truck", "bus"]))]        
         bigcar_df_frame = set(bigcar_df.json_path.to_list())
         closedvru_df = self.df[(abs(self.df.x) < 8) & (abs(self.df.y) <10) & (self.df.class_name.isin(["pedestrian", "tricycle", "rider"]))]  
@@ -244,6 +272,7 @@ class StatisticsManager():
         self.info_stats()
         self.scenario_bbox_stats()
         self.city_heat_distribution()  
+        self.output_wrapper()
 
     
 if __name__ == '__main__':
