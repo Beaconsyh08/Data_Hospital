@@ -550,17 +550,14 @@ class DataManager:
         if save_path:
             os.makedirs("/".join(save_path.split("/")[:-1]), exist_ok=True)
         try:
-            try:
-                info_dict = load_from_pickle(save_path, "info") if info_dict is None else info_dict
-            except:
-                info_dict = None
-
-            pickle_obj = {"info": info_dict, "df": self.df}
-            with open(save_path, "wb") as pickle_file: 
-                pickle.dump(pickle_obj, pickle_file)
-            self.logger.debug("DataFrame Saved: %s" % save_path)    
+            info_dict = load_from_pickle(save_path, "info") if info_dict is None else info_dict
         except:
-            self.logger.warning("DataFrame Saving Failed")
+            info_dict = None
+
+        pickle_obj = {"info": info_dict, "df": self.df}
+        with open(save_path, "wb") as pickle_file: 
+            pickle.dump(pickle_obj, pickle_file)
+        self.logger.debug("DataFrame Saved: %s" % save_path)    
         
 
     def reset_emb_id(self, ) -> None:

@@ -24,7 +24,9 @@ class DataHospitalConfig(Config):
     # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
     
     # Data Checking Phase I
-    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "Statistics"]
+    MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "Statistics"]
+    MODULES = ["Logical", "Outlier", "Calibration", "Statistics"]
+    
     
     # Data Checking Phase II
     # MODULES = ["CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
@@ -32,7 +34,7 @@ class DataHospitalConfig(Config):
     # Fast Single Frame
     # MODULES = ["Duplicated", "Logical", "Outlier", "Statistics"]
 
-    MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
     # MODULES = ["Statistics"]
     
     EVALUATOR = "LUCAS"

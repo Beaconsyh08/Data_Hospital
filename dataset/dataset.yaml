@@ -197,41 +197,41 @@ cards_conf:
   #     project: icu30
 
 
-  - file_name: /data_path/yayun0916.txt
-    cards:
-    - card_id: 62c3e7997f2d00be346296b9
-      media_name: side_cam
-      project: ori
-    - card_id: 62c3e77e7f2d00be3458f368
-      media_name: side_cam
-      project: ori
-    - card_id: 62cecfed0a4bcd0612271fed
-      media_name: side_cam
-      project: icu30
-    - card_id: 62c5afcf526a0e03d32a60d8
-      media_name: side_cam
-      project: icu30
-    - card_id: 62ea1482548421eb86d06fb0
-      media_name: side_camera
-      project: icu30
-    - card_id: 62bb30f1ddf478154fa9c11a
-      media_name: front_middle_v30
-      project: icu30
-    - card_id: 62c58ce47f2d00be34f7f262
-      media_name: front_cam
-      project: icu30
-    - card_id: 62ea13d1548421eb86cdce10
-      media_name: front_middle_camera
-      project: icu30
-    - card_id: 62bb2f5fddf478154fa369c4
-      media_name: rear_middle_v30
-      project: icu30
-    - card_id: 62c6533712d7beae3983760c
-      media_name: rear_cam
-      project: icu30
-    - card_id: 62ea1429548421eb86cf199d
-      media_name: rear_middle_camera
-      project: icu30
+  # - file_name: /data_path/yayun0916.txt
+  #   cards:
+  #   - card_id: 62c3e7997f2d00be346296b9
+  #     media_name: side_cam
+  #     project: ori
+  #   - card_id: 62c3e77e7f2d00be3458f368
+  #     media_name: side_cam
+  #     project: ori
+  #   - card_id: 62cecfed0a4bcd0612271fed
+  #     media_name: side_cam
+  #     project: icu30
+  #   - card_id: 62c5afcf526a0e03d32a60d8
+  #     media_name: side_cam
+  #     project: icu30
+  #   - card_id: 62ea1482548421eb86d06fb0
+  #     media_name: side_camera
+  #     project: icu30
+  #   - card_id: 62bb30f1ddf478154fa9c11a
+  #     media_name: front_middle_v30
+  #     project: icu30
+  #   - card_id: 62c58ce47f2d00be34f7f262
+  #     media_name: front_cam
+  #     project: icu30
+  #   - card_id: 62ea13d1548421eb86cdce10
+  #     media_name: front_middle_camera
+  #     project: icu30
+  #   - card_id: 62bb2f5fddf478154fa369c4
+  #     media_name: rear_middle_v30
+  #     project: icu30
+  #   - card_id: 62c6533712d7beae3983760c
+  #     media_name: rear_cam
+  #     project: icu30
+  #   - card_id: 62ea1429548421eb86cf199d
+  #     media_name: rear_middle_camera
+  #     project: icu30
 
 
 #   - file_name: /data_path/frontcam_ori.txt

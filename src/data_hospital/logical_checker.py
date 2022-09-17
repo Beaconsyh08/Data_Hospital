@@ -9,7 +9,9 @@ import pandas as pd
 from tqdm import tqdm
 from configs.config import (OutputConfig, VisualizationConfig, CoordinateConverterConfig)
 from src.data_hospital.coordinate_converter import CoordinateConverter
+from src.data_manager.data_manager import load_from_pickle
 from src.data_manager.data_manager_creator import data_manager_creator
+from src.data_manager.train_cam3d_manager import TrainCam3dManager
 
 from src.utils.logger import get_logger
 from src.utils.struct import parse_obs
@@ -25,9 +27,10 @@ class LogicalChecker():
     def __init__(self, cfg: dict) -> None:
         self.logger = get_logger()
         self.cfg = cfg       
-        self.dm = self.build_df()
-        self.df = self.dm.df
-        
+        # self.dm = self.build_df()
+        # self.df = self.dm.df
+        self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        self.dm = TrainCam3dManager(self.df)
         with open(cfg.JSON_PATH) as total_file:
             self.total_frames = set([_.strip() for _ in total_file])
 
@@ -230,7 +233,7 @@ class LogicalChecker():
     def diagnose(self,):
         self.bbox_checker()
         self.coor_checker()
-        self.resolution_checker()
+        # self.resolution_checker()
         
         print(self.df)
         self.dm.save_to_pickle(self.cfg.DATAFRAME_PATH)
