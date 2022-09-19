@@ -1,4 +1,4 @@
-NAME = "yayun0916"
+NAME = "test0914"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
@@ -21,11 +21,10 @@ class Config:
 
 class DataHospitalConfig(Config):
     # Full Data Checking 
-    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
     
     # Data Checking Phase I
-    MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "Statistics"]
-    MODULES = ["Logical", "Outlier", "Calibration", "Statistics"]
+    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "Statistics"]
     
     
     # Data Checking Phase II
@@ -33,13 +32,11 @@ class DataHospitalConfig(Config):
     
     # Fast Single Frame
     # MODULES = ["Duplicated", "Logical", "Outlier", "Statistics"]
-
-    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
-    # MODULES = ["Statistics"]
     
+    # MODULES = ["Statistics"]
+
     EVALUATOR = "LUCAS"
-    PROBLEMATIC_LIST = ["dup_json", "dup_img", "empty"]
-    ERROR_LIST = ["bbox_error", "coor_error", "res_error", "outlier_error", "calibration_error", "miss_anno_error", "matching_error"]
+    TOTAL_ERROR_LIST = ["dup_json", "dup_img", "empty", "bbox_error", "coor_error", "res_error", "outlier_error", "calibration_error", "miss_anno_error", "matching_error"]
     ORIENTATION = "SIDE"
     COOR = "Lidar"
     VIS = False

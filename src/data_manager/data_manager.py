@@ -500,32 +500,42 @@ class DataManager:
         self.logger.critical("DataFrame Loading Started: %s" % load_path)
         json_paths = __json_path_getter(load_path)
         
-        MAX_DF_LEN = 400000
-        DF_NUMBER = int(len(json_paths) / MAX_DF_LEN) + 1
-        self.logger.debug("Split to %d DataFrame to Loading" % DF_NUMBER)
-        temp_dir = self.cfg.TEMP_DIR
-        os.makedirs(temp_dir, exist_ok=True)
-        def group_elements(n, iterable, padvalue=None):
-            return zip_longest(*[iter(iterable)]*n, fillvalue=padvalue)
+        # # ---------------------------------------------------------------------------------------
+        # # Split & Concat
+        # MAX_DF_LEN = 400000
+        # DF_NUMBER = int(len(json_paths) / MAX_DF_LEN) + 1
+        # self.logger.debug("Split to %d DataFrame to Loading" % DF_NUMBER)
+        # temp_dir = self.cfg.TEMP_DIR
+        # os.makedirs(temp_dir, exist_ok=True)
+        # def group_elements(n, iterable, padvalue=None):
+        #     return zip_longest(*[iter(iterable)]*n, fillvalue=padvalue)
         
-        group_items = group_elements(MAX_DF_LEN, json_paths)
-        self.total_df_number = 0
-        for ind, lst in tqdm(enumerate(group_items), total=DF_NUMBER, desc="DataFrames Loading"):
-            clean_lst = [_ for _ in lst if _ is not None]
-            __json_reader(clean_lst)
-            self.save_to_pickle("%s/%d.pkl" % (temp_dir, ind))
-            self.total_df_number = ind + 1
+        # group_items = group_elements(MAX_DF_LEN, json_paths)
+        # self.total_df_number = 0
+        # for ind, lst in tqdm(enumerate(group_items), total=DF_NUMBER, desc="DataFrames Loading"):
+        #     clean_lst = [_ for _ in lst if _ is not None]
+        #     __json_reader(clean_lst)
+        #     self.save_to_pickle("%s/%d.pkl" % (temp_dir, ind))
+        #     self.total_df_number = ind + 1
             
-        if self.total_df_number == 0:
-            self.logger.error("Check Path: %s" % load_path)
-            sys.exit(-1)
+        # if self.total_df_number == 0:
+        #     self.logger.error("Check Path: %s" % load_path)
+        #     sys.exit(-1)
         
-        total_df_lst = []
-        for df_ind in tqdm(range(self.total_df_number), desc="Concatenating DataFrames"):
-            df_path = "%s/%d.pkl" % (temp_dir, df_ind)
-            print(df_path)
-            total_df_lst.append(load_from_pickle(df_path))
-        self.df = pd.concat(total_df_lst)
+        # total_df_lst = []
+        # for df_ind in tqdm(range(self.total_df_number), desc="Concatenating DataFrames"):
+        #     df_path = "%s/%d.pkl" % (temp_dir, df_ind)
+        #     print(df_path)
+        #     total_df_lst.append(load_from_pickle(df_path))
+        # self.df = pd.concat(total_df_lst)
+        # # ---------------------------------------------------------------------------------------
+        
+        # ---------------------------------------------------------------------------------------
+        # Normal DataFrame Loading
+        json_paths = __json_path_getter(load_path)
+        __json_reader(json_paths)
+        # ---------------------------------------------------------------------------------------
+        
         print(self.df)
             
         self.logger.info("DataFrame Loading Finished")

@@ -23,13 +23,13 @@ class MissAnnoChecker():
         self.save_dir = cfg.SAVE_DIR
         os.makedirs(self.save_dir, exist_ok=True)
         self.vis = cfg.VIS
-        self.total_error_list = DataHospitalConfig.ERROR_LIST + DataHospitalConfig.PROBLEMATIC_LIST + ["2d_null_error", "3d_null_error"]
+        # self.total_error_list = DataHospitalConfig.TOTAL_ERROR_LIST + ["2d_null_error", "3d_null_error"]
         
         
     def rules_decider(self,) -> set:
         self.df_selected = self.df[(self.df.priority == "P0") & (self.df.case_flag == "2") & (self.df.iou == -1)]
-        for error in self.total_error_list:
-            self.df_selected[error] = [0 for _ in range(len(self.df_selected))]
+        # for error in self.total_error_list:
+        #     self.df_selected[error] = [0 for _ in range(len(self.df_selected))]
             
         self.df_selected = self.df_selected.assign(miss_anno_error=1)
         miss_anno_dict = self.df_selected.miss_anno_error.to_dict()
@@ -48,13 +48,13 @@ class MissAnnoChecker():
             pickle.dump(pickle_obj, pickle_file)
             
             
-    def result_output(self, jsons: set, save_name: str):
+    def result_output(self, jsons: set, save_name: str) -> None:
         with open("%s/%s.txt" % (self.save_dir, save_name), "w") as to_del_file:
             for json_path in tqdm(jsons):
                 to_del_file.writelines(json_path + "\n")
         
         
-    def save_result_to_ori_df(self,):
+    def save_result_to_ori_df(self,) -> None:
         self.df_selected.json_path = self.df_selected.ori_path
 
         ori_df = load_from_pickle(self.cfg.DATAFRAME_PATH)
@@ -64,7 +64,7 @@ class MissAnnoChecker():
         self.logger.debug("Update Result to Ori DataFrame: %s" % self.cfg.DATAFRAME_PATH)
     
     
-    def diagnose(self,):
+    def diagnose(self,) -> None:
         false_p0_jsons = self.rules_decider()
         self.result_output(false_p0_jsons, "miss_anno_error")    
         total_jsons = set(self.df.ori_path)
@@ -75,7 +75,7 @@ class MissAnnoChecker():
             self.visualization(self.df_selected.sample(500))
     
     
-    def visualization(self, df_vis: pd.DataFrame):
+    def visualization(self, df_vis: pd.DataFrame) -> None:
         visualizer = Visualizer(VisualizationConfig)
         for idx, row in tqdm(enumerate(df_vis.itertuples()), total=len(df_vis)):
             obs_list = []

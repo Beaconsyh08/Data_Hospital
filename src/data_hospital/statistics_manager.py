@@ -1,5 +1,6 @@
+from cmath import nan
 import os
-from tabnanny import check
+from re import T
 
 import folium
 import matplotlib.pyplot as plt
@@ -9,6 +10,8 @@ from src.data_manager.data_manager import load_from_pickle
 from src.data_manager.data_manager_creator import data_manager_creator
 from src.utils.logger import get_logger
 import sys
+import numpy as np
+import json
 sys.path.append("../haomo_ai_framework")
 from haomoai.cards import CardOperation
 from tqdm import tqdm
@@ -30,12 +33,11 @@ class StatisticsManager():
         except FileNotFoundError:
             self.logger.error("Please Check If the File Exists")
             sys.exit()     
-            
+        
         self.total_frames_number = len(set(list(self.df.json_path)))
         self.df['class_name_map'] = self.df['class_name'].map(Config.TYPE_MAP)
         self.save_dir = self.cfg.SAVE_DIR
         os.makedirs(self.save_dir, exist_ok=True)
-        self.checking_stats()
         self.card_dir = OutputConfig.OUTPUT_CARD_DIR
         os.makedirs(self.card_dir, exist_ok=True)
         
@@ -45,33 +47,39 @@ class StatisticsManager():
             plt.text(i, y[i], y[i], ha = 'center')
         
     
-    def set_loader(self, load_path: str):
+    def set_loader(self, load_path: str) -> set:
         return set([_.strip() for _ in open(load_path)])
         
     
+    def add_noinfo_data(self, error_name: str, error_lst: list, json_lst: set):
+        new_df = pd.DataFrame({"json_path": list(json_lst),
+                                error_name: error_lst})
+        self.df = self.df.append(new_df)
+    
+    
     def checking_stats(self,):
         self.logger.critical("Data Checking Error Stats Summary")
-        dup_jsons = self.set_loader("%s/duplicated_jsons.txt" % DuplicatedCheckerConfig.SAVE_DIR)
-        dup_imgs = self.set_loader("%s/duplicated_imgs.txt" % DuplicatedCheckerConfig.SAVE_DIR)
+        self.dup_jsons = self.set_loader("%s/duplicated_jsons.txt" % DuplicatedCheckerConfig.SAVE_DIR)
+        self.dup_imgs = self.set_loader("%s/duplicated_imgs.txt" % DuplicatedCheckerConfig.SAVE_DIR)
         ori_empty = self.set_loader("%s/empty.txt" % LogicalCheckerConfig.SAVE_DIR)
         checked_jsons = set(list(self.df.json_path))
         self.real_empty_frame = ori_empty - checked_jsons
         
         self.problem_frame, self.problem_bbox = set(), set()
-        self.total_frame = checked_jsons | dup_jsons | dup_imgs | ori_empty
-        total_frame_amount = len(self.total_frame) + len(dup_jsons)
-        self.problem_frame = dup_jsons | dup_imgs | self.real_empty_frame
+        self.total_frame = checked_jsons | self.dup_jsons | self.dup_imgs | ori_empty
+        total_frame_amount = len(self.total_frame) + len(self.dup_jsons)
+        self.problem_frame = self.dup_jsons | self.dup_imgs | self.real_empty_frame
+        
+        self.add_noinfo_data("dup_json", [1 for _ in range(len(self.dup_jsons))], self.dup_jsons)
+        self.add_noinfo_data("dup_img", [1 for _ in range(len(self.dup_imgs))], self.dup_imgs)
+        self.add_noinfo_data("empty", [1 for _ in range(len(self.real_empty_frame))], self.real_empty_frame)
         
         res_pd = pd.DataFrame()
-        res_pd.set_axis(DataHospitalConfig.PROBLEMATIC_LIST + DataHospitalConfig.ERROR_LIST, inplace=True)
-        
-        res_pd.at["dup_json", "Frame_Amount"], res_pd.at["dup_json", "Frame_Ratio"] = len(dup_jsons), len(dup_jsons) / total_frame_amount
-        res_pd.at["dup_img", "Frame_Amount"], res_pd.at["dup_img", "Frame_Ratio"] = len(dup_imgs), len(dup_imgs) / total_frame_amount
-        res_pd.at["empty", "Frame_Amount"], res_pd.at["empty", "Frame_Ratio"] = len(self.real_empty_frame), len(self.real_empty_frame) / total_frame_amount
+        res_pd.set_axis(DataHospitalConfig.TOTAL_ERROR_LIST, inplace=True)
         
         total_instance_amount = len(self.df)
-        for error in DataHospitalConfig.ERROR_LIST:
-            error_df = self.df[~self.df[error].isin([0, None])]
+        for error in DataHospitalConfig.TOTAL_ERROR_LIST:
+            error_df = self.df[~self.df[error].isin([0, None, np.NaN])]
             error_instance_amount = len(error_df)
             error_frame = set(list(error_df.json_path))
             self.problem_frame |= error_frame
@@ -93,12 +101,40 @@ class StatisticsManager():
         with open(save_path, "w") as output_file:
             for json_path in tqdm(json_paths, desc= "%s Saving" % file_name):
                 output_file.writelines(json_path + "\n")
-        self.logger.debug("%s has been saved in: %s" % (file_name, save_path))
+        self.logger.debug("%s Has Been Saved in: %s" % (file_name, save_path))
             
+    
+    def error_outputer(self, ):
+        error_df = self.df[["json_path"] + DataHospitalConfig.TOTAL_ERROR_LIST].fillna(0)
+        frame_error_df = error_df.groupby(["json_path"]).max()
+        
+        error_json = {"data": []}
+        
+        for row in tqdm(frame_error_df.itertuples(), desc="Check Resultl Output Saving", total=len(frame_error_df)):
+            index = row.Index
+            error_attribute = []
+            for i in range(len(frame_error_df.columns)):
+                # i + 1 to ignore index
+                if row[i + 1] not in [0, None, np.NaN]:
+                    error_attribute.append(frame_error_df.columns[i])
+            
+            error_dict = dict()
+            error_dict["data_oss_path"] = index
+            error_dict["check_result"] = error_attribute
+            error_json["data"].append(error_dict)
+        
+        save_path = "%s/check_result.json" % self.card_dir
+        with open(save_path, "w") as output_file:
+            json.dump(error_json, output_file)
+        
+        self.logger.debug("Check Result Has Been Saved in: %s" % save_path)
+        
+    
     def output_wrapper(self, ): 
         self.json_outputer("problem", self.problem_frame)
         self.json_outputer("real_empty", self.real_empty_frame)
         self.json_outputer("real_clean", self.real_clean_frame)
+        self.error_outputer()
 
     
     def city_stats(self,):
@@ -267,6 +303,7 @@ class StatisticsManager():
     
     
     def diagnose(self, ):
+        self.checking_stats()
         self.city_stats()
         self.time_stats()
         self.info_stats()

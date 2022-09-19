@@ -1,3 +1,4 @@
+from tkinter import N
 from PIL import Image
 import shutil
 import json
@@ -27,10 +28,10 @@ class LogicalChecker():
     def __init__(self, cfg: dict) -> None:
         self.logger = get_logger()
         self.cfg = cfg       
-        # self.dm = self.build_df()
-        # self.df = self.dm.df
-        self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
-        self.dm = TrainCam3dManager(self.df)
+        self.dm = self.build_df()
+        self.df = self.dm.df
+        # self.df = load_from_pickle(self.cfg.DATAFRAME_PATH)
+        # self.dm = TrainCam3dManager(self.df)
         with open(cfg.JSON_PATH) as total_file:
             self.total_frames = set([_.strip() for _ in total_file])
 
@@ -52,7 +53,7 @@ class LogicalChecker():
         self.coor = cfg.COOR
         
         
-    def build_df(self, ):
+    def build_df(self, ) -> TrainCam3dManager:
         dm = data_manager_creator(self.cfg)
         dm.load_from_json()
         return dm
@@ -128,9 +129,11 @@ class LogicalChecker():
         self.empty_frames = self.total_frames - self.prob_frames - self.clean_frames
         self.clean_empty = self.clean_frames | self.empty_frames
         
-        def format_output(text: str, lst: list):
+        
+        def format_output(text: str, lst: list) -> None:
             frame_dict[text] = len(lst)
             frame_per_dict[text] = round(len(lst) / len(self.total_frames), 4)
+
 
         format_output("error_sum", self.prob_frames)
         format_output("total", self.total_frames)
@@ -210,9 +213,7 @@ class LogicalChecker():
                             if object["id"] == id:
                                 try:
                                     attr = object['3D_attributes']['position']
-                                    new.x = attr["x"]
-                                    new.y = attr["y"]
-                                    new.z = attr["z"]
+                                    new.x, new.y, new.z = attr["x"], attr["y"], attr["z"]
                                     new.yaw = object['3D_attributes']['rotation']["yaw"]
                                 except:
                                     pass
@@ -230,7 +231,7 @@ class LogicalChecker():
                         output_file.writelines(info)
                             
     
-    def diagnose(self,):
+    def diagnose(self,) -> None:
         self.bbox_checker()
         self.coor_checker()
         # self.resolution_checker()

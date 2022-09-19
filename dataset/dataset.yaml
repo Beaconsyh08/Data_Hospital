@@ -190,11 +190,11 @@ cards_conf:
 #   #     project: icu30
 
 
-  # - file_name: /data_path/test0914.txt
-  #   cards:
-  #   - card_id: 6322eca888974f319a1b25c7
-  #     media_name: side
-  #     project: icu30
+  - file_name: /data_path/test0914.txt
+    cards:
+    - card_id: 6322eca888974f319a1b25c7
+      media_name: side
+      project: icu30
 
 
   # - file_name: /data_path/yayun0916.txt
