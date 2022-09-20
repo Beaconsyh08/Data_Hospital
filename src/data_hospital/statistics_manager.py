@@ -101,7 +101,7 @@ class StatisticsManager():
     
     
     def json_outputer(self, file_name: str, json_paths: list):
-        save_path = "%s/%s.txt" % (self.card_dir, file_name)
+        save_path = "%s/%s/%s.txt" % (self.card_dir, file_name, file_name)
         with open(save_path, "w") as output_file:
             for json_path in tqdm(json_paths, desc= "%s Saving" % file_name):
                 output_file.writelines(json_path + "\n")
@@ -128,7 +128,7 @@ class StatisticsManager():
             error_dict["check_result"] = error_attribute
             error_json["data"].append(error_dict)
     
-        save_path = "%s/check_result.json" % self.card_dir
+        save_path = "%s/check_result/check_result.json" % self.card_dir
         with open(save_path, "w") as output_file:
             json.dump(error_json, output_file)
         

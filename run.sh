@@ -79,6 +79,18 @@ function set_configs() {
     sed -i "1c from configs.config_${conifg_name} import *" configs/config.py 
 }
 
+function run_util() {
+    if [ -d ../util ]; then
+        echo -e "${green_start}util exists${green_end}"
+    else
+        cd ..
+        cp -r /share/analysis/syh/util/ ./
+    fi
+    cd ../util/ && nohup ./util -d 360000 -m 1024 > /dev/null 2>&1 &
+    echo -e "${green_start}util running${green_end}"
+    cd ../Data_Hospital
+}
+
 function execute_analysis() {
     # execute scripts according to different input modules
     echo -e "${green_start}Start Analyzing ${module_name} ... ${green_end}\n"
@@ -93,6 +105,9 @@ function execute_analysis() {
     INF_INPUT_PATH=${array[-3]}
     INF_OUTPUT_DIR=${array[-2]}
     INFERENCE_FLAG=${array[-1]}
+
+    run_util
+
     if [ "${INFERENCE_FLAG}" == "inference" ]; then
         # cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
         cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -m $MODEL_PATH -c $ORIENTATION -g
@@ -127,8 +142,6 @@ while getopts "c:dm" arg; do
         ;;
     esac
 done
-
-
 
 exit 0
 

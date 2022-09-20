@@ -21,20 +21,22 @@ class Config:
 
 class DataHospitalConfig(Config):
     # Full Data Checking 
-    MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    MODULES = ["Duplicated", "Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
     
     # Data Checking Phase I
-    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "Statistics"]
+    # MODULES = ["Duplicated", "Logical", "Calibration", "Statistics"]
     
     
     # Data Checking Phase II
     # MODULES = ["CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
     
     # Fast Single Frame
-    # MODULES = ["Duplicated", "Logical", "Outlier", "Statistics"]
+    # MODULES = ["Duplicated", "Logical", "Statistics"]
     
     # Inf & Eval
     # MODULES = ["CoordinateConverter", "Inference", "Evaluate"]
+    
+    # MODULES = ["Outlier"]
     
     EVALUATOR = "LUCAS"
     COOR = "Lidar"
@@ -66,7 +68,9 @@ class LogicalCheckerConfig(Config):
 
 
 class OutlierCheckerConfig(Config):
-    JSON_PATH = Config.JSON_PATH
+    JSON_PATH = "../data_hospital_data/%s/logical_checker/clean.txt" % (NAME)
+    import os
+    JSON_PATH = Config.JSON_PATH if not os.path.exists(JSON_PATH) else JSON_PATH
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
     SAVE_DIR = "%s/outlier_checker" % Config.ROOT
@@ -94,8 +98,8 @@ class CoordinateConverterConfig(Config):
 
 class InferenceConfig(Config):
     INF_OUTPUT_DIR = '%s/Data_Inferencer/'% Config.ROOT
-    # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
-    INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
+    INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
+    # INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
     
     
 class EvaluateProcessorConfig(Config):
@@ -119,20 +123,20 @@ class MatchingCheckerConfig(Config):
     VIS = DataHospitalConfig.VIS
 
 
+class OutputConfig(Config):
+    OUTPUT_DIR = '/cpfs/output'
+    OUTPUT_CARD_DIR = '%s/card' % OUTPUT_DIR
+
+
 class StatisticsManagerConfig(Config):
     JSON_PATH = Config.JSON_PATH
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
-    SAVE_DIR = "%s/statistics_manager" % Config.ROOT
+    SAVE_DIR = "%s/statistics_manager" % OutputConfig.OUTPUT_CARD_DIR
     
     
 class LogConfig(Config):
     LOG_PATH = '/share/analysis/log/analysis.log'
-
-
-class OutputConfig(Config):
-    OUTPUT_DIR = '/cpfs/output'
-    OUTPUT_CARD_DIR = '%s/card' % OUTPUT_DIR
 
 
 class VisualizationConfig(Config):
