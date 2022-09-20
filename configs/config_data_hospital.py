@@ -39,8 +39,6 @@ class DataHospitalConfig(Config):
     EVALUATOR = "LUCAS"
     COOR = "Lidar"
     
-    MODULES = ["Statistics"]
-    
     TOTAL_ERROR_LIST = ["dup_json", "dup_img", "empty", "bbox_error", "coor_error", "res_error", "outlier_error", "calibration_error", "miss_anno_error", "matching_error"]
     ORIENTATION = "SIDE"
     VIS = False

@@ -9,16 +9,31 @@ output_path="/cpfs/output/"
 card_tools_path="/root/tools/card"
 
 function repo_ready() {
-    if [ -d "../haomo_ai_framework" ]; then
+    if [ -d ../haomo_ai_framework ]; then
+        echo -e "${green_start}haomo_ai_framework exists${green_end}"
+    else
+        cd ..
         git clone git@codeup.aliyun.com:5f02dcd86a575d7f23661142/Lucas/Training/haomo_ai_framework.git
+        echo -e "${green_start}haomo_ai_framework downloaded${green_end}"
+        cd Data_Hospital
     fi
 
-    if [ -d "../Data_Inferencer" ]; then
+    if [ -d ../Data_Inferencer ]; then
+        echo -e "${green_start}Data_Inferencer exists${green_end}"
+    else
+        cd ..
         git clone git@codeup.aliyun.com:5f02dcd86a575d7f23661142/Lucas/algorithms/Data_Inferencer.git
+        echo -e "${green_start}Data_Inferencer downloaded${green_end}"
+        cd Data_Hospital
     fi
 
-    if [ -d "../Lucas_Evaluator" ]; then
+    if [ -d ../Lucas_Evaluator ]; then
+        echo -e "${green_start}Lucas_Evaluator exists${green_end}"
+    else
+        cd ..
         git clone git@codeup.aliyun.com:5f02dcd86a575d7f23661142/Lucas/algorithms/Lucas_Evaluator.git
+        echo -e "${green_start}Lucas_Evaluator downloaded${green_end}"
+        cd Data_Hospital
     fi
 }
 
@@ -67,6 +82,7 @@ function set_configs() {
 function execute_analysis() {
     # execute scripts according to different input modules
     echo -e "${green_start}Start Analyzing ${module_name} ... ${green_end}\n"
+    repo_ready
     python setup.py install 
     python tools/data_hospital.py
     IS_INFERENCE=$(python ./tools/data_hospital_passer.py)
@@ -92,6 +108,7 @@ function execute_analysis() {
 while getopts "c:dm" arg; do
     case ${arg} in
     c)
+        
         conifg_name=${OPTARG}
         set_configs
         ;;
@@ -101,7 +118,6 @@ while getopts "c:dm" arg; do
         download_dataset
         ;;
     m)
-        repo_ready
         check_dependencies
         execute_analysis
         ;;
