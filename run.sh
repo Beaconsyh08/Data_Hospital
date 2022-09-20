@@ -5,10 +5,22 @@ red_end="\033[0m"
 green_start="\033[32m"
 green_end="\033[0m"
 
-
 output_path="/cpfs/output/"
-
 card_tools_path="/root/tools/card"
+
+function repo_ready() {
+    if [ -d "../haomo_ai_framework" ]; then
+        git clone git@codeup.aliyun.com:5f02dcd86a575d7f23661142/Lucas/Training/haomo_ai_framework.git
+    fi
+
+    if [ -d "../Data_Inferencer" ]; then
+        git clone git@codeup.aliyun.com:5f02dcd86a575d7f23661142/Lucas/algorithms/Data_Inferencer.git
+    fi
+
+    if [ -d "../Lucas_Evaluator" ]; then
+        git clone git@codeup.aliyun.com:5f02dcd86a575d7f23661142/Lucas/algorithms/Lucas_Evaluator.git
+    fi
+}
 
 function help_content() {
     echo "Useage: ./run.sh -mdh [OPTARG]
@@ -66,16 +78,16 @@ function execute_analysis() {
     INF_OUTPUT_DIR=${array[-2]}
     INFERENCE_FLAG=${array[-1]}
     if [ "${INFERENCE_FLAG}" == "inference" ]; then
-        # cd ../data_inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
-        cd ../data_inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -m $MODEL_PATH -c $ORIENTATION -g
-        cd ../data_hospital/
+        # cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
+        cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -m $MODEL_PATH -c $ORIENTATION -g
+        cd ../Data_Hospital/
     fi
 
     python tools/data_hospital_2.py 
 
     echo -e "${green_start}Analyzing ${module_name} Completed!${green_end}\n"
     return 0
-}
+} 
 
 while getopts "c:dm" arg; do
     case ${arg} in
@@ -89,6 +101,7 @@ while getopts "c:dm" arg; do
         download_dataset
         ;;
     m)
+        repo_ready
         check_dependencies
         execute_analysis
         ;;

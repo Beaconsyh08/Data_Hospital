@@ -115,7 +115,7 @@ class EvaluateProcessorQA():
             elif result["desc"].endswith("x"):
                 self.logger.error("QA Evaluator Not Available, Contact QA")
                 sys.exit(0)
-            sleep(600)
+            sleep(300)
         
         save_path = "%s/result.json" % self.output_dir
         with open(save_path, 'w') as output_file:
@@ -131,7 +131,7 @@ class EvaluateProcessorQA():
 if __name__ == '__main__':
     class Config1:
         NAME = "train31_total"
-        INPUT_DIR = '%s/data_inferencer/'% '/root/data_hospital_data/0728v60/%s'
+        INPUT_DIR = '%s/Data_Inferencer/'% '/root/data_hospital_data/0728v60/%s'
         OUTPUT_DIR = '%s/evaluate_processor' % '/root/data_hospital_data/0728v60/%s'
         MODEL_NAME = "HAHA"
         

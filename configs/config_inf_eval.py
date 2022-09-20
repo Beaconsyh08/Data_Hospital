@@ -20,12 +20,25 @@ class Config:
 
 
 class DataHospitalConfig(Config):
-    MODULES = ["Inference", "Evaluate"]
-    # MODULES = ["Statistics"]
+    # Full Data Checking 
+    MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    
+    # Data Checking Phase I
+    # MODULES = ["Duplicated", "Logical", "Outlier", "Calibration", "Statistics"]
+    
+    
+    # Data Checking Phase II
+    # MODULES = ["CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    
+    # Fast Single Frame
+    # MODULES = ["Duplicated", "Logical", "Outlier", "Statistics"]
+    
+    MODULES = ["Statistics"]
+
     EVALUATOR = "LUCAS"
-    ERROR_LIST = ["bbox_error", "coor_error", "res_error"]
+    TOTAL_ERROR_LIST = ["dup_json", "dup_img", "empty", "bbox_error", "coor_error", "res_error", "outlier_error", "calibration_error", "miss_anno_error", "matching_error"]
     ORIENTATION = "SIDE"
-    COOR = "Vehicle"
+    COOR = "Lidar"
     VIS = False
     
     
@@ -44,10 +57,17 @@ class LogicalCheckerConfig(Config):
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
     ERROR_LIST = ["bbox_error", "coor_error", "res_error"]
-    CHECK_ERROR_LIST = ERROR_LIST + ["2d_null_error", "3d_null_error"]
     SAVE_DIR = "%s/logical_checker" % Config.ROOT
     COOR = DataHospitalConfig.COOR
     ONLINE = False
+    VIS = False
+
+
+class OutlierCheckerConfig(Config):
+    JSON_PATH = Config.JSON_PATH
+    JSON_TYPE = "txt"
+    DATA_TYPE = "train_cam3d"
+    SAVE_DIR = "%s/outlier_checker" % Config.ROOT
     VIS = False
     
     
@@ -71,7 +91,7 @@ class CoordinateConverterConfig(Config):
     
 
 class InferenceConfig(Config):
-    INF_OUTPUT_DIR = '%s/data_inferencer/'% Config.ROOT
+    INF_OUTPUT_DIR = '%s/Data_Inferencer/'% Config.ROOT
     # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
     INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
     
@@ -79,7 +99,7 @@ class InferenceConfig(Config):
 class EvaluateProcessorConfig(Config):
     NAME = NAME
     MODEL_NAME = InferenceConfig.INF_MODEL_PATH[:-4]
-    INPUT_DIR = '%s/data_inferencer/'% Config.ROOT
+    INPUT_DIR = '%s/Data_Inferencer'% Config.ROOT
     OUTPUT_DIR = '%s/evaluate_processor' % Config.ROOT
     
     JSON_PATH = '%s/data_hospital_badcase.txt' % OUTPUT_DIR
@@ -110,7 +130,7 @@ class LogConfig(Config):
 
 class OutputConfig(Config):
     OUTPUT_DIR = '/cpfs/output'
-    OUTPUT_CLEAN_PATH = '%s/card/clean' % OUTPUT_DIR
+    OUTPUT_CARD_DIR = '%s/card' % OUTPUT_DIR
 
 
 class VisualizationConfig(Config):

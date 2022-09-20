@@ -55,7 +55,7 @@ class EvaluateProcessorLucas():
     
     def evaluate(self,):
         # execute("a", "b", "c")
-        os.system("cd ../Arithmetic_evaluation_server && python exec_eva/exec_obstacle_2d_eva.py --gt_dir %s --dt_dir %s --case_dir %s --result_dir %s" % (self.gt_path, self.dt_path, self.badcases_dir, self.result_path))
+        os.system("cd ../Lucas_Evaluator && python exec_eva/exec_obstacle_2d_eva.py --gt_dir %s --dt_dir %s --case_dir %s --result_dir %s" % (self.gt_path, self.dt_path, self.badcases_dir, self.result_path))
         return 
         
     

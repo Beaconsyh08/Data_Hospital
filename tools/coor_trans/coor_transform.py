@@ -12,11 +12,6 @@ from tqdm import tqdm
 import sys
 from ann_parser import transfer_attr
 from ann_parser import getCalibTransformMatrix, lidar2camera, lidar2vehicle, vehicle2lidar
-# sys.path.append('/root/Arithmetic_evaluation_server')
-# from ann_parser import transfer_attr
-# from ann_parser import getCalibTransformMatrix, lidar2camera, lidar2vehicle
-
-# from src.data_hospital.utils.inference.mmdet.haomo.core.evalution import eval_map_haomo
 
 
 # @DATASETS.register_module()

@@ -1,4 +1,4 @@
-NAME = "test0914"
+NAME = "test0915"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
@@ -33,12 +33,16 @@ class DataHospitalConfig(Config):
     # Fast Single Frame
     # MODULES = ["Duplicated", "Logical", "Outlier", "Statistics"]
     
-    # MODULES = ["Statistics"]
-
+    # Inf & Eval
+    # MODULES = ["CoordinateConverter", "Inference", "Evaluate"]
+    
     EVALUATOR = "LUCAS"
+    COOR = "Lidar"
+    
+    MODULES = ["Statistics"]
+    
     TOTAL_ERROR_LIST = ["dup_json", "dup_img", "empty", "bbox_error", "coor_error", "res_error", "outlier_error", "calibration_error", "miss_anno_error", "matching_error"]
     ORIENTATION = "SIDE"
-    COOR = "Lidar"
     VIS = False
     
     
@@ -91,7 +95,7 @@ class CoordinateConverterConfig(Config):
     
 
 class InferenceConfig(Config):
-    INF_OUTPUT_DIR = '%s/data_inferencer/'% Config.ROOT
+    INF_OUTPUT_DIR = '%s/Data_Inferencer/'% Config.ROOT
     # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
     INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
     
@@ -99,7 +103,7 @@ class InferenceConfig(Config):
 class EvaluateProcessorConfig(Config):
     NAME = NAME
     MODEL_NAME = InferenceConfig.INF_MODEL_PATH[:-4]
-    INPUT_DIR = '%s/data_inferencer'% Config.ROOT
+    INPUT_DIR = '%s/Data_Inferencer'% Config.ROOT
     OUTPUT_DIR = '%s/evaluate_processor' % Config.ROOT
     
     JSON_PATH = '%s/data_hospital_badcase.txt' % OUTPUT_DIR

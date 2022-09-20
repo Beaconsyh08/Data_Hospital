@@ -2,8 +2,8 @@ import json
 import os
 from tqdm import tqdm
 
-ROOT = "/root/data_hospital_data/0728v60/traffic_temp/data_inferencer/dt_old/"
-SAVE_ROOT = "/root/data_hospital_data/0728v60/traffic_temp/data_inferencer/dt/"
+ROOT = "/root/data_hospital_data/0728v60/traffic_temp/Data_Inferencer/dt_old/"
+SAVE_ROOT = "/root/data_hospital_data/0728v60/traffic_temp/Data_Inferencer/dt/"
 os.makedirs(SAVE_ROOT, exist_ok=True)
 
 file_lst = []

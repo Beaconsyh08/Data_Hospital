@@ -1,6 +1,4 @@
-from tkinter import N
 from PIL import Image
-import shutil
 import json
 import os
 import pickle

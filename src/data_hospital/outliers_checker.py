@@ -6,6 +6,16 @@ class OutlierChecker():
         self.logger = get_logger()
         self.cfg = cfg       
         
+    
+    def iqr(self,):
         
-    def diagnose() -> None:
+        
+    
+    def sd(self,):
+        
+    
+    
+    
+        
+    def diagnose(self) -> None:
         pass

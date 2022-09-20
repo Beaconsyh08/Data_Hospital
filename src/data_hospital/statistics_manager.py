@@ -20,6 +20,7 @@ plt.rc('font', size=16)
 plt.rc('axes', titlesize=24) 
 plt.rc('axes', labelsize=20)
 from datetime import time
+from datetime import datetime
 import pandas as pd
 
 
@@ -36,8 +37,11 @@ class StatisticsManager():
         
         self.total_frames_number = len(set(list(self.df.json_path)))
         self.df['class_name_map'] = self.df['class_name'].map(Config.TYPE_MAP)
+        
         self.save_dir = self.cfg.SAVE_DIR
         os.makedirs(self.save_dir, exist_ok=True)
+        
+        
         self.card_dir = OutputConfig.OUTPUT_CARD_DIR
         os.makedirs(self.card_dir, exist_ok=True)
         
@@ -107,8 +111,9 @@ class StatisticsManager():
     def error_outputer(self, ):
         error_df = self.df[["json_path"] + DataHospitalConfig.TOTAL_ERROR_LIST].fillna(0)
         frame_error_df = error_df.groupby(["json_path"]).max()
-        
-        error_json = {"data": []}
+
+        error_json = {"date_time": str(datetime.now()),
+                        "data": []}
         
         for row in tqdm(frame_error_df.itertuples(), desc="Check Resultl Output Saving", total=len(frame_error_df)):
             index = row.Index
@@ -122,7 +127,7 @@ class StatisticsManager():
             error_dict["data_oss_path"] = index
             error_dict["check_result"] = error_attribute
             error_json["data"].append(error_dict)
-        
+    
         save_path = "%s/check_result.json" % self.card_dir
         with open(save_path, "w") as output_file:
             json.dump(error_json, output_file)
@@ -182,8 +187,8 @@ class StatisticsManager():
     def city_heat_distribution(self, ) -> None:
         self.logger.critical("Data City Heat Stats")
         m = folium.Map([39.904989, 116.405285], tiles='stamentoner', zoom_start=10)
-        df = self.df.drop_duplicates(subset="json_path", keep='first', inplace=True)
-        df = self.df[self.df["lon"].notna()]
+        df = self.df.drop_duplicates(subset="json_path", keep='first')
+        df = df[df["lon"].notna()]
         
         lons = df.lon.to_list()
         lats = df.lat.to_list()
