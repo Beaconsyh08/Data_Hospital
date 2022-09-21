@@ -1,4 +1,4 @@
-NAME = "test0914"
+NAME = "data"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
