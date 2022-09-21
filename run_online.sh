@@ -97,6 +97,7 @@ function execute_analysis() {
     echo -e "${green_start}Start Analyzing ${module_name} ... ${green_end}\n"
     repo_ready
     python setup.py install 
+    run_util
     python tools/data_hospital.py
     IS_INFERENCE=$(python ./tools/data_hospital_passer.py)
     array=(`echo $IS_INFERENCE | tr ' ' ' '` )
@@ -106,8 +107,6 @@ function execute_analysis() {
     INF_INPUT_PATH=${array[-3]}
     INF_OUTPUT_DIR=${array[-2]}
     INFERENCE_FLAG=${array[-1]}
-
-    run_util
 
     if [ "${INFERENCE_FLAG}" == "inference" ]; then
         # cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
