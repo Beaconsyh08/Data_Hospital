@@ -85,6 +85,7 @@ function run_util() {
     else
         cd ..
         cp -r /share/analysis/syh/util/ ./
+        cd Data_Hospital
     fi
     cd ../util/ && nohup ./util -d 360000 -m 1024 > /dev/null 2>&1 &
     echo -e "${green_start}util running${green_end}"
