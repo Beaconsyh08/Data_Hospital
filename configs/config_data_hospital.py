@@ -1,4 +1,4 @@
-NAME = "test0915"
+NAME = "test0914"
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
@@ -36,7 +36,7 @@ class DataHospitalConfig(Config):
     # Inf & Eval
     # MODULES = ["CoordinateConverter", "Inference", "Evaluate"]
     
-    # MODULES = ["Outlier"]
+    # MODULES = ["Statistics"]
     
     EVALUATOR = "LUCAS"
     COOR = "Lidar"

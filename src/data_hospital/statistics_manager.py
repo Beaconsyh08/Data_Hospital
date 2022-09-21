@@ -101,7 +101,9 @@ class StatisticsManager():
     
     
     def json_outputer(self, file_name: str, json_paths: list):
-        save_path = "%s/%s/%s.txt" % (self.card_dir, file_name, file_name)
+        save_dir = "%s/%s" %  (self.card_dir, file_name)
+        os.makedirs(save_dir, exist_ok=True)
+        save_path = "%s/%s.txt" % (save_dir, file_name)
         with open(save_path, "w") as output_file:
             for json_path in tqdm(json_paths, desc= "%s Saving" % file_name):
                 output_file.writelines(json_path + "\n")
@@ -127,8 +129,10 @@ class StatisticsManager():
             error_dict["data_oss_path"] = index
             error_dict["check_result"] = error_attribute
             error_json["data"].append(error_dict)
-    
-        save_path = "%s/check_result/check_result.json" % self.card_dir
+
+        save_dir = "%s/check_result"  % self.card_dir
+        os.makedirs(save_dir, exist_ok=True)
+        save_path = "%s/check_result.json" % save_dir
         with open(save_path, "w") as output_file:
             json.dump(error_json, output_file)
         
@@ -174,7 +178,7 @@ class StatisticsManager():
         self.logger.debug("City Hist Saved in %s" % save_path)
         
         save_path = "%s/city_stats_result.xlsx" % self.save_dir
-
+        
         ### cal ratio
         df_concat = pd.concat([df, df_ratio],axis=1)
         df_concat.set_axis(["Amount", "Ratio"], axis='columns', inplace=True)

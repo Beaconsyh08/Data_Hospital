@@ -69,7 +69,7 @@ function download_dataset() {
 function check_dependencies() {
     # remove output directory
     if [ -d ${output_path} ];then
-        # rm -rf ${output_path}
+        rm -rf ${output_path}
         echo -e "${green_start} Removed the Folder: ${output_path} ${green_end}\n"
     fi
 }
