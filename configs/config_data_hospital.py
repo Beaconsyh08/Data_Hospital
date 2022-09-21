@@ -1,7 +1,12 @@
 NAME = "data"
+
+import os
+
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
     ROOT = '/root/data_hospital_data/%s' % NAME
+    DATAFRAME_DIR = "%s/dataframes" % (ROOT)
+    os.makedirs(DATAFRAME_DIR, exist_ok=True)
     DATAFRAME_PATH = '%s/dataframes/dataframe.pkl' % ROOT
     BADCASE_DATAFRAME_PATH = '%s/dataframes/badcase_dataframe.pkl' % ROOT
     FINAL_DATAFRAME_PATH = '%s/dataframes/final_dataframe.pkl' % ROOT
@@ -49,9 +54,9 @@ class DataHospitalConfig(Config):
 class DuplicatedCheckerConfig(Config):
     JSON_PATH = Config.JSON_PATH
     ORI_JSON_PATH = Config.JSON_PATH
-    ORI_PKL_PATH = "/root/data_hospital_data/dataframes/sidecam_ori.pkl"
-    SAVE_PKL_PATH = "/root/data_hospital_data/dataframes/%s.pkl" % NAME
     SAVE_DIR = "%s/duplicated_checker" % Config.ROOT
+    ORI_PKL_PATH = "%s/dataframes/sidecam_ori.pkl" % Config.ROOT
+    SAVE_PKL_PATH = "%s/dataframes/%s.pkl" % (Config.ROOT, NAME)
     PKL_READY = False
     METHOD = "Total"
     
@@ -69,7 +74,6 @@ class LogicalCheckerConfig(Config):
 
 class OutlierCheckerConfig(Config):
     JSON_PATH = "../data_hospital_data/%s/logical_checker/clean.txt" % (NAME)
-    import os
     JSON_PATH = Config.JSON_PATH if not os.path.exists(JSON_PATH) else JSON_PATH
     JSON_TYPE = "txt"
     DATA_TYPE = "train_cam3d"
