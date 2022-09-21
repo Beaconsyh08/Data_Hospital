@@ -755,6 +755,7 @@ class CalibrationChecker():
         
         for txt in tqdm(self.txt_paths):
             mean_iou, count = self.multi_process(txt, tag, img_count)
+            print(txt, mean_iou, count)
             txt_lst.append(txt)
             iou_lst.append(mean_iou)
             count_lst.append(count)
