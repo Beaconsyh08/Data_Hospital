@@ -41,7 +41,6 @@ class CalibrationChecker():
         print("LOAD PATH", self.load_path)
         os.makedirs(self.load_path, exist_ok=True)
         self.threshold = cfg.THRESHOLD
-        self.txt_paths = [self.load_path + "/" + _ for _ in os.listdir(self.load_path)]
         print("TXT PATH", self.txt_paths)
         self.res_pd = pd.DataFrame()
         self.prob_lst = []
@@ -738,14 +737,15 @@ class CalibrationChecker():
         
     def txt_for_reproejct(self, ) -> None:
         carday_ids = set(self.df.carday_id)
-        self.logger.debug("Calibration Ready File Has Been Saved in %s" % self.cfg.LOAD_PATH)
+        self.logger.debug("Calibration Ready File Has Been Saved in %s" % self.load_path)
         for carday_id in tqdm(carday_ids, desc="Spliting Json Paths Based on CarDay"):
             json_paths = list(set(self.df[self.df['carday_id'] == carday_id].json_path.tolist()))
-            shutil.os.makedirs(self.cfg.LOAD_PATH, exist_ok=True)
-            with open("%s/%s.txt" % (self.cfg.LOAD_PATH, carday_id), "w") as output_file:
+            with open("%s/%s.txt" % (self.load_path, carday_id), "w") as output_file:
                 for json_path in json_paths:
                     output_file.writelines(json_path + "\n")
-                    
+        
+        self.txt_paths = [self.load_path + "/" + _ for _ in os.listdir(self.load_path)]
+        
                     
     def diagnose(self,):
         self.txt_for_reproejct()
