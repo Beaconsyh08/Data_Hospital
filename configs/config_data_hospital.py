@@ -4,7 +4,7 @@ import os
 
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
-    ROOT = '/root/data_hospital_data/%s' % NAME
+    ROOT = '../data_hospital_data/%s' % NAME
     DATAFRAME_DIR = "%s/dataframes" % (ROOT)
     os.makedirs(DATAFRAME_DIR, exist_ok=True)
     DATAFRAME_PATH = '%s/dataframes/dataframe.pkl' % ROOT
