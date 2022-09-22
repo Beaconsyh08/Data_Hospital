@@ -41,7 +41,6 @@ class CalibrationChecker():
         print("LOAD PATH", self.load_path)
         os.makedirs(self.load_path, exist_ok=True)
         self.threshold = cfg.THRESHOLD
-        print("TXT PATH", self.txt_paths)
         self.res_pd = pd.DataFrame()
         self.prob_lst = []
         
