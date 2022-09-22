@@ -87,9 +87,8 @@ function run_util() {
         cp -r /share/analysis/syh/util/ ./
         cd worker
     fi
-    cd ../util/ && nohup ./util -d 360000 -m 2048 > /dev/null 2>&1 &
+    nohup ./util_checker.sh > /dev/null 2>&1 &
     echo -e "${green_start}util running${green_end}"
-    cd ../worker
 }
 
 function execute_analysis() {
@@ -107,14 +106,12 @@ function execute_analysis() {
     INF_INPUT_PATH=${array[-3]}
     INF_OUTPUT_DIR=${array[-2]}
     INFERENCE_FLAG=${array[-1]}
-    run_util
     if [ "${INFERENCE_FLAG}" == "inference" ]; then
         # cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
         cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -m $MODEL_PATH -c $ORIENTATION -g
         cd ../worker/
     fi
 
-    run_util
     python tools/data_hospital_2.py 
 
     nohup pkill util > /dev/null 2>&1 &
