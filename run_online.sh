@@ -117,7 +117,7 @@ function execute_analysis() {
     run_util
     python tools/data_hospital_2.py 
 
-    pkill util
+    nohup pkill util > /dev/null 2>&1 &
     echo -e "${green_start}Util Completed!${green_end}\n"
     echo -e "${green_start}Analyzing ${module_name} Completed!${green_end}\n"
     return 0
