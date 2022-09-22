@@ -81,14 +81,14 @@ function set_configs() {
 
 function run_util() {
     if [ -d ../util ]; then
-        echo -e "${green_start}util exists${green_end}"
+        echo -e "${green_start}Util exists${green_end}"
     else
         cd ..
         cp -r /share/analysis/syh/util/ ./
         cd Data_Hospital
     fi
     cd ../util/ && nohup ./util -d 360000 -m 1024 > /dev/null 2>&1 &
-    echo -e "${green_start}util running${green_end}"
+    echo -e "${green_start}Util running${green_end}"
     cd ../Data_Hospital
 }
 
@@ -117,6 +117,8 @@ function execute_analysis() {
 
     python tools/data_hospital_2.py 
 
+    pkill util
+    echo -e "${green_start}Util Completed!${green_end}\n"
     echo -e "${green_start}Analyzing ${module_name} Completed!${green_end}\n"
     return 0
 } 
