@@ -1,4 +1,4 @@
-NAME = "data"
+NAME = "2.2.5.0"
 
 import os
 
@@ -13,20 +13,30 @@ class Config:
     TEMP_DIR = '%s/temp_dataframes' % ROOT 
     JSON_PATH = "/data_path/%s.txt" % NAME
     
-    TYPE_MAP = {'car': 'car', 'van': 'car', 
-                'truck': 'truck', 'forklift': 'truck',
-                'bus':'bus', 
-                'rider':'rider', 'rider_bicycle': 'rider', 'rider_motorcycle': 'rider',
-                'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
-                'bicycle': 'bicycle', 'motorcycle': 'bicycle',
-                'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
-                'static': 'static', 'trafficCone': 'static', 'water-filledBarrier': 'static', 'other': 'static', 'accident': 'static', 'construction': 'static', 'traffic-cone': 'static', 'other-vehicle': 'static', 'attached': 'static', 'accident': 'static', 'traffic_cone': 'static', 'other-static': 'static', 'water-filled-barrier': 'static', 'other_static': 'static', 'water_filled_barrier': 'static', 'dynamic': 'static', 'other_vehicle': 'static', 'trafficcone': 'static', 'water-filledbarrier': 'static',
-                }
+    TYPE_MAP = {
+            'car': 'car', 'van': 'car', 
+            'truck': 'truck', 'forklift': 'truck',
+            'bus':'bus', 
+            'rider':'rider', 'rider_bicycle': 'rider', 'rider_motorcycle': 'rider',
+            'rider-bicycle': 'rider', 'rider-motorcycle':'rider', 
+            'bicycle': 'bicycle', 'motorcycle': 'bicycle',
+            'tricycle': 'tricycle', 'closed-tricycle':'tricycle', 'open-tricycle': 'tricycle', 'closed_tricycle':'tricycle', 'open_tricycle': 'tricycle', 'pedestrian': 'pedestrian',
+            'static': 'static', 'trafficCone': 'static', 'water-filledBarrier': 'static', 'other': 'static', 'accident': 'static', 'construction': 'static', 'traffic-cone': 'static', 
+            'other-vehicle': 'static', 'attached': 'static', 'traffic_cone': 'static', 'other-static': 'static', 'water-filled-barrier': 'static', 'other_static': 'static', 'water_filled_barrier': 'static', 
+            'dynamic': 'static', 'other_vehicle': 'static', 'trafficcone': 'static', 'water-filledbarrier': 'static',
+            }
+    CATEGORY = {
+            'vehicle': ['car', 'bus', 'truck', 'van', 'forklift'],
+            'vru': ['pedestrian', 'rider', 'bicycle', 'tricycle', 'rider-bicycle', 'motorcycle', 'rider-motorcycle', 'rider_bicycle', 'rider_motorcycle', 'closed-tricycle', 'open-tricycle', 'closed_tricycle', 'open_tricycle'],
+            'static': ['static', 'trafficCone', 'water-filledBarrier', 'other', 'accident', 'construction', 'traffic-cone', 'other-vehicle', 'attached', 'traffic_cone', 'other-static', 'water-filled-barrier', 'other_static', 
+                        'water_filled_barrier', 'dynamic', 'other_vehicle', 'water-filledbarrier']
+            }
+
 
 
 class DataHospitalConfig(Config):
     # Full Data Checking 
-    MODULES = ["Duplicated", "Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    # MODULES = ["Duplicated", "Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
     
     # Data Checking Phase I
     # MODULES = ["Duplicated", "Logical", "Calibration", "Statistics"]
@@ -39,12 +49,11 @@ class DataHospitalConfig(Config):
     # MODULES = ["Duplicated", "Logical", "Statistics"]
     
     # Inf & Eval
-    # MODULES = ["CoordinateConverter", "Inference", "Evaluate"]
+    MODULES = ["CoordinateConverter", "Inference", "Evaluate"]
+    EVALUATOR = "LUCAS"
+    COOR = "Vehicle"
     
     # MODULES = ["Statistics"]
-    
-    EVALUATOR = "LUCAS"
-    COOR = "Lidar"
     
     TOTAL_ERROR_LIST = ["dup_json", "dup_img", "empty", "bbox_error", "coor_error", "res_error", "outlier_error", "calibration_error", "miss_anno_error", "matching_error"]
     ORIENTATION = "SIDE"
@@ -102,7 +111,8 @@ class CoordinateConverterConfig(Config):
 
 class InferenceConfig(Config):
     INF_OUTPUT_DIR = '%s/Data_Inferencer/'% Config.ROOT
-    INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
+    INF_MODEL_PATH = '/share/analysis/syh/models/2.2.5.0-0721-M-PT230-268-U.pth'
+    # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
     # INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
     
     
@@ -111,7 +121,6 @@ class EvaluateProcessorConfig(Config):
     MODEL_NAME = InferenceConfig.INF_MODEL_PATH[:-4]
     INPUT_DIR = '%s/Data_Inferencer'% Config.ROOT
     OUTPUT_DIR = '%s/evaluate_processor' % Config.ROOT
-    
     JSON_PATH = '%s/data_hospital_badcase.txt' % OUTPUT_DIR
     JSON_TYPE = "txt"
     DATA_TYPE = "qa_cam3d" if DataHospitalConfig.EVALUATOR == "LUCAS" else "qa_cam3d_temp"

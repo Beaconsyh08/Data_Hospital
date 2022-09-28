@@ -7,7 +7,7 @@ from haomoai.cards import CardOperation
 
 
 oss_urls = []
-json_path = '/root/data_hospital_data/v71_2000/coordinate_converter//trans/' # json_files文件夹下保存了所有用于创建卡片的json文件，里面的json文件不在oss上，使用时修改此地址即可
+json_path = '/root/data_hospital_data/2.2.7.0/evaluate_processor/cases/' # json_files文件夹下保存了所有用于创建卡片的json文件，里面的json文件不在oss上，使用时修改此地址即可
 card_inst = CardOperation()
 
 for _, _, files in os.walk(json_path):

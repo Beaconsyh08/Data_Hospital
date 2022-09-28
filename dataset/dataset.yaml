@@ -189,13 +189,50 @@ cards_conf:
 #   #     media_name: side_cam
 #   #     project: icu30
 
+  # - file_name: /data_path/unclean221.txt
+  #   cards:
+  #   - card_id: 6312dde22a8b894bcf072e02
+  #     project: icu30
+  #     media_name: exp
+  #   - card_id: 6312de0a2a8b894bcf110405
+  #     project: icu30
+  #     media_name: exp
+  #   - card_id: 6312de372a8b894bcf1ae929
+  #     project: icu30
+  #     media_name: exp
+  #   - card_id: 6312de602a8b894bcf24bb24
+  #     project: icu30
+  #     media_name: exp
 
-  - file_name: /data_path/test0914.txt
+  - file_name: /data_path/qa_test_10.txt
     cards:
-    - card_id: 6322eca888974f319a1b25c7
+    - card_id: 632979bd1d875c5e41e7f335
+      media_name: cases
+      project: qa
+
+  - file_name: /data_path/228.txt
+    cards:
+    - card_id: 632d7520c5e1b7134ea24b64
       media_name: side
       project: icu30
 
+  - file_name: /data_path/227.txt
+    cards:
+    - card_id: 6331238897047697cc5fb6ee
+      media_name: side
+      project: icu30
+
+  # - file_name: /data_path/test0914.txt
+  #   cards:
+  #   - card_id: 6322eca888974f319a1b25c7
+  #     media_name: side
+  #     project: icu30
+
+  # - file_name: /data_path/test0914.txt
+  #   cards:
+  #   - card_id: 6322eca888974f319a1b25c7
+  #     media_name: side
+  #     project: icu30
 
   # - file_name: /data_path/yayun0916.txt
   #   cards:

@@ -1,6 +1,4 @@
-from cmath import nan
 import os
-from re import T
 
 import folium
 import matplotlib.pyplot as plt
