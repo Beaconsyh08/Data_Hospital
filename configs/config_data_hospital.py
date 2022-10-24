@@ -1,10 +1,10 @@
-NAME = "2.2.5.0"
+NAME = "day_test"
 
 import os
 
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
-    ROOT = '/root/data_hospital_data/%s' % NAME
+    ROOT = '/root/data_hospital_data/BASE20+FN2/%s' % NAME
     DATAFRAME_DIR = "%s/dataframes" % (ROOT)
     os.makedirs(DATAFRAME_DIR, exist_ok=True)
     DATAFRAME_PATH = '%s/dataframes/dataframe.pkl' % ROOT
@@ -49,6 +49,8 @@ class DataHospitalConfig(Config):
     # MODULES = ["Duplicated", "Logical", "Statistics"]
     
     # Inf & Eval
+    # MODULES = ["Logical", "Calibration", "Statistics"]
+    # MODULES = ["Logical", "Statistics"]
     MODULES = ["CoordinateConverter", "Inference", "Evaluate"]
     EVALUATOR = "LUCAS"
     COOR = "Vehicle"
@@ -111,8 +113,10 @@ class CoordinateConverterConfig(Config):
 
 class InferenceConfig(Config):
     INF_OUTPUT_DIR = '%s/Data_Inferencer/'% Config.ROOT
-    INF_MODEL_PATH = '/share/analysis/syh/models/2.2.5.0-0721-M-PT230-268-U.pth'
+    # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.0.0-0616-M-PT188-192-U.pth'
     # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
+    INF_MODEL_PATH = '/share/analysis/syh/models/BASE20+FN2.pth'
+    
     # INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
     
     

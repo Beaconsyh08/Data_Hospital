@@ -50,7 +50,12 @@ class StatisticsManager():
         
     
     def set_loader(self, load_path: str) -> set:
-        return set([_.strip() for _ in open(load_path)])
+        if os.path.exists(load_path):
+            result = set([_.strip() for _ in open(load_path)])
+        else:
+            result = set()
+            
+        return result
         
     
     def add_noinfo_data(self, error_name: str, error_lst: list, json_lst: set):
@@ -207,8 +212,8 @@ class StatisticsManager():
         self.logger.critical("Clean Data Time Stats Summary")
         time_dict = dict()
         time_ratio_dict = dict()
-        night_df = self.df[(self.df["time"] < time(6, 0, 0)) | (self.df["time"] > time(19, 0, 0))]
-        day_df = self.df[(self.df["time"] >= time(6, 0, 0)) & (self.df["time"] <= time(19, 0, 0))]
+        night_df = self.df[(self.df["time"] < time(3, 0, 0)) | (self.df["time"] > time(21, 0, 0))]
+        day_df = self.df[(self.df["time"] >= time(3, 0, 0)) & (self.df["time"] <= time(21, 0, 0))]
         night_json = list(set(night_df.json_path.to_list()))
         day_json = list(set(day_df.json_path.to_list()))
         time_dict["night"] = len(night_json)

@@ -204,23 +204,106 @@ cards_conf:
   #     project: icu30
   #     media_name: exp
 
-  - file_name: /data_path/qa_test_10.txt
-    cards:
-    - card_id: 632979bd1d875c5e41e7f335
-      media_name: cases
-      project: qa
+  # - file_name: /data_path/2.2.5.0.txt
+  #   cards:
+  #   - card_id: 632979bd1d875c5e41e7f335
+  #     media_name: cases
+  #     project: qa
 
-  - file_name: /data_path/228.txt
-    cards:
-    - card_id: 632d7520c5e1b7134ea24b64
-      media_name: side
-      project: icu30
+  # - file_name: /data_path/228.txt
+  #   cards:
+  #   - card_id: 632d7520c5e1b7134ea24b64
+  #     media_name: side
+  #     project: icu30
 
-  - file_name: /data_path/227.txt
+  # - file_name: /data_path/227.txt
+  #   cards:
+  #   - card_id: 6331238897047697cc5fb6ee
+  #     media_name: side
+  #     project: icu30
+
+  # - file_name: /data_path/226.txt
+  #   cards:
+  #   - card_id: 6334079c1e006b046c777468
+  #     media_name: side
+  #     project: icu30
+
+  # - file_name: /data_path/225.txt
+  #   cards:
+  #   - card_id: 633436a41e006b046c1c7e91
+  #     media_name: side
+  #     project: icu30
+  
+  # - file_name: /data_path/qa_test_new.txt
+  #   cards:
+  #   - card_id: 632979bd1d875c5e41e7f335
+  #     media_name: cases
+  #     project: qa
+
+  # - file_name: /data_path/2.2.8.0.txt
+  #   cards:
+  #   - card_id: 62e9100e2f748ee9eddd7b08
+  #     project: icu30
+  #     media_name: side_cam_v71
+  #   - card_id: 62e90fea2f748ee9edd44f44
+  #     project: icu30
+  #     media_name: side_cam_v71
+  #   - card_id: 62e90fc32f748ee9edcb1f1f
+  #     project: icu30
+  #     media_name: side_cam_v71
+  #   - card_id: 62e90f9c2f748ee9edc1f404
+  #     project: icu30
+  #     media_name: side_cam_v71
+
+  - file_name: /data_path/realnight_train_gan_21_4_5.txt
     cards:
-    - card_id: 6331238897047697cc5fb6ee
-      media_name: side
+    - card_id: 634cfcc973827087b9301aeb
       project: icu30
+      media_name: realnight_train_gan_21_4_5 
+
+  - file_name: /data_path/day_train_gan_lighter.txt
+    cards:
+    - card_id: 634d644f216ea6aca163bd4c
+      project: icu30
+      media_name: day_train_gan_10_17_5
+
+  - file_name: /data_path/day_train_gan.txt
+    cards:
+    - card_id: 6347e10f1e006b046c55f6ef
+      project: icu30
+      media_name: day_train_gan
+  
+  - file_name: /data_path/night_total.txt
+    cards:
+    - card_id: 6347ae5f1e006b046c0c27d1
+      project: icu30
+      media_name: exp_night
+
+
+  - file_name: /data_path/day_test_gan.txt
+    cards:
+    - card_id: 634e9d9e5ac7295e8eff6e9a
+      project: icu30
+      media_name: day_test_gan
+  
+  - file_name: /data_path/night_test_gan.txt
+    cards:
+    - card_id: 634e9e355ac7295e8eff8788
+      project: icu30
+      media_name: night_test_gan
+
+  - file_name: /data_path/day_test.txt
+    cards:
+    - card_id: 6347b15e1e006b046c27cc05
+      project: icu30
+      media_name: day_test
+  
+  - file_name: /data_path/night_test.txt
+    cards:
+    - card_id: 6347b47c1e006b046c402ae7
+      project: icu30
+      media_name: night_test
+
 
   # - file_name: /data_path/test0914.txt
   #   cards:
