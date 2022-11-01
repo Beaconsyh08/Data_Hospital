@@ -1,6 +1,7 @@
 from configs.config import DataHospitalConfig, EvaluateProcessorConfig, MissAnnoCheckerConfig, MatchingCheckerConfig, StatisticsManagerConfig
 from src.data_hospital.evaluate_processor_lucas import EvaluateProcessorLucas
 from src.data_hospital.evaluate_processor_qa import EvaluateProcessorQA
+from src.data_hospital.evaluate_processor_gan import EvaluateProcessorGAN
 from src.data_hospital.matching_checker import MatchingChecker
 from src.data_hospital.miss_anno_checker import MissAnnoChecker
 from src.data_hospital.statistics_manager import StatisticsManager
@@ -21,7 +22,13 @@ class DataHospital2():
             
             if "Evaluate" in self.modules:
                 logger.warning("Evaluator Processor Running")
-                evaluate_processor = EvaluateProcessorLucas(EvaluateProcessorConfig) if self.cfg.EVALUATOR == "LUCAS" else EvaluateProcessorQA(EvaluateProcessorConfig)
+                if self.cfg.EVALUATOR == "LUCAS":
+                    evaluate_processor = EvaluateProcessorLucas(EvaluateProcessorConfig) 
+                elif self.cfg.EVALUATOR == "QA":
+                    evaluate_processor = EvaluateProcessorQA(EvaluateProcessorConfig) 
+                elif self.cfg.EVALUATOR == "GAN":
+                    evaluate_processor = EvaluateProcessorGAN(EvaluateProcessorConfig)
+                    
                 evaluate_processor.diagnose()
                     
             if "MissAnno" in self.modules:
