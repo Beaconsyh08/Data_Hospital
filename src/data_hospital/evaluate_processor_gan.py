@@ -2,7 +2,7 @@ import sys
 from time import sleep
 from datetime import datetime
 
-from configs.config_data_hospital import DataHospitalConfig, EvaluateProcessorConfig
+from configs.config import DataHospitalConfig, EvaluateProcessorConfig
 from src.data_manager.data_manager_creator import data_manager_creator
 import yaml
 
@@ -70,11 +70,11 @@ class EvaluateProcessorGAN():
         
         
     def pack_json(self,):
-        load_path = "../../../data_hospital_data/%s/%s/evaluate_processor/cases" % (EvaluateProcessorConfig.NAME, EvaluateProcessorConfig.MODEL_NAME)
+        load_path = "../data_hospital_data/%s/%s/evaluate_processor/cases" % (EvaluateProcessorConfig.MODEL_NAME, EvaluateProcessorConfig.NAME)
         cases_paths = [load_path + "/" + _ for _ in os.listdir(load_path)]
-        with open ("/data_path/base.txt") as output_file:
+        with open ("/data_path/base.txt", "w") as output_file:
             for case_path in cases_paths:
-                output_file.writelines(case_path + "/")
+                output_file.writelines(case_path + "\n")
         
         
 if __name__ == '__main__':

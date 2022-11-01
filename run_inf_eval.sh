@@ -11,7 +11,8 @@ card_tools_path="/root/tools/card"
 CONFIG_PATH="configs/config_inf_eval.py"
 ANA_CONFIG_PATH="../2d_analysis/configs/config_cases.py"
 TEST_SETS="day_test night_test"
-INF_MODELS="/share/analysis/syh/models/BASE20+FN4.pth /share/analysis/syh/models/BASE20+FN6.pth /share/analysis/syh/models/BASE20+FN8.pth /share/analysis/syh/models/BASE20+FN10.pth"
+# TEST_SETS="test_test"
+INF_MODELS="/share/analysis/syh/models/BASE20.pth /share/analysis/syh/models/BASE20+RN2+FN2.pth /share/analysis/syh/models/BASE20+RN2.pth /share/analysis/syh/models/BASE20+FN2.pth /share/analysis/syh/models/BASE20+FN4.pth /share/analysis/syh/models/BASE20+FN6.pth /share/analysis/syh/models/BASE20+FN8.pth /share/analysis/syh/models/BASE20+FN10.pth"
 
 function repo_ready() {
     if [ -d ../haomo_ai_framework ]; then
@@ -111,11 +112,13 @@ function execute_analysis() {
 
     python tools/data_hospital_2.py 
 
-    ../2d_analysis/run.sh -c inf_eval -m inf_eval
+    cd ../2d_analysis
+    ./run.sh -c cases -m inf_eval
 
+    cd ../Data_Hospital
     pkill util
     echo -e "${green_start}Util Completed!${green_end}\n"
-    echo -e "${green_start}Analyzing ${module_name} Comp  leted!${green_end}\n"
+    echo -e "${green_start}Analyzing ${module_name} Completed!${green_end}\n"
     return 0
 } 
 
@@ -138,11 +141,10 @@ while getopts "cm" arg; do
                     VARR="INF_MODEL = \"${inf_model}\""
                     sed -i "2c${VARR}" ${CONFIG_PATH}
 
-                    VARRR="NAME = \"${inf_model}\"_\"${test_set}\""
-                    sed -i "1c${VARRR}" ${ANA_CONFIG_PATH}
-
-                    VARRRR="TYPE = 60"
-                    sed -i "1c${VARRRR}" ${ANA_CONFIG_PATH}
+                    VARRR="TYPE = 60"
+                    sed -i "1c${VAR}" ${ANA_CONFIG_PATH}
+                    sed -i "2c${VARRR}" ${ANA_CONFIG_PATH}
+                    sed -i "3c${VARR}" ${ANA_CONFIG_PATH}
 
                     set_configs
                     execute_analysis
