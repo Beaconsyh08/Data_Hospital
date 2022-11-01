@@ -139,7 +139,10 @@ while getopts "cm" arg; do
                     sed -i "2c${VARR}" ${CONFIG_PATH}
 
                     VARRR="NAME = \"${inf_model}\"_\"${test_set}\""
-                    sed -i "2c${VARRR}" ${CONFIG_PATH}
+                    sed -i "1c${VARRR}" ${ANA_CONFIG_PATH}
+
+                    VARRRR="TYPE = 60"
+                    sed -i "1c${VARRRR}" ${ANA_CONFIG_PATH}
 
                     set_configs
                     execute_analysis
