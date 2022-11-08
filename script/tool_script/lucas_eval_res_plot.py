@@ -23,7 +23,7 @@ def addlabels(x, y):
 
 for test_set in TEST_SETS:
     res_df = pd.DataFrame()
-    json_path = "../cases_analysis_data/%s/%s.json" % (test_set, TARGET)
+    json_path = "/share/analysis/syh/eval/%s/%s.json" % (test_set, TARGET)
     with open(json_path) as json_obj:
         result_json = json.load(json_obj)
         res = result_json
@@ -43,7 +43,7 @@ for test_set in TEST_SETS:
                 # res_df.at[model, "recall"] = r
                 
         elif MODE == "analysis":
-            json_path = "../cases_analysis_data/%s/%s.json" % (test_set, model)
+            json_path = "/share/analysis/syh/eval/%s/%s.json" % (test_set, model)
             with open(json_path) as json_obj:
                 result_json = json.load(json_obj)
                 res = result_json
