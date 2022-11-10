@@ -10,9 +10,10 @@ card_tools_path="/root/tools/card"
 
 CONFIG_PATH="configs/config_inf_eval.py"
 ANA_CONFIG_PATH="../2d_analysis/configs/config_cases.py"
-TEST_SETS="day_test night_test"
+TEST_SETS="night_test_qa_frame"
 # TEST_SETS="test_test"
-INF_MODELS="/share/analysis/syh/models/BASE20.pth /share/analysis/syh/models/BASE20+RN2+FN2.pth /share/analysis/syh/models/BASE20+RN2.pth /share/analysis/syh/models/BASE20+FN2.pth /share/analysis/syh/models/BASE20+FN4.pth /share/analysis/syh/models/BASE20+FN6.pth /share/analysis/syh/models/BASE20+FN8.pth /share/analysis/syh/models/BASE20+FN10.pth"
+INF_MODELS="/share/analysis/syh/models/BASE20.pth /share/analysis/syh/models/BASE20+RN2+FN2.pth /share/analysis/syh/models/BASE20+RN2.pth /share/analysis/syh/models/BASE20+FN2.pth /share/analysis/syh/models/BASE20+FN4.pth /share/analysis/syh/models/BASE20+FN6.pth /share/analysis/syh/models/BASE20+FN8.pth /share/analysis/syh/models/BASE20+FN10.pth /share/analysis/syh/models/STROTSS-BASE20+FK2.pth /share/analysis/syh/models/STROTSS-BASE20+FK2+RN2.pth /share/analysis/syh/models/C2_BASE20+FN2.pth /share/analysis/syh/models/C2_BASE20+FN6.pth /share/analysis/syh/models/C2_BASE20+FN10.pth"
+# INF_MODELS="/share/analysis/syh/models/BASE20+FK2+RN2.pth"
 
 function repo_ready() {
     if [ -d ../haomo_ai_framework ]; then
@@ -102,7 +103,7 @@ function execute_analysis() {
     INF_OUTPUT_DIR=${array[-2]}
     INFERENCE_FLAG=${array[-1]}
 
-    run_util
+    # run_util
 
     if [ "${INFERENCE_FLAG}" == "inference" ]; then
         # cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
@@ -116,10 +117,10 @@ function execute_analysis() {
     ./run.sh -c cases -m inf_eval
 
     cd ../Data_Hospital
-    pkill util
+    # pkill util
     echo -e "${green_start}Util Completed!${green_end}\n"
     echo -e "${green_start}Analyzing ${module_name} Completed!${green_end}\n"
-    return 0
+    # return 0
 } 
 
 
@@ -134,6 +135,8 @@ while getopts "cm" arg; do
         do
             for inf_model in ${INF_MODELS}
                 do
+                    echo inf_model
+                    echo INF_MODELS
                     echo -e "${green_start} ${test_set} ${inf_model} ${green_end}\n"
                     VAR="NAME = \"${test_set}\""
                     sed -i "1c${VAR}" ${CONFIG_PATH}

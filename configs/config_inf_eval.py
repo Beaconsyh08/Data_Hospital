@@ -1,5 +1,5 @@
-NAME = "night_test"
-INF_MODEL = "/share/analysis/syh/models/BASE20+FN10.pth"
+NAME = "night_test_qa_frame"
+INF_MODEL = "/share/analysis/syh/models/C2_BASE20+FN10.pth"
 MODEL_NAME = INF_MODEL.split("/")[-1].split(".")[0]
 
 import os
