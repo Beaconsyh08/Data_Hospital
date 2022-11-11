@@ -3,7 +3,7 @@ from time import sleep
 from datetime import datetime
 import yaml
 
-from configs.config_data_hospital import DataHospitalConfig
+from configs.config import DataHospitalConfig
 from src.data_manager.data_manager_creator import data_manager_creator
 sys.path.append("../haomo_ai_framework")
 import json

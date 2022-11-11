@@ -304,11 +304,11 @@ cards_conf:
       project: icu30
       media_name: night_test
 
-  - file_name: /data_path/night_test_qa.txt
+  - file_name: /data_path/night_test_qa_frame.txt
     cards:
-    - card_id: 636a08d7bf8578e6723dd916
-      project: qa
-      media_name: real_night
+    - card_id: 636a574dbf8578e672b4da29
+      project: icu30
+      media_name: night_test_qa
 
 
   # - file_name: /data_path/test0914.txt

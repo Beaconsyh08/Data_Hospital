@@ -1,5 +1,5 @@
 from configs.config import DataHospitalConfig, DuplicatedCheckerConfig, StatisticsManagerConfig, LogicalCheckerConfig, CalibrationCheckerConfig, CoordinateConverterConfig, InferenceConfig
-from configs.config_data_hospital import OutlierCheckerConfig
+from configs.config import OutlierCheckerConfig
 from src.data_hospital.coordinate_converter import CoordinateConverter
 from src.data_hospital.calibration_checker import CalibrationChecker
 from src.data_hospital.logical_checker import LogicalChecker

@@ -3,7 +3,7 @@ import os
 import folium
 import matplotlib.pyplot as plt
 from folium.plugins import HeatMap, MarkerCluster
-from configs.config_data_hospital import DataHospitalConfig, DuplicatedCheckerConfig, LogicalCheckerConfig, Config, OutputConfig
+from configs.config import DataHospitalConfig, DuplicatedCheckerConfig, LogicalCheckerConfig, Config, OutputConfig
 from src.data_manager.data_manager import load_from_pickle
 from src.data_manager.data_manager_creator import data_manager_creator
 from src.utils.logger import get_logger
@@ -86,6 +86,7 @@ class StatisticsManager():
         
         total_instance_amount = len(self.df)
         for error in DataHospitalConfig.TOTAL_ERROR_LIST:
+
             error_df = self.df[~self.df[error].isin([0, None, np.NaN])]
             error_instance_amount = len(error_df)
             error_frame = set(list(error_df.json_path))
@@ -109,7 +110,8 @@ class StatisticsManager():
         save_path = "%s/%s.txt" % (save_dir, file_name)
         with open(save_path, "w") as output_file:
             for json_path in tqdm(json_paths, desc= "%s Saving" % file_name):
-                output_file.writelines(json_path + "\n")
+                if json_path != None:
+                    output_file.writelines(json_path + "\n")
         self.logger.debug("%s Has Been Saved in: %s" % (file_name, save_path))
             
     

@@ -2,7 +2,7 @@ import sys
 from time import sleep
 from datetime import datetime
 
-from configs.config_data_hospital import DataHospitalConfig, EvaluateProcessorConfig
+from configs.config import DataHospitalConfig, EvaluateProcessorConfig
 from src.data_manager.data_manager_creator import data_manager_creator
 
 import json

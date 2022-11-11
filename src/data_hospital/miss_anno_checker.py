@@ -1,6 +1,5 @@
 from pathlib import Path
-from configs.config import VisualizationConfig
-from configs.config_data_hospital import DataHospitalConfig
+from configs.config import VisualizationConfig, DataHospitalConfig
 from src.data_manager.data_manager import load_from_pickle
 from src.utils.struct import Obstacle, parse_obs
 from src.visualization.visualization import Visualizer
@@ -35,7 +34,10 @@ class MissAnnoChecker():
         miss_anno_dict = self.df_selected.miss_anno_error.to_dict()
         self.df['miss_anno_error'] = [miss_anno_dict.get(_, 0) for _ in self.df.index]
         
-        false_p0_jsons = set(self.df_selected.ori_path)
+        false_p0_jsons = set(self.df_selected.ori_path) if DataHospitalConfig.COOR == "Lidar" else set(self.df_selected.json_path)
+        
+        if false_p0_jsons == {None}:
+            false_p0_jsons = set()
         self.logger.debug("Miss Label P0 Frame Number: %d" % len(false_p0_jsons))
         
         self.save_to_pickle(self.df, self.df_path)
@@ -50,12 +52,13 @@ class MissAnnoChecker():
             
     def result_output(self, jsons: set, save_name: str) -> None:
         with open("%s/%s.txt" % (self.save_dir, save_name), "w") as to_del_file:
-            for json_path in tqdm(jsons):
-                to_del_file.writelines(json_path + "\n")
-        
+            if jsons != {None}:
+                for json_path in tqdm(jsons):
+                    to_del_file.writelines(str(json_path) + "\n")
+            
         
     def save_result_to_ori_df(self,) -> None:
-        self.df_selected.json_path = self.df_selected.ori_path
+        self.df_selected.json_path = self.df_selected.ori_path if DataHospitalConfig.COOR == "Lidar" else self.df_selected.json_path
 
         ori_df = load_from_pickle(self.cfg.DATAFRAME_PATH)
         ori_df = pd.concat([ori_df, self.df_selected])
@@ -67,7 +70,7 @@ class MissAnnoChecker():
     def diagnose(self,) -> None:
         false_p0_jsons = self.rules_decider()
         self.result_output(false_p0_jsons, "miss_anno_error")    
-        total_jsons = set(self.df.ori_path)
+        total_jsons = set(self.df.ori_path) if DataHospitalConfig.COOR == "Lidar" else set(self.df.json_path)
         clean_jsons = total_jsons - false_p0_jsons
         self.result_output(clean_jsons, "clean")
         self.save_result_to_ori_df()

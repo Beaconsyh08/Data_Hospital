@@ -6,7 +6,7 @@ from src.data_manager.data_manager import load_from_pickle
 from src.utils.struct import Obstacle, parse_obs
 from pathlib import Path
 from src.visualization.visualization import Visualizer
-from configs.config import VisualizationConfig
+from configs.config import VisualizationConfig, DataHospitalConfig
 from tqdm import tqdm
 import json
 import pickle
@@ -30,10 +30,11 @@ class MatchingChecker():
             pickle.dump(pickle_obj, pickle_file)
             
             
-    def result_output(self, jsons: set, save_name: str):
+    def result_output(self, jsons: set, save_name: str) -> None:
         with open("%s/%s.txt" % (self.save_dir, save_name), "w") as to_del_file:
-            for json_path in tqdm(jsons):
-                to_del_file.writelines(json_path + "\n")
+            if jsons != {None}:
+                for json_path in tqdm(jsons):
+                    to_del_file.writelines(str(json_path) + "\n")
                     
     
     def rules_decider(self,) -> set:
@@ -44,7 +45,7 @@ class MatchingChecker():
         self.matching_dict = self.df_selected.matching_error.to_dict()
         self.df['matching_error'] = [self.matching_dict.get(_, 0) for _ in self.df.index]
         
-        matching_jsons = set(self.df_selected.ori_path)
+        matching_jsons = set(self.df_selected.ori_path) if DataHospitalConfig.COOR == "Lidar" else set(self.df_selected.json_path)
         self.logger.debug("2D3D Matching Frame Number: %d" % len(matching_jsons))
         
         self.save_to_pickle(self.df, self.df_path)
@@ -64,7 +65,7 @@ class MatchingChecker():
     def diagnose(self,):
         matching_jsons = self.rules_decider()
         self.result_output(matching_jsons, "matching_error")    
-        total_jsons = set(self.df.ori_path)
+        total_jsons = set(self.df.ori_path) if DataHospitalConfig.COOR == "Lidar" else set(self.df.json_path)
         clean_jsons = total_jsons - matching_jsons
         self.result_output(clean_jsons, "clean")
         self.save_result_to_ori_df()

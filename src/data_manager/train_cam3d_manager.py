@@ -10,7 +10,7 @@ Copyright (c) HAOMO.AI, Inc. and its affiliates. All Rights Reserved
 """
 
 import pandas as pd
-from configs.config_data_hospital import DataHospitalConfig
+from configs.config import DataHospitalConfig
 from src.data_manager.data_manager import DataManager
 
 class TrainCam3dManager(DataManager):

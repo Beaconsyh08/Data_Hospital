@@ -107,7 +107,7 @@ function execute_analysis() {
     INF_OUTPUT_DIR=${array[-2]}
     INFERENCE_FLAG=${array[-1]}
 
-    run_util
+    # run_util
 
     if [ "${INFERENCE_FLAG}" == "inference" ]; then
         # cd ../Data_Inferencer/ && ./run.sh -p $INF_INPUT_PATH -d $INF_OUTPUT_DIR -g
@@ -117,7 +117,7 @@ function execute_analysis() {
 
     python tools/data_hospital_2.py 
 
-    pkill util
+    # pkill util
     echo -e "${green_start}Util Completed!${green_end}\n"
     echo -e "${green_start}Analyzing ${module_name} Completed!${green_end}\n"
     return 0

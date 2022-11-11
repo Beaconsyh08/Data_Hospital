@@ -19,6 +19,7 @@ class DataHospital2():
         
         if self.cfg.ORIENTATION == "SIDE":
             logger.warning("Data Checking II Running")
+            logger.error("Activated Modules: %s" % ', '.join(map(str, self.modules)))
             
             if "Evaluate" in self.modules:
                 logger.warning("Evaluator Processor Running")
