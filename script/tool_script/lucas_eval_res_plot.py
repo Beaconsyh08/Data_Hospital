@@ -7,17 +7,19 @@ plt.rc('font', size=14)
 plt.rc('axes', titlesize=24) 
 plt.rc('axes', labelsize=20)
 
-# MODELS = ["BASE20", "BASE20+FN2", "BASE20+FN4", "BASE20+FN6", "BASE20+FN8", "BASE20+FN10"]
-MODELS = ["BASE20", "BASE20+FN2", "C2_BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+FN10", "C2_BASE20+FN10", "BASE20+RN2+FN2", "C2_BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
-IS2D = True
-if IS2D:
-    MODELS = [_ + "_2d" for _ in MODELS]
-# MODELS = ["BASE20", "BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
+IS2D = False
+ISSHARE = False
 TARGET = "BASE20+RN2"
-TEST_SETS = ["night_test_qa_frame"]
-# TEST_SETS = ["day_test"]
-NAME = "c_new_test"
+TEST_SETS = ["day_test", "night_test"]
+NAME = "TB"
 MODE = "analysis"
+# MODELS = ["BASE20", "BASE20+FN2", "BASE20+FN4", "BASE20+FN6", "BASE20+FN8", "BASE20+FN10"]
+# MODELS = ["BASE20", "BASE20+FN2", "C2_BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+FN10", "C2_BASE20+FN10", "BASE20+RN2+FN2", "C2_BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
+MODELS = ["BASE20", "BASE20+FN2", "C2_BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+FN6", "C2_BASE20+FN6", "STROTSS-BASE20+FK6w", "BASE20+FN10", "C2_BASE20+FN10", "STROTSS-BASE20+FK10w", "BASE20+RN2+FN2", "C2_BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
+
+MODELS = [_ + "_2d" for _ in MODELS] if IS2D else MODELS
+ROOT = "/share/analysis/syh/eval" if ISSHARE else "/root/cases_analysis_data"
+
 SAVE_ROOT = "/share/analysis/syh/vis/gan"
 os.makedirs(SAVE_ROOT, exist_ok=True)
 
@@ -28,7 +30,7 @@ def addlabels(x, y):
 
 for test_set in TEST_SETS:
     res_df = pd.DataFrame()
-    json_path = "/share/analysis/syh/eval/%s/%s_2d.json" % (test_set, TARGET)
+    json_path = "%s/%s/%s_2d.json" % (ROOT, test_set, TARGET) if IS2D else "%s/%s/%s.json" % (ROOT, test_set, TARGET)
     not_found = []
     with open(json_path) as json_obj:
         result_json = json.load(json_obj)
@@ -37,6 +39,7 @@ for test_set in TEST_SETS:
         target = f
     
     for model in MODELS:
+        print(model)
         if MODE == "lucas_eval":
             json_path = "../data_hospital_data/%s/%s/evaluate_processor/result.json" % (model, test_set)
             with open(json_path) as json_obj:
@@ -49,7 +52,8 @@ for test_set in TEST_SETS:
                 # res_df.at[model, "recall"] = r
                 
         elif MODE == "analysis":
-            json_path = "/share/analysis/syh/eval/%s/%s.json" % (test_set, model)
+            # json_path = "/share/analysis/syh/eval/%s/%s.json" % (test_set, model)
+            json_path = "%s/%s/%s.json" % (ROOT, test_set, model)
             try:
                 with open(json_path) as json_obj:
                     result_json = json.load(json_obj)

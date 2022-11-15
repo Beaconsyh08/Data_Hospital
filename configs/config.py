@@ -1,1 +1,1 @@
-from configs.config_online_qa import *
+from configs.config_inf_eval import *

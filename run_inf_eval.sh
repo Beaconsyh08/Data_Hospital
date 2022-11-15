@@ -10,10 +10,10 @@ card_tools_path="/root/tools/card"
 
 CONFIG_PATH="configs/config_inf_eval.py"
 ANA_CONFIG_PATH="../2d_analysis/configs/config_cases.py"
-TEST_SETS="night_test_qa_frame"
-# TEST_SETS="test_test"
-INF_MODELS="/share/analysis/syh/models/BASE20.pth /share/analysis/syh/models/BASE20+RN2+FN2.pth /share/analysis/syh/models/BASE20+RN2.pth /share/analysis/syh/models/BASE20+FN2.pth /share/analysis/syh/models/BASE20+FN4.pth /share/analysis/syh/models/BASE20+FN6.pth /share/analysis/syh/models/BASE20+FN8.pth /share/analysis/syh/models/BASE20+FN10.pth /share/analysis/syh/models/STROTSS-BASE20+FK2.pth /share/analysis/syh/models/STROTSS-BASE20+FK2+RN2.pth /share/analysis/syh/models/C2_BASE20+FN2.pth /share/analysis/syh/models/C2_BASE20+FN6.pth /share/analysis/syh/models/C2_BASE20+FN10.pth"
-# INF_MODELS="/share/analysis/syh/models/BASE20+FK2+RN2.pth"
+TEST_SETS="day_test night_test night_test_qa_frame"
+# TEST_SETS="night_test_qa_frame"
+# INF_MODELS="/share/analysis/syh/models/BASE20.pth /share/analysis/syh/models/BASE20+RN2+FN2.pth /share/analysis/syh/models/BASE20+RN2.pth /share/analysis/syh/models/BASE20+FN2.pth /share/analysis/syh/models/BASE20+FN4.pth /share/analysis/syh/models/BASE20+FN6.pth /share/analysis/syh/models/BASE20+FN8.pth /share/analysis/syh/models/BASE20+FN10.pth /share/analysis/syh/models/STROTSS-BASE20+FK2.pth /share/analysis/syh/models/STROTSS-BASE20+FK2+RN2.pth /share/analysis/syh/models/C2_BASE20+FN2.pth /share/analysis/syh/models/C2_BASE20+FN6.pth /share/analysis/syh/models/C2_BASE20+FN10.pth"
+INF_MODELS="/share/analysis/syh/models/CARBASE.pth /share/analysis/syh/models/CARBASE+FN20.pth"
 
 function repo_ready() {
     if [ -d ../haomo_ai_framework ]; then
