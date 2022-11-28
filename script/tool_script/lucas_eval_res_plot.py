@@ -9,13 +9,22 @@ plt.rc('axes', labelsize=20)
 
 IS2D = False
 ISSHARE = False
-TARGET = "BASE20+RN2"
-TEST_SETS = ["day_test", "night_test"]
-NAME = "TB"
+TARGET = "BASE20"
+TEST_SETS = ["day_test", "night_test", "night_test_qa_frame"]
+NAME = "BASE20_HM"
 MODE = "analysis"
 # MODELS = ["BASE20", "BASE20+FN2", "BASE20+FN4", "BASE20+FN6", "BASE20+FN8", "BASE20+FN10"]
 # MODELS = ["BASE20", "BASE20+FN2", "C2_BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+FN10", "C2_BASE20+FN10", "BASE20+RN2+FN2", "C2_BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
-MODELS = ["BASE20", "BASE20+FN2", "C2_BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+FN6", "C2_BASE20+FN6", "STROTSS-BASE20+FK6w", "BASE20+FN10", "C2_BASE20+FN10", "STROTSS-BASE20+FK10w", "BASE20+RN2+FN2", "C2_BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
+# MODELS = ["BASE20", "BASE20+FN2", "C2_BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+FN6", "C2_BASE20+FN6", "STROTSS-BASE20+FK6w", "BASE20+FN10", "C2_BASE20+FN10", "STROTSS-BASE20+FK10w", "BASE20+RN2+FN2", "C2_BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
+# MODELS = ["BASE20", "BASE20+FN10", "C2_BASE20+FN10", "STROTSS-BASE20+FK10w"]
+# MODELS = ["BASE20", "BASE20+FN10", "C2_BASE20+FN10", "STROTSS-BASE20+FK10w"]
+# MODELS = ["CARBASE", "CARBASE+FN10", "CARBASE+FN50"]
+MODELS = ["BASE20", "C2_BASE20+FN2", "C2_BASE20+FN6", "C2_BASE20+FN10", "C2_BASE20+FN7"]
+# MODELS = ["BASE20", "BASE20+FN2", "BASE20+FN6", "BASE20+FN10", "C2_BASE20+FN7"]
+
+
+
+
 
 MODELS = [_ + "_2d" for _ in MODELS] if IS2D else MODELS
 ROOT = "/share/analysis/syh/eval" if ISSHARE else "/root/cases_analysis_data"
@@ -31,7 +40,7 @@ def addlabels(x, y):
 for test_set in TEST_SETS:
     res_df = pd.DataFrame()
     json_path = "%s/%s/%s_2d.json" % (ROOT, test_set, TARGET) if IS2D else "%s/%s/%s.json" % (ROOT, test_set, TARGET)
-    not_found = []
+    not_found = []    
     with open(json_path) as json_obj:
         result_json = json.load(json_obj)
         res = result_json
@@ -88,12 +97,16 @@ for test_set in TEST_SETS:
     bar_chart = res_df.f1.plot(kind="bar", color=colors, width=0.4)
     res_df.f1.plot(kind="line", marker='*', color='darkviolet', ms=10)
     res_df[TARGET].plot(kind="line", color='darkred', rot = 20)
-    upper = max(res_df.f1.max(), res_df[TARGET].max()) + 0.015
-    lower = min(res_df.f1.min(), res_df[TARGET].min()) - 0.015
+    # upper = max(res_df.f1.max(), res_df[TARGET].max()) + 0.015
+    upper = max(res_df.f1.max(), res_df[TARGET].max()) * 1.01
+    
+    # lower = min(res_df.f1.min(), res_df[TARGET].min()) - 0.015
+    lower = min(res_df.f1.min(), res_df[TARGET].min()) * 0.99
     
     plt.ylim((lower, upper))
     plt.legend()
-    plt.title("F1 Trend as Generated Night Data Increasing: %s" % test_set.capitalize())
+    title_prefix = "2D " if IS2D else ""
+    plt.title("%sF1 Trend as Generated Night Data Increasing: %s" % (title_prefix, test_set.capitalize()))
     addlabels(EX_MODELS, round(res_df.f1, 4))
     addlabels([EX_MODELS[-1]], [round(res_df[TARGET].mean(), 4)])
     

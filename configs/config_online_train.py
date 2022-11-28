@@ -114,8 +114,8 @@ class CoordinateConverterConfig(Config):
 class InferenceConfig(Config):
     INF_OUTPUT_DIR = '%s/Data_Inferencer/'% Config.ROOT
     # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.0.0-0616-M-PT188-192-U.pth'
-    # INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
-    INF_MODEL_PATH = '/share/analysis/syh/models/BASE20+FN2.pth'
+    INF_MODEL_PATH = '/share/analysis/syh/models/2.2.8.0-0811-M-PT288-221-U.pth'
+    # INF_MODEL_PATH = '/share/analysis/syh/models/BASE20+FN2.pth'
     
     # INF_MODEL_PATH = '/share/analysis/syh/models/clean50.pth'
     

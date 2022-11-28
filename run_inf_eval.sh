@@ -13,7 +13,7 @@ ANA_CONFIG_PATH="../2d_analysis/configs/config_cases.py"
 TEST_SETS="day_test night_test night_test_qa_frame"
 # TEST_SETS="night_test_qa_frame"
 # INF_MODELS="/share/analysis/syh/models/BASE20.pth /share/analysis/syh/models/BASE20+RN2+FN2.pth /share/analysis/syh/models/BASE20+RN2.pth /share/analysis/syh/models/BASE20+FN2.pth /share/analysis/syh/models/BASE20+FN4.pth /share/analysis/syh/models/BASE20+FN6.pth /share/analysis/syh/models/BASE20+FN8.pth /share/analysis/syh/models/BASE20+FN10.pth /share/analysis/syh/models/STROTSS-BASE20+FK2.pth /share/analysis/syh/models/STROTSS-BASE20+FK2+RN2.pth /share/analysis/syh/models/C2_BASE20+FN2.pth /share/analysis/syh/models/C2_BASE20+FN6.pth /share/analysis/syh/models/C2_BASE20+FN10.pth"
-INF_MODELS="/share/analysis/syh/models/CARBASE.pth /share/analysis/syh/models/CARBASE+FN20.pth"
+INF_MODELS="/share/analysis/syh/models/C2_BASE20+FN7.pth"
 
 function repo_ready() {
     if [ -d ../haomo_ai_framework ]; then
@@ -75,18 +75,18 @@ function set_configs() {
     sed -i "1c from configs.config_inf_eval import *" configs/config.py 
 }
 
-function run_util() {
-    if [ -d ../util ]; then
-        echo -e "${green_start}Util exists${green_end}"
-    else
-        cd ..
-        cp -r /share/analysis/syh/util/ ./
-        cd Data_Hospital
-    fi
-    cd ../util/ && nohup ./util -d 360000 -m 1024 > /dev/null 2>&1 &
-    echo -e "${green_start}Util running${green_end}"
-    cd ../Data_Hospital
-}
+# function run_util() {
+#     if [ -d ../util ]; then
+#         echo -e "${green_start}Util exists${green_end}"
+#     else
+#         cd ..
+#         cp -r /share/analysis/syh/util/ ./
+#         cd Data_Hospital
+#     fi
+#     cd ../util/ && nohup ./util -d 360000 -m 1024 > /dev/null 2>&1 &
+#     echo -e "${green_start}Util running${green_end}"
+#     cd ../Data_Hospital
+# }
 
 function execute_analysis() {
     # execute scripts according to different input modules
