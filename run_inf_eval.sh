@@ -11,8 +11,9 @@ card_tools_path="/root/tools/card"
 CONFIG_PATH="configs/config_inf_eval.py"
 ANA_CONFIG_PATH="../2d_analysis/configs/config_cases.py"
 TEST_SETS="day_test night_test night_test_qa_frame"
-# TEST_SETS="night_test_qa_frame"
+TEST_SETS="night_test_new"
 # INF_MODELS="/share/analysis/syh/models/BASE20.pth /share/analysis/syh/models/BASE20+RN2+FN2.pth /share/analysis/syh/models/BASE20+RN2.pth /share/analysis/syh/models/BASE20+FN2.pth /share/analysis/syh/models/BASE20+FN4.pth /share/analysis/syh/models/BASE20+FN6.pth /share/analysis/syh/models/BASE20+FN8.pth /share/analysis/syh/models/BASE20+FN10.pth /share/analysis/syh/models/STROTSS-BASE20+FK2.pth /share/analysis/syh/models/STROTSS-BASE20+FK2+RN2.pth /share/analysis/syh/models/C2_BASE20+FN2.pth /share/analysis/syh/models/C2_BASE20+FN6.pth /share/analysis/syh/models/C2_BASE20+FN10.pth"
+# INF_MODELS="/share/analysis/syh/models/BASE20+FN2.pth /share/analysis/syh/models/CARBASE.pth /share/analysis/syh/models/CARBASE+FN10.pth /share/analysis/syh/models/CARBASE+FN50.pth"
 INF_MODELS="/share/analysis/syh/models/C2_BASE20+FN7.pth"
 
 function repo_ready() {
@@ -153,7 +154,6 @@ while getopts "cm" arg; do
                     execute_analysis
                 done
         done
-        
         ;;
     *)
         help_content
@@ -161,5 +161,4 @@ while getopts "cm" arg; do
         ;;
     esac
 done
-
 exit 0

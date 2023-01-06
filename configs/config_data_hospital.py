@@ -1,10 +1,10 @@
-NAME = "day_test"
+NAME = "front_night"
 
 import os
 
 class Config:
     # ROOT = '/share/analysis/result/data_hospital_data/0628/%s' % NAME
-    ROOT = '/root/data_hospital_data/BASE20+FN2/%s' % NAME
+    ROOT = '/root/data_hospital_data/%s' % NAME
     DATAFRAME_DIR = "%s/dataframes" % (ROOT)
     os.makedirs(DATAFRAME_DIR, exist_ok=True)
     DATAFRAME_PATH = '%s/dataframes/dataframe.pkl' % ROOT
@@ -36,7 +36,7 @@ class Config:
 
 class DataHospitalConfig(Config):
     # Full Data Checking 
-    # MODULES = ["Duplicated", "Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
+    MODULES = ["Logical", "Calibration", "CoordinateConverter", "Inference", "Evaluate", "MissAnno", "Matching", "Statistics"]
     
     # Data Checking Phase I
     # MODULES = ["Duplicated", "Logical", "Calibration", "Statistics"]
@@ -51,7 +51,7 @@ class DataHospitalConfig(Config):
     # Inf & Eval
     # MODULES = ["Logical", "Calibration", "Statistics"]
     # MODULES = ["Logical", "Statistics"]
-    MODULES = ["CoordinateConverter", "Inference", "Evaluate"]
+    # MODULES = ["CoordinateConverter", "Inference", "Evaluate"]
     EVALUATOR = "LUCAS"
     COOR = "Vehicle"
     

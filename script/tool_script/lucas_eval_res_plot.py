@@ -10,20 +10,16 @@ plt.rc('axes', labelsize=20)
 IS2D = False
 ISSHARE = False
 TARGET = "BASE20"
-TEST_SETS = ["day_test", "night_test", "night_test_qa_frame"]
-NAME = "BASE20_HM"
+# TEST_SETS = ["day_test", "night_test", "night_test_qa_frame", "night_test_new"]
+TEST_SETS = ["night_test_new"]
+NAME = "BASE20_new_night"
 MODE = "analysis"
-# MODELS = ["BASE20", "BASE20+FN2", "BASE20+FN4", "BASE20+FN6", "BASE20+FN8", "BASE20+FN10"]
+# MODELS = ["BASE20", "BASE20+FN2", "BASE20+FN4", "BASE20+FN6", "BASE20+FN8", "BASE20+FN10", "BASE20+RN2", "BASE20+RN2+FN2"]
 # MODELS = ["BASE20", "BASE20+FN2", "C2_BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+FN10", "C2_BASE20+FN10", "BASE20+RN2+FN2", "C2_BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
 # MODELS = ["BASE20", "BASE20+FN2", "C2_BASE20+FN2", "STROTSS-BASE20+FK2", "BASE20+FN6", "C2_BASE20+FN6", "STROTSS-BASE20+FK6w", "BASE20+FN10", "C2_BASE20+FN10", "STROTSS-BASE20+FK10w", "BASE20+RN2+FN2", "C2_BASE20+RN2+FN2", "STROTSS-BASE20+FK2+RN2"]
-# MODELS = ["BASE20", "BASE20+FN10", "C2_BASE20+FN10", "STROTSS-BASE20+FK10w"]
-# MODELS = ["BASE20", "BASE20+FN10", "C2_BASE20+FN10", "STROTSS-BASE20+FK10w"]
 # MODELS = ["CARBASE", "CARBASE+FN10", "CARBASE+FN50"]
-MODELS = ["BASE20", "C2_BASE20+FN2", "C2_BASE20+FN6", "C2_BASE20+FN10", "C2_BASE20+FN7"]
+MODELS = ["BASE20", "C2_BASE20+FN2", "C2_BASE20+FN6", "C2_BASE20+FN10"]
 # MODELS = ["BASE20", "BASE20+FN2", "BASE20+FN6", "BASE20+FN10", "C2_BASE20+FN7"]
-
-
-
 
 
 MODELS = [_ + "_2d" for _ in MODELS] if IS2D else MODELS
@@ -57,8 +53,8 @@ for test_set in TEST_SETS:
                 p, r, f = res["precision"], res["recall"], res["f1_score"]
                 res_df.at[model, "f1"] = f
                 res_df.at[model, TARGET] = target
-                # res_df.at[model, "precision"] = p
-                # res_df.at[model, "recall"] = r
+                res_df.at[model, "precision"] = p
+                res_df.at[model, "recall"] = r
                 
         elif MODE == "analysis":
             # json_path = "/share/analysis/syh/eval/%s/%s.json" % (test_set, model)
@@ -68,8 +64,8 @@ for test_set in TEST_SETS:
                     result_json = json.load(json_obj)
                     res = result_json
                     p, r, f = res["P0_Precision"], res["P0_Recall"], res["P0_F1_Score"]
-                    # res_df.at[model, "precision"] = p
-                    # res_df.at[model, "recall"] = r
+                    res_df.at[model, "precision"] = p
+                    res_df.at[model, "recall"] = r
                     res_df.at[model, "f1"] = f
                     res_df.at[model, TARGET] = target
             except FileNotFoundError:
