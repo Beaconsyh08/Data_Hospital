@@ -3,13 +3,13 @@ from tqdm import tqdm
 from datetime import time
 import random
 
-ROOT = "/root/data_hospital_data/realnight_train_total/dataframes/"
+ROOT = "/root/data_hospital_data/front_night/dataframes/"
 DF_LST = ["dataframe.pkl",]
 
 night_start = 21
 night_end = 4
 obj_threshold = 5
-amount = 2000
+amount = 1000
 
 for pkl in DF_LST:
     # name = pkl.split("_")[0]

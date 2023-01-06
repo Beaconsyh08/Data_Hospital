@@ -3,9 +3,8 @@ from tqdm import tqdm
 from datetime import time
 import random
 
-ROOT = "/root/data_hospital_data/day_train_gan/dataframes/"
+ROOT = "/root/data_hospital_data/BASE20+FN2/front_6w/dataframes/"
 DF_LST = ["dataframe.pkl",]
-
 day_start = 10
 day_end = 17
 obj_threshold = 5
@@ -24,7 +23,7 @@ for pkl in DF_LST:
     night_df_jsons = list(set(night_df.json_path.to_list()))
     print(len(night_df_jsons))
     
-    obj_df = night_df[night_df.objects_amount < obj_threshold]
+    obj_df = night_df[night_df.objects_amount > obj_threshold]
     obj_df_jsons = list(set(obj_df.json_path.to_list()))
     print(len(obj_df_jsons))
     
@@ -32,7 +31,7 @@ for pkl in DF_LST:
     print(len(obj_df_jsons))
     
     # save_path = "/data_path/%s_night.txt" % name
-    save_path = "/data_path/%d_%d_%d_day_bg.txt" % (day_start, day_end, obj_threshold)
+    save_path = "/data_path/%d_%d_%d_day_fg.txt" % (day_start, day_end, obj_threshold)
     
     print(save_path)
     with open(save_path, "w") as output_file:

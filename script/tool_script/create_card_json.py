@@ -7,12 +7,12 @@ from haomoai.cards import CardOperation
 
 
 oss_urls = []
-json_path = '/root/data_hospital_data/BASE20+RN2+FN2/night_test/evaluate_processor/cases' # json_files文件夹下保存了所有用于创建卡片的json文件，里面的json文件不在oss上，使用时修改此地址即可
+json_path = '/share/2d-od/lei/snowdata/hokkaido_snow_new_json' # json_files文件夹下保存了所有用于创建卡片的json文件，里面的json文件不在oss上，使用时修改此地址即可
 card_inst = CardOperation()
 
 print(json_path)
 PROJECT = "icu30"
-MEDIA_NAME = "gan"
+MEDIA_NAME = "snow"
 
 for _, _, files in os.walk(json_path):
     for name in tqdm(files):

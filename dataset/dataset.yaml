@@ -291,39 +291,105 @@ cards_conf:
   #     project: icu30
   #     media_name: night_test_gan
 
-  - file_name: /data_path/day_test.txt
-    cards:
-    - card_id: 6347b15e1e006b046c27cc05
-      project: icu30
-      media_name: day_test
+  # - file_name: /data_path/day_test.txt
+  #   cards:
+  #   - card_id: 6347b15e1e006b046c27cc05
+  #     project: icu30
+  #     media_name: day_test
   
-  - file_name: /data_path/night_test.txt
-    cards:
-    - card_id: 6347b47c1e006b046c402ae7
-      project: icu30
-      media_name: night_test
+  # - file_name: /data_path/night_test.txt
+  #   cards:
+  #   - card_id: 6347b47c1e006b046c402ae7
+  #     project: icu30
+  #     media_name: night_test
 
-  - file_name: /data_path/night_test_qa_frame.txt
-    cards:
-    - card_id: 636a574dbf8578e672b4da29
-      project: icu30
-      media_name: night_test_qa
+  # - file_name: /data_path/night_test_qa_frame.txt
+  #   cards:
+  #   - card_id: 636a574dbf8578e672b4da29
+  #     project: icu30
+  #     media_name: night_test_qa
 
-  - file_name: /data_path/hm_7w.txt
-    cards:
-    - card_id: 637db3cc9bd8757a02b77edd
-      project: icu30
-      media_name: fake_night
-    - card_id: 637db3cc9bd8757a02b77edc
-      project: icu30
-      media_name: fake_night
-    - card_id: 637db4009bd8757a02b86d33
-      project: icu30
-      media_name: fake_night
-    - card_id: 637db4009bd8757a02b86dfc
-      project: icu30
-      media_name: fake_night
+  # - file_name: /data_path/hm_7w.txt
+  #   cards:
+  #   - card_id: 637db3cc9bd8757a02b77edd
+  #     project: icu30
+  #     media_name: fake_night
+  #   - card_id: 637db3cc9bd8757a02b77edc
+  #     project: icu30
+  #     media_name: fake_night
+  #   - card_id: 637db4009bd8757a02b86d33
+  #     project: icu30
+  #     media_name: fake_night
+  #   - card_id: 637db4009bd8757a02b86dfc
+  #     project: icu30
+  #     media_name: fake_night
 
+  # - file_name: /data_path/c2_2w.txt
+  #   cards:
+  #   - card_id: 63637da26b40b597c8fb2369
+  #     project: icu30
+  #     media_name: fake_night_base
+
+  # - file_name: /data_path/night_test_new.txt
+  #   cards:
+  #   - card_id: 6388ae763a771903136a40b4
+  #     project: qa
+  #     media_name: cases
+
+  # - file_name: /data_path/front_view.txt
+  #   cards:
+  #   - card_id: 62aaf1e2686f561aaca36c76
+  #     project: icu30
+  #     media_name: label_2d_object
+  #   - card_id: 62abf692ab093e478cca40e0
+  #     project: icu30
+  #     media_name: label_2d_object
+  #   - card_id: 62abfe12ab093e478ceb3796
+  #     project: icu30
+  #     media_name: label_2d_object
+  #   - card_id: 62ac3379ab093e478c0760cb
+  #     project: icu30
+  #     media_name: label_2d_object
+
+  # - file_name: /data_path/front_obj.txt
+  #   cards:
+  #   - card_id: 62e8d411214aa1ddd1a0865a
+  #     project: icu30
+  #     media_name: front_cam_v56
+  # - file_name: /data_path/side_night.txt
+  #   cards:
+  #   - card_id: 63181a8c0b7426fbf2f6d908
+  #     project: icu30
+  #     media_name: side_night
+
+
+  - file_name: /data_path/waterloo2_snow.txt
+    cards:
+    - card_id: 63a06c13a4bde0d0b4163e12
+      project: icu30
+      media_name: snow_waterloo
+
+  - file_name: /data_path/bdd_snow.txt
+    cards:
+    - card_id: 639d997f1d2f1e24bb1218c4
+      project: icu30
+      media_name: snow
+
+  - file_name: /data_path/hak_snow.txt
+    cards:
+    - card_id: 63a07a5ba4bde0d0b434ce25
+      project: icu30
+      media_name: snow
+
+  - file_name: /data_path/front_source.txt
+    cards:
+    - card_id: 639c36aa5c6c3952e8846bbd
+      project: icu30
+      media_name: front_fg
+    - card_id: 639c36845c6c3952e8842e22
+      project: icu30
+      media_name: front_bg
+      
   # - file_name: /data_path/test0914.txt
   #   cards:
   #   - card_id: 6322eca888974f319a1b25c7
