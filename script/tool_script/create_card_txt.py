@@ -25,9 +25,9 @@ def card_generator(k: int, project: str, media_name: str, paths: list):
         
             print("Card ID: %s, Project: %s, Media Name: %s, Frame Amount: %d" % (str(card_id_train), str(project), str(media_name), len(clean_lst)))
 
-PATHS = ['/data_path/waterloo_snow_filtered.txt']
+PATHS = ['/data_path/bdd_day_4k.txt', '/data_path/bdd_night_4k.txt']
 K = 550000
 PROJECT = "icu30"
-MEDIA_NAME = "snow_waterloo"
+MEDIA_NAME = "bdd"
 
 card_generator(K, PROJECT, MEDIA_NAME, PATHS)
