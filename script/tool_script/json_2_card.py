@@ -10,7 +10,7 @@ from pathlib import Path
 from src.utils.file_io import write_json
 
 oss_urls = []
-json_path = '/share/analysis/syh/temp/dt' # json_files文件夹下保存了所有用于创建卡片的json文件，里面的json文件不在oss上，使用时修改此地址即可
+json_path = '/mnt/ve_share/generation/data/new_lane_json_5' # json_files文件夹下保存了所有用于创建卡片的json文件，里面的json文件不在oss上，使用时修改此地址即可
 card_inst = CardOperation()
 
 for _, _, files in os.walk(json_path):
@@ -21,5 +21,5 @@ for _, _, files in os.walk(json_path):
             js_str = str(json.load(f))
             oss_urls.append(js_str)
 
-card_id = card_inst.create_card_w_append( project='qa', media_name='sidecam_1205_dt', target_dir=json_path) # 设置生成卡片的 project 和 media_name
+card_id = card_inst.create_card_w_append( project='icu30', media_name='blur_lane', target_dir=json_path) # 设置生成卡片的 project 和 media_name
 print('card_id: ', card_id)

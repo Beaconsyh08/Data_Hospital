@@ -363,101 +363,124 @@ cards_conf:
   #     media_name: side_night
 
 
-  - file_name: /data_path/waterloo2_snow.txt
-    cards:
-    - card_id: 63a06c13a4bde0d0b4163e12
-      project: icu30
-      media_name: snow_waterloo
+  # - file_name: /data_path/blur_lane.txt
+  #   cards:
+  #   - card_id: 640160b1669a67d78291c53a
+  #     project: icu30
+  #     media_name: blur_lane
+  #   - card_id: 64016fa4669a67d7829b2986
+  #     project: icu30
+  #     media_name: blur_lane
+  #   - card_id: 640170bd669a67d7829c1a2d
+  #     project: icu30
+  #     media_name: blur_lane
+  #   - card_id: 6401802c669a67d782ade1a8
+  #     project: icu30
+  #     media_name: blur_lane
+  #   - card_id: 640191cf669a67d782cb56c8
+  #     project: icu30
+  #     media_name: blur_lane
+  #   - card_id: 64018b67669a67d782c18261
+  #     project: icu30
+  #     media_name: blur_lane
 
-  - file_name: /data_path/bdd_snow.txt
-    cards:
-    - card_id: 639d997f1d2f1e24bb1218c4
-      project: icu30
-      media_name: snow
 
-  - file_name: /data_path/hak_snow.txt
+
+  # - file_name: /data_path/waterloo2_snow.txt
+  #   cards:
+  #   - card_id: 63a06c13a4bde0d0b4163e12
+  #     project: icu30
+  #     media_name: snow_waterloo
+
+  # - file_name: /data_path/bdd_snow.txt
+  #   cards:
+  #   - card_id: 639d997f1d2f1e24bb1218c4
+  #     project: icu30
+  #     media_name: snow
+
+  - file_name: /data_path/hok_snow.txt
     cards:
     - card_id: 63a07a5ba4bde0d0b434ce25
       project: icu30
       media_name: snow
 
-  - file_name: /data_path/front_day.txt
-    cards:
-    - card_id: 639c36aa5c6c3952e8846bbd
-      project: icu30
-      media_name: front_fg
-    - card_id: 639c36845c6c3952e8842e22
-      project: icu30
-      media_name: front_bg
+  # - file_name: /data_path/front_day.txt
+  #   cards:
+  #   - card_id: 639c36aa5c6c3952e8846bbd
+  #     project: icu30
+  #     media_name: front_fg
+  #   - card_id: 639c36845c6c3952e8842e22
+  #     project: icu30
+  #     media_name: front_bg
       
-  - file_name: /data_path/front_night.txt
-    cards:
-    - card_id: 63a069b0a4bde0d0b4136f46
-      project: icu30
-      media_name: front_night
-    - card_id: 63a069d2a4bde0d0b4138778
-      project: icu30
-      media_name: front_night
+  # - file_name: /data_path/front_night.txt
+  #   cards:
+  #   - card_id: 63a069b0a4bde0d0b4136f46
+  #     project: icu30
+  #     media_name: front_night
+  #   - card_id: 63a069d2a4bde0d0b4138778
+  #     project: icu30
+  #     media_name: front_night
 
-  - file_name: /data_path/side_day.txt
-    cards:
-    - card_id: 634d644f216ea6aca163bd4c
-      project: icu30
-      media_name: day_train_gan_10_17_5
-    - card_id: 634fc2a2c60ce93f6df8da77
-      project: icu30
-      media_name: day_train_gan_10_17_5_bg
+  # - file_name: /data_path/side_day.txt
+  #   cards:
+  #   - card_id: 634d644f216ea6aca163bd4c
+  #     project: icu30
+  #     media_name: day_train_gan_10_17_5
+  #   - card_id: 634fc2a2c60ce93f6df8da77
+  #     project: icu30
+  #     media_name: day_train_gan_10_17_5_bg
       
-  - file_name: /data_path/side_night.txt
-    cards:
-    - card_id: 634cfcc973827087b9301aeb
-      project: icu30
-      media_name: realnight_train_gan_21_4_5
-    - card_id: 634fc24ec60ce93f6df7b683
-      project: icu30
-      media_name: realnight_train_gan_21_4_5_bg
+  # - file_name: /data_path/side_night.txt
+  #   cards:
+  #   - card_id: 634cfcc973827087b9301aeb
+  #     project: icu30
+  #     media_name: realnight_train_gan_21_4_5
+  #   - card_id: 634fc24ec60ce93f6df7b683
+  #     project: icu30
+  #     media_name: realnight_train_gan_21_4_5_bg
 
-  - file_name: /data_path/bdd_day.txt
-    cards:
-    - card_id: 634fe49e1e94c5a873d474af
-      project: icu30
-      media_name: BDD100K_DAYTIME
+  # - file_name: /data_path/bdd_day.txt
+  #   cards:
+  #   - card_id: 634fe49e1e94c5a873d474af
+  #     project: icu30
+  #     media_name: BDD100K_DAYTIME
 
-  - file_name: /data_path/bdd_night.txt
-    cards:
-    - card_id: 634fe2a01e94c5a873d3983b
-      project: icu30
-      media_name: BDD100K_NIGHT
+  # - file_name: /data_path/bdd_night.txt
+  #   cards:
+  #   - card_id: 634fe2a01e94c5a873d3983b
+  #     project: icu30
+  #     media_name: BDD100K_NIGHT
 
-  - file_name: /data_path/demo3.txt
-    cards:
-    - card_id: 63bbf6a5a65af67d151b142c
-      project: icu30
-      media_name: demo
+  # - file_name: /data_path/demo3.txt
+  #   cards:
+  #   - card_id: 63bbf6a5a65af67d151b142c
+  #     project: icu30
+  #     media_name: demo
 
-  - file_name: /data_path/demo4.txt
-    cards:
-    - card_id: 63bc0ac1a65af67d1523432b
-      project: icu30
-      media_name: demo
+  # - file_name: /data_path/demo4.txt
+  #   cards:
+  #   - card_id: 63bc0ac1a65af67d1523432b
+  #     project: icu30
+  #     media_name: demo
 
-  - file_name: /data_path/night_test.txt
-    cards:
-    - card_id: 6347b47c1e006b046c402ae7
-      project: icu30
-      media_name: night_test
+  # - file_name: /data_path/night_test.txt
+  #   cards:
+  #   - card_id: 6347b47c1e006b046c402ae7
+  #     project: icu30
+  #     media_name: night_test
 
-  - file_name: /data_path/day_test.txt
-    cards:
-    - card_id: 6347b15e1e006b046c27cc05
-      project: icu30
-      media_name: day_test
+  # - file_name: /data_path/day_test.txt
+  #   cards:
+  #   - card_id: 6347b15e1e006b046c27cc05
+  #     project: icu30
+  #     media_name: day_test
 
-  - file_name: /data_path/demo2.txt
-    cards:
-    - card_id: 6393d3f715ff92fe1b05c969
-      project: icu30
-      media_name: frame_sensor_data
+  # - file_name: /data_path/demo2.txt
+  #   cards:
+  #   - card_id: 6393d3f715ff92fe1b05c969
+  #     project: icu30
+  #     media_name: frame_sensor_data
 
 
 
