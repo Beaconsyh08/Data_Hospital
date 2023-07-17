@@ -10,9 +10,9 @@ from pathlib import Path
     
 def process(MODEL: str, COMBINE: bool, FRAME: int = 100) -> None:
     # PATH = "/root/mmgeneration/tests/haomo/%s/%s" % (DEMO, MODEL)
-    # PATH = "/mnt/ve_share/generation/data/%s/%s" % (DEMO, MODEL)
+    # PATH = "/mnt/ve_share/songyuhao/generation/data/%s/%s" % (DEMO, MODEL)
     print(MODEL)
-    FATHER_PATH = "/mnt/ve_share/generation/data/p2p/imgs/%s" % MODEL
+    FATHER_PATH = "/mnt/ve_share/songyuhao/generation/data/p2p/imgs/%s" % MODEL
     img_paths = glob.glob(os.path.join(FATHER_PATH,'*'))
     img_paths = [_.split("_") for _ in img_paths]
     
@@ -52,7 +52,7 @@ def process(MODEL: str, COMBINE: bool, FRAME: int = 100) -> None:
                     
                 gif_images_ori.append(Image.fromarray(np.uint8(cv2.cvtColor(img_combine, cv2.COLOR_BGR2RGB) )))
             
-            save_root = "/mnt/ve_share/generation/data/result/diffusions/vis/p2p/gif/%s" % MODEL
+            save_root = "/mnt/ve_share/songyuhao/generation/data/result/diffusions/vis/p2p/gif/%s" % MODEL
             os.makedirs(save_root, exist_ok=True)
             save_path = "%s/%d_%d.gif" % (save_root, i, FRAME)
 

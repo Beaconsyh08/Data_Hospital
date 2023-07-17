@@ -10,22 +10,16 @@ from pathlib import Path
     
 def process(MODEL: str, COMBINE: bool, FRAME: int, SCENE: str) -> None:
     # PATH = "/root/mmgeneration/tests/haomo/%s/%s" % (DEMO, MODEL)
-    # PATH = "/mnt/ve_share/generation/data/%s/%s" % (DEMO, MODEL)
+    # PATH = "/mnt/ve_share/songyuhao/generation/data/%s/%s" % (DEMO, MODEL)
     print("MODEL:", MODEL)
     print("SCENE:", SCENE)
-    FATHER_PATH = "/mnt/ve_share/generation/data/p2p/imgs/%s" % MODEL
-    img_paths = glob.glob(os.path.join(FATHER_PATH,'*'))
-    img_paths = [_.split("_") for _ in img_paths]
-    
-    ft = []
-    for each in img_paths:
-        if len(each) == 5 and each[-2].split("/")[-1] == SCENE:
-            ft.append("_".join(each))
-    ft = random.sample(ft[:-1], min(FRAME, len(ft) - 1))
+    FATHER_PATH = "/mnt/share_disk/syh/data/prompt_to_prompt/imgs/%s/%s" % (MODEL, SCENE)
+    folder_paths = glob.glob(os.path.join(FATHER_PATH,'*'))
+    folder_paths = random.sample(folder_paths, min(FRAME, len(folder_paths)))
     
     if COMBINE:
         gif_images_ori = []
-        for f in ft:
+        for f in folder_paths:
             paths = "%s/0.80_0.80_2.00" % (f)
             if Path(paths).exists():
                 img_ppp = glob.glob(os.path.join(paths,'*.png'))
@@ -36,12 +30,12 @@ def process(MODEL: str, COMBINE: bool, FRAME: int, SCENE: str) -> None:
                 
             gif_images_ori.append(Image.fromarray(np.uint8(cv2.cvtColor(img_combine, cv2.COLOR_BGR2RGB) )))
         
-        save_root = "/mnt/ve_share/generation/data/result/diffusions/vis/p2p/gif_2/%s" % MODEL
+        save_root = "/mnt/ve_share/songyuhao/generation/data/result/diffusions/vis/p2p/gif_3/%s" % MODEL
         os.makedirs(save_root, exist_ok=True)
         save_path = "%s/%s_%d.gif" % (save_root, SCENE, FRAME)
 
         # imageio.mimsave(save_path, gif_images_ori, duration=2000)
-        if len(ft) > 0:
+        if len(folder_paths) > 0:
             gif_images_ori[0].save(save_path, format='GIF', append_images=gif_images_ori[1:], save_all=True, duration=1500, loop=0)
             print(save_path)
     

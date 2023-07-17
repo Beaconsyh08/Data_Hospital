@@ -10,7 +10,7 @@ from pathlib import Path
 from src.utils.file_io import write_json
 
 oss_urls = []
-json_path = '/mnt/ve_share/generation/data/new_lane_json_5' # json_files文件夹下保存了所有用于创建卡片的json文件，里面的json文件不在oss上，使用时修改此地址即可
+json_path = '/mnt/ve_share/songyuhao/generation/data/new_lane_json_5' # json_files文件夹下保存了所有用于创建卡片的json文件，里面的json文件不在oss上，使用时修改此地址即可
 card_inst = CardOperation()
 
 for _, _, files in os.walk(json_path):

@@ -62,7 +62,7 @@ def load_and_dowmload_imgs(json_path, save_dir, mode):
 
 jsontxt_path = '/data_path/front_night.txt'
 # jsontxt_folder = "/share/2d-od/lei/aiday_inf/demo2"
-save_dir = '/mnt/ve_share/generation/data/train/front_night'  
+save_dir = '/mnt/ve_share/songyuhao/generation/data/train/front_night'  
 # save_dir = '/mnt/ve_share/yayun'
 
 
