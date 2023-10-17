@@ -398,11 +398,17 @@ cards_conf:
   #     project: icu30
   #     media_name: snow
 
-  - file_name: /data_path/hok_snow.txt
+  # - file_name: /data_path/hok_snow.txt
+  #   cards:
+  #   - card_id: 63a07a5ba4bde0d0b434ce25
+  #     project: icu30
+  #     media_name: snow
+
+  - file_name: /data_path/aiday.txt
     cards:
-    - card_id: 63a07a5ba4bde0d0b434ce25
+    - card_id: 6416a9c4209a6017645dbde9
       project: icu30
-      media_name: snow
+      media_name: frame_sensor_data
 
   # - file_name: /data_path/front_day.txt
   #   cards:

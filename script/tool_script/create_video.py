@@ -62,7 +62,7 @@ def process(MODEL: str, DEMO: str, COMBINE: bool, FATHER_PATH: str, FRAME: int =
 # MODELS = ["SD-HM-V0.1",]  #  "cut_snow_hok", "cut_snow_waterloo"
 # MODELS = ["SD-HM-V0.0", "SD-HM-V0.1", "SD-Base", "SD-HM-V1.0", "SD-HM-V1.1", "SD-HM-V1.2"]
 # MODELS = ["SD-Base", "SD-HM-V0.0", "SD-HM-V0.1", "SD-HM-V1.0", "SD-HM-V1.1", "SD-HM-V1.2", "SD-HM-V2.0", "SD-HM-V3.0", "SD-HM-V3.0.1", "SD-HM-V3.1", "SD-HM-V3.1.1", "SD-HM-V4.0", "SD-HM-V4.0.1", "SD-HM-V4.1", "SD-HM-V4.1.1"]
-MODELS = ["INS-HM-LORA-NIGHT-V0.1.0", "INS-HM-LORA-NIGHT-V0.1.0-2500", "INS-HM-LORA-NIGHT-V0.1.0-5000", "INS-HM-LORA-NIGHT-V0.0.0", "INS-HM-LORA-NIGHT-V0.0.0-5000", "INS-HM-LORA-NIGHT-V0.0.0-10000"]
+MODELS = ["INS-HM-V0.4.5-5000",]
 
 # MODELS = ["INS-Base", "INS-HM-NIGHT-V0.0.0", "INS-HM-NIGHT-V0.0.1", "INS-HM-NIGHT-V0.1.0", "INS-HM-SNOWY-V0.0.0", "INS-HM-SNOWY-V0.0.1", "INS-HM-SNOWY-V0.1.0"]
 
@@ -70,15 +70,16 @@ MODELS = ["INS-HM-LORA-NIGHT-V0.1.0", "INS-HM-LORA-NIGHT-V0.1.0-2500", "INS-HM-L
 MANUAL = False
 COMBINE = False
 # ROOT_PATH = "/mnt/ve_share/songyuhao/generation/data/result/diffusions/vis/dreambooth"
-ROOT_PATH = "/mnt/ve_share/songyuhao/generation/data/result/diffusions/vis/instructpix2pix/lora"
+ROOT_PATH = "/mnt/ve_share/songyuhao/generation/data/result/diffusions/vis/instructpix2pix/official"
 
 for model in MODELS:
     print(model)
     
     FATHER_PATH = "%s/%s" % (ROOT_PATH, model)
     COMB_PATH = "%s/%s" % (ROOT_PATH, "INS-HM-SNOWY-V0.0.0")
-    
+    print(FATHER_PATH)
     prompts = [x[0].split("/")[-1] for x in os.walk(FATHER_PATH)][1:]
+    print(prompts)
     if MANUAL:
         prompts = ["a city street with cars driving down it and tall buildings in the background on a foggy day with a few cars", "a city street with cars driving down it and tall buildings in the background with a few cars", "a white bus driving down a street next to a white car and a white car with a yellow license plate", ]
         prompts = ["_".join(_.split()) for _ in prompts]
