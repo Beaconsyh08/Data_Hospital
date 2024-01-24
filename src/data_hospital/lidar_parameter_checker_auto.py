@@ -242,18 +242,21 @@ def draw_cloud(image, project_cloud, intensity=None, ind=None):
         color_scales_manager = ColorScalesManager()
         color_scales_manager.init_color_table()
         color_scales_manager.set_display_range(0.0, 1.0)
-        # color_scales_manager.set_saturation_rage(0.0, 0.21336615)
-        color_scales_manager.set_saturation_rage(0.0, 0.6)
+        color_scales_manager.set_saturation_rage(0.0, 0.21336615)
+        # color_scales_manager.set_saturation_rage(0.0, 0.6)
         color_scales_manager.check_intensity(intensity)
         for idx, point in enumerate(project_cloud):
             color = color_scales_manager.get_color(intensity[idx])
             # print(intensity_tmp[idx], color)
-            cv2.circle(image, tuple(point[0]), 2, tuple(color))
+            cv2.circle(image, tuple(point[0]), 1, tuple(color))
     else:
         for idx, point in enumerate(point[0]):
             # print(intensity_tmp[idx], color)
-            cv2.circle(image, tuple(point[0]), 2, (0, 0, 255))
+            cv2.circle(image, tuple(point[0]), 1, (0, 0, 255))
     return image
+
+
+# def calculate_ratio(lane_intensity_matrix, lane_seg_matrix):
 
 
 def main(pcd_file, hw_conf, image_file, camera_orientation, output_path):
@@ -289,14 +292,8 @@ def main(pcd_file, hw_conf, image_file, camera_orientation, output_path):
     img = cv2.imread(image_file)
     canvas = np.zeros_like(img)
     h, w = shape[:2]
-    try:
-        pcd_file_2 = pypcd.PointCloud.from_path(pcd_file)
-    except ValueError:
-        return
-    pcd_file_2_data = pcd_file_2.pc_data
-    intensity = pcd_file_2_data['intensity']
-    intensity = intensity[indices]
-    img = draw_cloud(image=img, project_cloud=ret[0], intensity=intensity)
+    intersity = pypcd.PointCloud.from_path(pcd_file).pc_data['intensity'][indices]
+    img = draw_cloud(image=img, project_cloud=ret[0], intensity=intersity)
     # for i, idx in enumerate(ret[0]):
     #     x, y = idx[0]
     #     if 0 < x < w and 0 < y < h:
@@ -330,16 +327,11 @@ def process_data(data):
     # try:
     main(pcd_file, hw_conf, image_file, camera_orientation, output_path)
     # except:
-    #     print("pcd_file: ", pcd_file)
-    #     print("hw_conf: ", hw_conf)
-    #     print("image_file: ", image_file)
-    #     print("output_folder: ", output_folder)
-    #     print("camera_orientation: ", camera_orientation)
 
 if __name__ == '__main__':
     input_path = "/root/data-juicer/outputs/demo-gn6/demo-processed.jsonl"
     camera_orientation = "front_middle_camera"
-    output_dir = "/mnt/share_disk/songyuhao/data/lidar_projection_all_new_2"
+    output_dir = "/mnt/share_disk/songyuhao/data/lidar_projection_all_new"
     n = 10
     datas = []
 
